@@ -407,6 +407,7 @@ const els = {
   tutorialProgress: document.querySelector("#tutorial-progress"),
   tutorialPrev: document.querySelector("#tutorial-prev"),
   tutorialNext: document.querySelector("#tutorial-next"),
+  tutorialResetLesson: document.querySelector("#tutorial-reset-lesson"),
   tutorialRestart: document.querySelector("#tutorial-restart"),
   tutorialExit: document.querySelector("#tutorial-exit"),
 };
@@ -548,6 +549,18 @@ function renderTutorialStatus(message, kind) {
 function resetTutorialCheck() {
   tutorialChecks.set(tutorialIndex, {});
   renderTutorialStatus();
+}
+
+async function resetLessonState() {
+  resetTutorialCheck();
+  const preset = (lessons[tutorialIndex].actions || []).find((action) => action.type === "preset");
+  if (preset) {
+    await runTutorialAction(preset);
+  } else {
+    els.sampleSummary.textContent = "";
+    clearSamples();
+  }
+  renderTutorial();
 }
 
 function renderTutorialDetails(details) {
@@ -800,14 +813,9 @@ els.tutorialNext.addEventListener("click", () => {
   renderTutorial();
 });
 
-els.tutorialRestart.addEventListener("click", async () => {
-  resetTutorialCheck();
-  const preset = (lessons[tutorialIndex].actions || []).find((action) => action.type === "preset");
-  if (preset) {
-    await runTutorialAction(preset);
-  }
-  renderTutorial();
-});
+els.tutorialResetLesson.addEventListener("click", resetLessonState);
+
+els.tutorialRestart.addEventListener("click", resetLessonState);
 
 els.tutorialExit.addEventListener("click", () => {
   els.tutorialPanel.hidden = true;

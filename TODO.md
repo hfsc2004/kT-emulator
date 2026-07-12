@@ -131,7 +131,7 @@ Goal: add an optional tutorial path for people who are new to kT-RAM and neural 
   - First check added for "Project: teach a positive preference"; still needs coverage for the rest of the tutorial.
 - [ ] Add concise explanations next to the chart and metrics.
 - [ ] Add a glossary drawer or popover for terms.
-- [ ] Add a "Reset lesson state" button so users can recover from experiments.
+- [x] Add a "Reset lesson state" button so users can recover from experiments.
 - [ ] Make tutorial text fit on mobile and desktop without overlapping controls.
 
 ## Emulator/API Work
