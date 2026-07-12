@@ -6,6 +6,10 @@
 
 Browser-based explorer for Knowm's kT-RAM neural lane emulator, with live controls, visual gauges, noisy read sampling, and an optional beginner tutorial.
 
+<p align="center">
+  <img src="web/assets/Screenshot.png" alt="kT-RAM Neural Lane Emulator browser interface" width="900">
+</p>
+
 This project wraps `ktram-neural-core`, the open Python emulator of the 2-1 kT-RAM neural lane described in Knowm's Neural Lane Emulator article. The goal is to make the emulator easier to explore without living entirely inside a Python prompt or notebook.
 
 The current UI focuses on the first useful surface: one lane, one address space, one differential pair selected by AAT `(0,)`.
