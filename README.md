@@ -10,7 +10,13 @@ The repository is being set up as a starting point for work with the kT emulator
 ./start.sh
 ```
 
-That starts the browser UI server and prints the local URL.
+That starts the browser UI server and opens it in your default browser.
+
+Start the server without opening a browser:
+
+```bash
+./start.sh --no-browser
+```
 
 Open a Python shell with the virtual environment active:
 

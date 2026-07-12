@@ -6,9 +6,11 @@ from __future__ import annotations
 import errno
 import gc
 import json
+import threading
+import webbrowser
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
-from urllib.parse import parse_qs, urlparse
+from urllib.parse import urlparse
 
 from ktram_neural_core import Core, INSTRUCTIONS
 
@@ -199,6 +201,7 @@ def main() -> None:
     parser = argparse.ArgumentParser(description="Run the kT-RAM emulator UI")
     parser.add_argument("--host", default="127.0.0.1")
     parser.add_argument("--port", type=int, default=8000)
+    parser.add_argument("--no-browser", action="store_true", help="do not open the UI automatically")
     args = parser.parse_args()
 
     server = None
@@ -213,7 +216,11 @@ def main() -> None:
     if server is None:
         raise SystemExit(f"No available port from {args.port} to {args.port + 19}")
 
-    print(f"kT emulator UI: http://{args.host}:{args.port}", flush=True)
+    url = f"http://{args.host}:{args.port}"
+    print(f"kT emulator UI: {url}", flush=True)
+    if not args.no_browser:
+        print("Opening browser...", flush=True)
+        threading.Timer(0.4, webbrowser.open, args=(url,)).start()
     try:
         server.serve_forever()
     except KeyboardInterrupt:
