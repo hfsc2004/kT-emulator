@@ -18,27 +18,45 @@
         </div>
         <div class="status">
           <span id="branch">AAT (0,)</span>
+          <button id="tutorial-toggle" type="button">Tutorial</button>
           <strong id="step">0</strong>
         </div>
       </header>
 
       <section class="metrics" aria-label="Current state">
-        <article>
+        <article data-focus="activation">
           <span>Activation</span>
           <strong id="y">+0.000000</strong>
         </article>
-        <article>
+        <article data-focus="conductance">
           <span>Ga</span>
           <strong id="ga">0.000000</strong>
         </article>
-        <article>
+        <article data-focus="conductance">
           <span>Gb</span>
           <strong id="gb">0.000000</strong>
         </article>
-        <article>
+        <article data-focus="magnitude">
           <span>Magnitude</span>
           <strong id="magnitude">0.000000</strong>
         </article>
+      </section>
+
+      <section id="tutorial-panel" class="panel tutorial-panel" hidden>
+        <div class="tutorial-main">
+          <div class="section-title" id="tutorial-kicker">Tutorial</div>
+          <h2 id="tutorial-title">What is this emulator?</h2>
+          <p id="tutorial-body"></p>
+          <p id="tutorial-task"></p>
+          <div class="tutorial-actions" id="tutorial-actions"></div>
+        </div>
+        <div class="tutorial-nav">
+          <button id="tutorial-prev" type="button">Back</button>
+          <span id="tutorial-progress">1 / 1</span>
+          <button id="tutorial-next" type="button">Next</button>
+          <button id="tutorial-restart" type="button">Restart</button>
+          <button id="tutorial-exit" type="button">Exit</button>
+        </div>
       </section>
 
       <section class="workspace">

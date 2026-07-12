@@ -33,6 +33,12 @@ To start the server without opening a browser:
 
 To stop the UI, press `Ctrl+C` in the terminal that started it.
 
+## Tutorial Mode
+
+Click `Tutorial` in the top bar to open an optional beginner path. The first tutorial slice walks through a balanced synapse, conductance reads, simple feedback, noisy low-voltage sampling, and magnitude as stored evidence.
+
+The tutorial is still early. It is designed to stay skippable so experienced users can continue using the main emulator controls directly.
+
 ## Other Commands
 
 Open a Python shell with the virtual environment active:

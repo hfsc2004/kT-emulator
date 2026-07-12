@@ -4,6 +4,56 @@
 
 const instructions = ["FF", "FFLV", "RF", "RFLV", "FH", "FL", "FU", "FA", "FZ", "RH", "RL", "RU", "RA", "RZ"];
 const readInstructions = new Set(["FF", "FFLV", "RF", "RFLV"]);
+const lessons = [
+  {
+    title: "What is this emulator?",
+    body: "This is a software sandbox for one kT-RAM neural lane. For now, you are looking at one tiny memory element called a synapse.",
+    task: "Start with a balanced synapse. The activation should sit near zero because the two conductances are equal.",
+    focus: "activation",
+    actions: [{ label: "Load balanced preset", type: "preset", name: "balanced" }],
+  },
+  {
+    title: "One synapse, two conductances",
+    body: "The synapse is made from two sides: Ga and Gb. The activation y comes from their balance. If Ga and Gb match, y is near zero.",
+    task: "Read the synapse once with FF. Watch y, Ga, and Gb update in the metric boxes.",
+    focus: "conductance",
+    actions: [
+      { label: "Reset balanced", type: "preset", name: "balanced" },
+      { label: "Run FF", type: "evaluate", instruction: "FF" },
+    ],
+  },
+  {
+    title: "Feedback changes memory",
+    body: "A read observes the synapse. Feedback nudges it. Running FF then RH is a simple cycle that pushes the stored state upward.",
+    task: "Run five FF/RH cycles and watch the activation move step by step.",
+    focus: "chart",
+    actions: [
+      { label: "Reset balanced", type: "preset", name: "balanced" },
+      { label: "Run 5 cycles", type: "cycle", read: "FF", feedback: "RH", count: 5 },
+    ],
+  },
+  {
+    title: "Noise can be useful",
+    body: "Low-voltage reads can act like samples. Near y = 0, the sign of the read can flip around like a soft coin toss.",
+    task: "Sample FFLV forty times. The positive count shows how often the noisy read landed above zero.",
+    focus: "activation",
+    actions: [
+      { label: "Reset balanced", type: "preset", name: "balanced" },
+      { label: "Sample FFLV", type: "sample", instruction: "FFLV", count: 40 },
+    ],
+  },
+  {
+    title: "Magnitude is stored evidence",
+    body: "Magnitude is the total conductance. A higher magnitude means the same weight is harder to move, like a heavier object.",
+    task: "Load the low and high magnitude presets. They have the same starting weight, but different stored evidence.",
+    focus: "magnitude",
+    actions: [
+      { label: "Low magnitude", type: "preset", name: "low-magnitude" },
+      { label: "High magnitude", type: "preset", name: "high-magnitude" },
+    ],
+  },
+];
+let tutorialIndex = 0;
 
 const els = {
   step: document.querySelector("#step"),
@@ -28,6 +78,17 @@ const els = {
   lastInstruction: document.querySelector("#last-instruction"),
   sampleSummary: document.querySelector("#sample-summary"),
   chart: document.querySelector("#chart"),
+  tutorialToggle: document.querySelector("#tutorial-toggle"),
+  tutorialPanel: document.querySelector("#tutorial-panel"),
+  tutorialTitle: document.querySelector("#tutorial-title"),
+  tutorialBody: document.querySelector("#tutorial-body"),
+  tutorialTask: document.querySelector("#tutorial-task"),
+  tutorialActions: document.querySelector("#tutorial-actions"),
+  tutorialProgress: document.querySelector("#tutorial-progress"),
+  tutorialPrev: document.querySelector("#tutorial-prev"),
+  tutorialNext: document.querySelector("#tutorial-next"),
+  tutorialRestart: document.querySelector("#tutorial-restart"),
+  tutorialExit: document.querySelector("#tutorial-exit"),
 };
 
 function fmt(value, digits = 6) {
@@ -67,6 +128,65 @@ function render(state) {
   }
 
   drawChart(state.history || []);
+}
+
+function setFocus(target) {
+  document.querySelectorAll(".focused").forEach((node) => node.classList.remove("focused"));
+  if (!target) {
+    return;
+  }
+  if (target === "chart") {
+    document.querySelector(".chart-panel")?.classList.add("focused");
+    return;
+  }
+  document.querySelectorAll(`[data-focus="${target}"]`).forEach((node) => {
+    node.classList.add("focused");
+  });
+}
+
+function renderTutorial() {
+  const lesson = lessons[tutorialIndex];
+  els.tutorialTitle.textContent = lesson.title;
+  els.tutorialBody.textContent = lesson.body;
+  els.tutorialTask.textContent = lesson.task;
+  els.tutorialProgress.textContent = `${tutorialIndex + 1} / ${lessons.length}`;
+  els.tutorialPrev.disabled = tutorialIndex === 0;
+  els.tutorialNext.disabled = tutorialIndex === lessons.length - 1;
+  els.tutorialActions.replaceChildren();
+  lesson.actions.forEach((action) => {
+    const button = document.createElement("button");
+    button.type = "button";
+    button.textContent = action.label;
+    button.addEventListener("click", () => runTutorialAction(action));
+    els.tutorialActions.appendChild(button);
+  });
+  setFocus(lesson.focus);
+}
+
+async function runTutorialAction(action) {
+  let state;
+  if (action.type === "preset") {
+    state = await post("/api/preset", { name: action.name });
+    els.sampleSummary.textContent = "";
+  } else if (action.type === "evaluate") {
+    state = await post("/api/evaluate", { instruction: action.instruction, noise: 0 });
+  } else if (action.type === "cycle") {
+    state = await post("/api/cycle", {
+      read: action.read,
+      feedback: action.feedback,
+      count: action.count,
+      noise: 0,
+    });
+  } else if (action.type === "sample") {
+    state = await post("/api/sample", {
+      instruction: action.instruction,
+      count: action.count,
+      noise: 0,
+    });
+  }
+  if (state) {
+    render(state);
+  }
 }
 
 function drawChart(history) {
@@ -173,6 +293,38 @@ els.sample.addEventListener("click", async () => {
     noise: Number(els.noise.value),
   });
   render(state);
+});
+
+els.tutorialToggle.addEventListener("click", () => {
+  els.tutorialPanel.hidden = !els.tutorialPanel.hidden;
+  if (!els.tutorialPanel.hidden) {
+    renderTutorial();
+  } else {
+    setFocus(null);
+  }
+});
+
+els.tutorialPrev.addEventListener("click", () => {
+  tutorialIndex = Math.max(0, tutorialIndex - 1);
+  renderTutorial();
+});
+
+els.tutorialNext.addEventListener("click", () => {
+  tutorialIndex = Math.min(lessons.length - 1, tutorialIndex + 1);
+  renderTutorial();
+});
+
+els.tutorialRestart.addEventListener("click", async () => {
+  const preset = lessons[tutorialIndex].actions.find((action) => action.type === "preset");
+  if (preset) {
+    await runTutorialAction(preset);
+  }
+  renderTutorial();
+});
+
+els.tutorialExit.addEventListener("click", () => {
+  els.tutorialPanel.hidden = true;
+  setFocus(null);
 });
 
 wireInstructions();
