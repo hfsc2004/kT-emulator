@@ -33,13 +33,13 @@ git clone https://github.com/hfsc2004/kT-emulator.git
 cd kT-emulator
 ```
 
-The launcher scripts check for Python and Git, create `.venv` if needed, install all Python dependencies, start the local UI server, and open the interface in your default browser.
+Then start the app for your platform. The launcher creates `.venv`, installs what the app needs, starts the local UI server, and opens the interface in your default browser.
 
-| Platform | Start the UI | Install only | Check environment |
-| --- | --- | --- | --- |
-| Linux | `./start.sh` | `./start.sh setup` | `./start.sh doctor` |
-| macOS | `./start.command` | `./start.command setup` | `./start.command doctor` |
-| Windows | `start.bat` | `start.bat setup` | `start.bat doctor` |
+| Platform | Start the UI |
+| --- | --- |
+| Linux | `./start.sh` |
+| macOS | `./start.command` |
+| Windows | `start.bat` |
 
 To start the server without opening a browser:
 
@@ -69,8 +69,33 @@ The tutorial is still early. It is designed to stay skippable so experienced use
 | --- | --- | --- | --- |
 | Open a Python shell | `./start.sh shell` | `./start.command shell` | `start.bat shell` |
 | Run the example | `./start.sh example` | `./start.command example` | `start.bat example` |
-| Force dependency installation | `./start.sh install` | `./start.command install` | `start.bat install` |
 | Show help | `./start.sh help` | `./start.command help` | `start.bat help` |
+
+## Troubleshooting
+
+If the app does not start, check the local environment:
+
+| Platform | Check environment |
+| --- | --- |
+| Linux | `./start.sh doctor` |
+| macOS | `./start.command doctor` |
+| Windows | `start.bat doctor` |
+
+To install dependencies without starting the UI:
+
+| Platform | Install only |
+| --- | --- |
+| Linux | `./start.sh setup` |
+| macOS | `./start.command setup` |
+| Windows | `start.bat setup` |
+
+To force dependency installation again:
+
+| Platform | Force install |
+| --- | --- |
+| Linux | `./start.sh install` |
+| macOS | `./start.command install` |
+| Windows | `start.bat install` |
 
 ## Dependency
 
