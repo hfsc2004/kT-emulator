@@ -13,6 +13,99 @@ const lessons = [
     actions: [{ label: "Load balanced preset", type: "preset", name: "balanced" }],
   },
   {
+    title: "How a regular computer works",
+    body: "A conventional computer keeps most memory and processing separate. The CPU fetches instructions, reads data from memory, works on that data, then writes results back.",
+    task: "Follow the example as a mental model. No emulator action is needed yet.",
+    focus: null,
+    details: [
+      {
+        title: "High level",
+        items: [
+          "Memory stores instructions and values.",
+          "The CPU runs instructions one step at a time.",
+          "A program usually moves data from memory to the CPU, changes it, then stores the result.",
+        ],
+      },
+      {
+        title: "Example",
+        items: [
+          "A program reads a score from memory.",
+          "The CPU adds one point.",
+          "The program writes the new score back to memory.",
+        ],
+      },
+      {
+        title: "Low level",
+        items: [
+          "Bits encode the instruction, the address of the score, and the number one.",
+          "Registers hold the score while the CPU arithmetic unit changes it.",
+          "A branch can choose the next instruction when a condition is true or false.",
+        ],
+      },
+    ],
+  },
+  {
+    title: "How kT-RAM is different",
+    body: "In kT-RAM, the stored state and the operation are tied closely together. Conductance stores the learned state, and read plus feedback instructions interact with that state.",
+    task: "Load a balanced synapse, then run FF once. Compare the visible flow with the CPU example.",
+    focus: "balance",
+    actions: [
+      { label: "Load balanced preset", type: "preset", name: "balanced" },
+      { label: "Run FF", type: "evaluate", instruction: "FF" },
+    ],
+    details: [
+      {
+        title: "High level",
+        items: [
+          "A selected synapse stores state as two conductances: Ga and Gb.",
+          "A read produces activation y from the balance between those conductances.",
+          "Feedback can nudge the conductances, so the stored state changes.",
+        ],
+      },
+      {
+        title: "Same example",
+        items: [
+          "Instead of reading a score into a CPU register, the lane reads a selected synapse.",
+          "The result is an activation: y leans negative, balanced, or positive.",
+          "Feedback is like updating the stored evidence for the next read.",
+        ],
+      },
+      {
+        title: "Low level",
+        items: [
+          "AAT selects which synapse address is active. This tutorial uses AAT (0,).",
+          "The differential weight comes from Ga minus Gb, normalized into y.",
+          "Read voltage, noise, and feedback instructions control how strongly the emulator samples or changes the state.",
+        ],
+      },
+    ],
+  },
+  {
+    title: "Where the analogy breaks",
+    body: "The comparison is useful, but it is not exact. A software variable is not the same thing as conductance, and this app is an emulator of one small lane surface.",
+    task: "Use the side-by-side bridge to keep the terms straight before changing memory with feedback.",
+    focus: "activation",
+    details: [
+      {
+        title: "Vocabulary bridge",
+        pairs: [
+          ["Memory address", "AAT selects an address-like synapse location."],
+          ["Stored value", "Ga and Gb hold conductance state, not a normal integer variable."],
+          ["CPU result", "Activation y is the read result from the selected lane state."],
+          ["Write back", "Feedback changes conductance instead of storing a copied value."],
+        ],
+      },
+      {
+        title: "Keep separate",
+        items: [
+          "Conventional computers usually separate storage and processing.",
+          "kT-RAM makes memory behavior part of the computation being explored.",
+          "The UI demonstrates the emulator model, not a complete physical hardware system.",
+        ],
+      },
+    ],
+  },
+  {
     title: "One synapse, two conductances",
     body: "The synapse is made from two sides: Ga and Gb. The activation y comes from their balance. If Ga and Gb match, y is near zero.",
     task: "Read the synapse once with FF. Watch the conductance bars and the y gauge.",
@@ -92,6 +185,7 @@ const els = {
   tutorialTitle: document.querySelector("#tutorial-title"),
   tutorialBody: document.querySelector("#tutorial-body"),
   tutorialTask: document.querySelector("#tutorial-task"),
+  tutorialDetails: document.querySelector("#tutorial-details"),
   tutorialActions: document.querySelector("#tutorial-actions"),
   tutorialProgress: document.querySelector("#tutorial-progress"),
   tutorialPrev: document.querySelector("#tutorial-prev"),
@@ -203,8 +297,9 @@ function renderTutorial() {
   els.tutorialProgress.textContent = `${tutorialIndex + 1} / ${lessons.length}`;
   els.tutorialPrev.disabled = tutorialIndex === 0;
   els.tutorialNext.disabled = tutorialIndex === lessons.length - 1;
+  renderTutorialDetails(lesson.details || []);
   els.tutorialActions.replaceChildren();
-  lesson.actions.forEach((action) => {
+  (lesson.actions || []).forEach((action) => {
     const button = document.createElement("button");
     button.type = "button";
     button.textContent = action.label;
@@ -212,6 +307,42 @@ function renderTutorial() {
     els.tutorialActions.appendChild(button);
   });
   setFocus(lesson.focus);
+}
+
+function renderTutorialDetails(details) {
+  els.tutorialDetails.replaceChildren();
+  details.forEach((section) => {
+    const card = document.createElement("section");
+    card.className = "tutorial-detail";
+
+    const title = document.createElement("h3");
+    title.textContent = section.title;
+    card.appendChild(title);
+
+    if (section.items) {
+      const list = document.createElement("ul");
+      section.items.forEach((item) => {
+        const li = document.createElement("li");
+        li.textContent = item;
+        list.appendChild(li);
+      });
+      card.appendChild(list);
+    }
+
+    if (section.pairs) {
+      const dl = document.createElement("dl");
+      section.pairs.forEach(([term, explanation]) => {
+        const dt = document.createElement("dt");
+        dt.textContent = term;
+        const dd = document.createElement("dd");
+        dd.textContent = explanation;
+        dl.append(dt, dd);
+      });
+      card.appendChild(dl);
+    }
+
+    els.tutorialDetails.appendChild(card);
+  });
 }
 
 async function runTutorialAction(action) {
@@ -368,7 +499,7 @@ els.tutorialNext.addEventListener("click", () => {
 });
 
 els.tutorialRestart.addEventListener("click", async () => {
-  const preset = lessons[tutorialIndex].actions.find((action) => action.type === "preset");
+  const preset = (lessons[tutorialIndex].actions || []).find((action) => action.type === "preset");
   if (preset) {
     await runTutorialAction(preset);
   }

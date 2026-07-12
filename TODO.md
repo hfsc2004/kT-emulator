@@ -52,6 +52,35 @@ Goal: add an optional tutorial path for people who are new to kT-RAM and neural 
   - Preview classifiers, memory, attractors, and random sources without implementing them yet.
   - Link back to Knowm's Neural Lane Emulator article and the installed package.
 
+## Computer Model Comparison
+
+- [x] Add a tutorial segment comparing conventional computers with kT-RAM.
+- [x] Start with a high-level explanation of a conventional computer.
+  - Explain CPU, memory, instructions, and stored data in plain language.
+  - Describe the normal fetch/decode/execute loop without assuming prior computer architecture knowledge.
+  - Emphasize that most conventional programs move data between separate memory and processing units.
+- [x] Start with a high-level explanation of kT-RAM.
+  - Explain that kT-RAM uses adaptive memory elements whose conductance stores learned state.
+  - Explain that read and feedback operations are tied closely to memory behavior.
+  - Emphasize that the tutorial app shows an emulator model, not a full hardware simulator.
+- [x] Add real examples that users can follow.
+  - Compare a conventional program reading a number, changing it, and writing it back.
+  - Compare a kT-RAM lane reading conductance, producing an activation, and applying feedback.
+  - Use one shared example, such as learning whether an input should lean positive or negative.
+  - Show which UI values correspond to the example: `y`, `Ga`, `Gb`, weight, magnitude, and instruction history.
+- [x] Add low-level explanations that line up with the high-level examples.
+  - For conventional computers, connect bits, registers, memory addresses, arithmetic, and branching back to the high-level example.
+  - For kT-RAM, connect AAT selection, paired conductances, differential weight, read voltage, noise, and feedback back to the same example.
+  - Keep the low-level section grounded in what the current single-synapse emulator can demonstrate.
+- [ ] Add visual comparison aids.
+  - Show a conventional computer flow: memory to CPU to memory.
+  - Show a kT-RAM flow: selected synapse to activation to feedback-adjusted conductance.
+  - Use side-by-side diagrams or cards only if they remain readable on mobile.
+- [x] Add vocabulary bridges between the two models.
+  - Map "memory address" to AAT/address selection carefully.
+  - Map "stored value" to conductance state carefully.
+  - Explain where the analogy breaks so users do not confuse software variables with physical conductance.
+
 ## UI Work
 
 - [x] Add a tutorial panel or route, separate from the dense control panel.

@@ -283,6 +283,58 @@ label span {
   color: var(--text);
 }
 
+.tutorial-details {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 10px;
+  margin-top: 14px;
+}
+
+.tutorial-detail {
+  min-width: 0;
+  padding: 0 0 0 12px;
+  border-left: 2px solid var(--line);
+}
+
+.tutorial-detail h3 {
+  margin: 0 0 8px;
+  color: var(--text);
+  font-size: 14px;
+  line-height: 1.2;
+}
+
+.tutorial-detail ul {
+  margin: 0;
+  padding-left: 18px;
+  color: var(--muted);
+  font-size: 13px;
+  line-height: 1.45;
+}
+
+.tutorial-detail li + li {
+  margin-top: 6px;
+}
+
+.tutorial-detail dl {
+  display: grid;
+  grid-template-columns: minmax(86px, max-content) minmax(0, 1fr);
+  gap: 7px 10px;
+  margin: 0;
+  font-size: 13px;
+  line-height: 1.35;
+}
+
+.tutorial-detail dt {
+  color: var(--text);
+  font-weight: 700;
+}
+
+.tutorial-detail dd {
+  min-width: 0;
+  margin: 0;
+  color: var(--muted);
+}
+
 .tutorial-actions {
   display: flex;
   flex-wrap: wrap;
@@ -498,5 +550,13 @@ canvas {
   .tutorial-nav span {
     grid-column: 1 / -1;
     order: -1;
+  }
+
+  .tutorial-detail dl {
+    grid-template-columns: 1fr;
+  }
+
+  .tutorial-detail dd {
+    margin-bottom: 6px;
   }
 }
