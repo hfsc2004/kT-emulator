@@ -10,6 +10,12 @@ The repository is being set up as a starting point for work with the kT emulator
 ./start.sh
 ```
 
+Run the browser UI:
+
+```bash
+./start.sh ui
+```
+
 ## Examples
 
 Run the single-synapse example:
