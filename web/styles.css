@@ -86,6 +86,11 @@ p {
   text-align: center;
 }
 
+.status button {
+  min-height: 36px;
+  padding: 0 12px;
+}
+
 .metrics {
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
@@ -102,6 +107,14 @@ p {
 .metrics article {
   min-height: 82px;
   padding: 14px;
+  transition: border-color .15s ease, background .15s ease;
+}
+
+.metrics article.focused,
+.controls .focused,
+.chart-panel.focused {
+  border-color: var(--green);
+  background: color-mix(in srgb, var(--green) 8%, var(--panel));
 }
 
 .metrics span,
@@ -124,6 +137,59 @@ label span {
   grid-template-columns: 340px minmax(0, 1fr);
   gap: 12px;
   align-items: start;
+}
+
+.tutorial-panel {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 16px;
+  align-items: start;
+  margin-bottom: 12px;
+  padding: 16px;
+}
+
+.tutorial-panel[hidden] {
+  display: none;
+}
+
+.tutorial-main h2 {
+  margin: 4px 0 0;
+  font-size: 20px;
+  line-height: 1.2;
+}
+
+.tutorial-main p {
+  max-width: 78ch;
+}
+
+#tutorial-task {
+  color: var(--text);
+}
+
+.tutorial-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 12px;
+}
+
+.tutorial-actions button {
+  min-height: 36px;
+  padding: 0 12px;
+}
+
+.tutorial-nav {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(72px, auto));
+  gap: 8px;
+  align-items: center;
+}
+
+.tutorial-nav span {
+  grid-column: 1 / -1;
+  color: var(--muted);
+  font-size: 13px;
+  text-align: center;
 }
 
 .panel {
@@ -262,8 +328,17 @@ canvas {
 
 @media (max-width: 940px) {
   .metrics,
-  .workspace {
+  .workspace,
+  .tutorial-panel {
     grid-template-columns: 1fr;
+  }
+
+  .tutorial-nav {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+
+  .tutorial-nav span {
+    grid-column: auto;
   }
 
   .metrics {
@@ -296,5 +371,14 @@ canvas {
 
   .row {
     grid-template-columns: 1fr;
+  }
+
+  .tutorial-nav {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .tutorial-nav span {
+    grid-column: 1 / -1;
+    order: -1;
   }
 }

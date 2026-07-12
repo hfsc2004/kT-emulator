@@ -4,11 +4,11 @@ Goal: add an optional tutorial path for people who are new to kT-RAM and neural 
 
 ## Product Shape
 
-- [ ] Add a tutorial mode that can be opened or skipped from the main UI.
-- [ ] Keep the existing emulator controls available for free exploration.
-- [ ] Add a clear way to return from tutorial mode to the normal dashboard.
+- [x] Add a tutorial mode that can be opened or skipped from the main UI.
+- [x] Keep the existing emulator controls available for free exploration.
+- [x] Add a clear way to return from tutorial mode to the normal dashboard.
 - [ ] Save no personal data; tutorial progress can stay in browser memory for now.
-- [ ] Make every tutorial step runnable with the current single-synapse emulator before expanding to larger examples.
+- [x] Make every tutorial step runnable with the current single-synapse emulator before expanding to larger examples.
 
 ## Tutorial Structure
 
@@ -54,10 +54,10 @@ Goal: add an optional tutorial path for people who are new to kT-RAM and neural 
 
 ## UI Work
 
-- [ ] Add a tutorial panel or route, separate from the dense control panel.
-- [ ] Add Back, Next, Restart, and Exit Tutorial controls.
-- [ ] Highlight the UI element being discussed in the current step.
-- [ ] Add controlled actions for tutorial steps, such as "Run FF once" or "Run 10 cycles".
+- [x] Add a tutorial panel or route, separate from the dense control panel.
+- [x] Add Back, Next, Restart, and Exit Tutorial controls.
+- [x] Highlight the UI element being discussed in the current step.
+- [x] Add controlled actions for tutorial steps, such as "Run FF once" or "Run 10 cycles".
 - [ ] Add inline checks that confirm the user completed the step.
 - [ ] Add concise explanations next to the chart and metrics.
 - [ ] Add a glossary drawer or popover for terms.
@@ -66,10 +66,10 @@ Goal: add an optional tutorial path for people who are new to kT-RAM and neural 
 
 ## Emulator/API Work
 
-- [ ] Add API endpoints for deterministic tutorial presets.
-- [ ] Add a preset for balanced weight: `y = 0`.
-- [ ] Add presets for positive and negative weights.
-- [ ] Add presets for same weight with low/high magnitude.
+- [x] Add API endpoints for deterministic tutorial presets.
+- [x] Add a preset for balanced weight: `y = 0`.
+- [x] Add presets for positive and negative weights.
+- [x] Add presets for same weight with low/high magnitude.
 - [ ] Add a batch instruction endpoint that returns intermediate history.
 - [ ] Add a sampling endpoint that returns positive/negative counts and sample values.
 - [ ] Keep tutorial runs reproducible with fixed seeds.

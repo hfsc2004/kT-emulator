@@ -27,6 +27,7 @@ Z = (0,)
 
 class EmulatorSession:
     def __init__(self) -> None:
+        self._lock = threading.RLock()
         self.reset()
 
     def reset(
@@ -37,73 +38,94 @@ class EmulatorSession:
         init: str = "medium",
         read_noise: float = 0.02,
         start_y: float | None = None,
+        level: float = 0.5,
     ) -> dict:
-        self.core = Core(
-            1,
-            1,
-            spaces_per_lane=1,
-            num_lanes=1,
-            model=model,
-            init=init,
-            seed=seed,
-            read_noise=read_noise,
-        )
-        self.model = model
-        self.init = init
-        self.seed = seed
-        self.read_noise = read_noise
-        self.step = 0
-        self.history: list[dict] = []
-        if start_y is not None:
-            self.core.set_start_y(0, Z, start_y)
-        return self.snapshot("reset", 0.0)
+        with self._lock:
+            self.core = Core(
+                1,
+                1,
+                spaces_per_lane=1,
+                num_lanes=1,
+                model=model,
+                init=init,
+                seed=seed,
+                read_noise=read_noise,
+            )
+            self.model = model
+            self.init = init
+            self.seed = seed
+            self.read_noise = read_noise
+            self.step = 0
+            self.history: list[dict] = []
+            if start_y is not None:
+                self.core.set_start_y(0, Z, start_y, level=level)
+            return self.snapshot("reset", 0.0)
 
     def evaluate(self, instruction: str, noise: float = 0.0) -> dict:
-        if instruction not in INSTRUCTIONS:
-            raise ValueError(f"Unknown instruction: {instruction}")
-        y = self.core.evaluate(Z, instruction, noise=noise)
-        self.step += 1
-        return self.snapshot(instruction, y)
+        with self._lock:
+            if instruction not in INSTRUCTIONS:
+                raise ValueError(f"Unknown instruction: {instruction}")
+            y = self.core.evaluate(Z, instruction, noise=noise)
+            self.step += 1
+            return self.snapshot(instruction, y)
 
     def cycle(self, count: int, read: str, feedback: str, noise: float = 0.0) -> dict:
-        count = max(1, min(count, 500))
-        for _ in range(count):
-            self.evaluate(read, noise=noise)
-            state = self.evaluate(feedback, noise=0.0)
-        return state
+        with self._lock:
+            count = max(1, min(count, 500))
+            for _ in range(count):
+                self.evaluate(read, noise=noise)
+                state = self.evaluate(feedback, noise=0.0)
+            return state
 
     def sample(self, count: int, instruction: str, noise: float = 0.0) -> dict:
-        count = max(1, min(count, 1000))
-        values = [self.evaluate(instruction, noise=noise)["y"] for _ in range(count)]
-        state = self.snapshot(f"{instruction} x{count}", values[-1])
-        state["sample"] = {
-            "count": count,
-            "mean": sum(values) / len(values),
-            "positive": sum(1 for value in values if value >= 0.0),
-            "values": values[:80],
-        }
-        return state
+        with self._lock:
+            count = max(1, min(count, 1000))
+            values = [self.evaluate(instruction, noise=noise)["y"] for _ in range(count)]
+            state = self.snapshot(f"{instruction} x{count}", values[-1])
+            state["sample"] = {
+                "count": count,
+                "mean": sum(values) / len(values),
+                "positive": sum(1 for value in values if value >= 0.0),
+                "values": values[:80],
+            }
+            return state
+
+    def preset(self, name: str) -> dict:
+        with self._lock:
+            presets = {
+                "balanced": dict(seed=11, read_noise=0.02, start_y=0.0, level=0.5),
+                "positive": dict(seed=12, read_noise=0.02, start_y=0.45, level=0.5),
+                "negative": dict(seed=13, read_noise=0.02, start_y=-0.45, level=0.5),
+                "low-magnitude": dict(seed=14, read_noise=0.0, start_y=0.25, level=0.15),
+                "high-magnitude": dict(seed=15, read_noise=0.0, start_y=0.25, level=0.85),
+            }
+            if name not in presets:
+                raise ValueError(f"Unknown preset: {name}")
+            state = self.reset(model="float", init="medium", **presets[name])
+            state["preset"] = name
+            return state
 
     def snapshot(self, instruction: str, y: float) -> dict:
-        ga, gb = self.core.read_gab(0, Z)
-        point = {
-            "step": self.step,
-            "instruction": instruction,
-            "y": y,
-            "ga": ga,
-            "gb": gb,
-            "magnitude": ga + gb,
-            "model": self.model,
-            "init": self.init,
-            "seed": self.seed,
-            "read_noise": self.read_noise,
-        }
-        if instruction not in {"reset", "state"}:
-            self.history.append(point)
-            self.history = self.history[-240:]
-        state = dict(point)
-        state["history"] = self.history
-        return state
+        with self._lock:
+            ga, gb = self.core.read_gab(0, Z)
+            point = {
+                "step": self.step,
+                "instruction": instruction,
+                "y": y,
+                "ga": ga,
+                "gb": gb,
+                "magnitude": ga + gb,
+                "model": self.model,
+                "init": self.init,
+                "seed": self.seed,
+                "read_noise": self.read_noise,
+            }
+            if instruction not in {"reset", "state"}:
+                self.history.append(point)
+                self.history = self.history[-240:]
+            state = dict(point)
+            state["history"] = self.history
+            return state
 
 
 SESSION = EmulatorSession()
@@ -173,6 +195,8 @@ class Handler(BaseHTTPRequestHandler):
                     read_noise=float(data.get("read_noise", 0.02)),
                     start_y=self.optional_float(data.get("start_y")),
                 )
+            elif parsed.path == "/api/preset":
+                state = SESSION.preset(str(data.get("name", "balanced")))
             elif parsed.path == "/api/evaluate":
                 state = SESSION.evaluate(
                     str(data.get("instruction", "FF")),
