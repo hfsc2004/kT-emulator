@@ -1,0 +1,1 @@
+git+https://github.com/knowm/ktram-neural-core.git@chapter-4b#subdirectory=python
