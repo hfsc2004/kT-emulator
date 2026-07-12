@@ -128,8 +128,8 @@ Goal: add an optional tutorial path for people who are new to kT-RAM and neural 
 - [x] Make Restart return to the first lesson and clear tutorial progress.
 - [x] Highlight the UI element being discussed in the current step.
 - [x] Add controlled actions for tutorial steps, such as "Run FF once" or "Run 10 cycles".
-- [ ] Add inline checks that confirm the user completed the step.
-  - First check added for "Project: teach a positive preference"; still needs coverage for the rest of the tutorial.
+- [x] Add inline checks that confirm the user completed current action-based tutorial steps.
+  - Informational comparison and roadmap steps remain read-only for now.
 - [ ] Add concise explanations next to the chart and metrics.
 - [ ] Add a glossary drawer or popover for terms.
 - [x] Add a "Reset lesson state" button so users can recover from experiments.
