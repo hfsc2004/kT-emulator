@@ -412,7 +412,7 @@ label span {
 
 .tutorial-nav {
   display: grid;
-  grid-template-columns: repeat(2, minmax(72px, auto));
+  grid-template-columns: repeat(auto-fit, minmax(92px, 1fr));
   gap: 8px;
   align-items: center;
 }
@@ -567,11 +567,11 @@ canvas {
   }
 
   .tutorial-nav {
-    grid-template-columns: repeat(4, minmax(0, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(92px, 1fr));
   }
 
   .tutorial-nav span {
-    grid-column: auto;
+    grid-column: 1 / -1;
   }
 
   .metrics {
