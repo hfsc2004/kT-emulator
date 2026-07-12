@@ -563,6 +563,12 @@ async function resetLessonState() {
   renderTutorial();
 }
 
+async function restartTutorial() {
+  tutorialChecks.clear();
+  tutorialIndex = 0;
+  await resetLessonState();
+}
+
 function renderTutorialDetails(details) {
   els.tutorialDetails.replaceChildren();
   details.forEach((section) => {
@@ -815,7 +821,7 @@ els.tutorialNext.addEventListener("click", () => {
 
 els.tutorialResetLesson.addEventListener("click", resetLessonState);
 
-els.tutorialRestart.addEventListener("click", resetLessonState);
+els.tutorialRestart.addEventListener("click", restartTutorial);
 
 els.tutorialExit.addEventListener("click", () => {
   els.tutorialPanel.hidden = true;
