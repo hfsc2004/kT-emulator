@@ -1,22 +1,39 @@
-# kT Emulator
+<p align="center">
+  <img src="web/assets/logo.jpeg" alt="kT-RAM Neural Lane Emulator logo" width="180">
+</p>
 
-This project uses Alex Nugent's kT RAM emulator.
+# kT-RAM Neural Lane Emulator
 
-The repository is being set up as a starting point for work with the kT emulator and related experiments.
+A small browser-based interface for experimenting with Alex Nugent's `ktram-neural-core`, the open Python emulator of the 2-1 kT-RAM neural lane described in Knowm's Neural Lane Emulator article.
 
-## Setup
+The goal of this project is to make the emulator easier to poke at without living entirely inside a Python prompt or notebook. The current UI focuses on the first useful surface: one lane, one address space, one differential pair selected by AAT `(0,)`.
+
+## What It Does
+
+- Creates a single-synapse kT-RAM neural lane using `ktram-neural-core`
+- Lets you reset the core with different model, init, seed, and read-noise settings
+- Runs individual two-letter instructions such as `FF`, `FFLV`, `RH`, and `FL`
+- Runs simple read/feedback cycles
+- Samples noisy sub-threshold reads
+- Shows live activation, conductances, magnitude, and history
+
+## Run
 
 ```bash
 ./start.sh
 ```
 
-That starts the browser UI server and opens it in your default browser.
+That creates `.venv` if needed, installs the emulator package if missing, starts the local UI server, and opens the interface in your default browser.
 
-Start the server without opening a browser:
+To start the server without opening a browser:
 
 ```bash
 ./start.sh --no-browser
 ```
+
+To stop the UI, press `Ctrl+C` in the terminal that started it.
+
+## Other Commands
 
 Open a Python shell with the virtual environment active:
 
@@ -24,10 +41,24 @@ Open a Python shell with the virtual environment active:
 ./start.sh shell
 ```
 
-## Examples
-
-Run the single-synapse example:
+Run the single-synapse command-line example:
 
 ```bash
 ./start.sh example
 ```
+
+Force dependency installation:
+
+```bash
+./start.sh install
+```
+
+## Dependency
+
+The emulator is installed from the `chapter-4b` branch of Knowm's repository:
+
+```text
+git+https://github.com/knowm/ktram-neural-core.git@chapter-4b#subdirectory=python
+```
+
+The Python package name is `ktram-neural-core`; the import name is `ktram_neural_core`.

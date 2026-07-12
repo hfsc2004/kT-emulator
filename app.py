@@ -118,7 +118,19 @@ class Handler(BaseHTTPRequestHandler):
             self.send_json(SESSION.snapshot("state", SESSION.core.lane(0).y))
             return
 
-        path = "index.html" if parsed.path == "/" else parsed.path.lstrip("/")
+        self.send_static(parsed.path)
+
+    def do_HEAD(self) -> None:
+        parsed = urlparse(self.path)
+        if parsed.path == "/api/state":
+            self.send_response(200)
+            self.send_header("Content-Type", "application/json; charset=utf-8")
+            self.end_headers()
+            return
+        self.send_static(parsed.path, head_only=True)
+
+    def send_static(self, request_path: str, head_only: bool = False) -> None:
+        path = "index.html" if request_path == "/" else request_path.lstrip("/")
         target = (STATIC / path).resolve()
         if not str(target).startswith(str(STATIC.resolve())) or not target.exists():
             self.send_error(404)
@@ -129,13 +141,19 @@ class Handler(BaseHTTPRequestHandler):
             content_type = "text/css"
         elif target.suffix == ".js":
             content_type = "application/javascript"
+        elif target.suffix in {".jpg", ".jpeg"}:
+            content_type = "image/jpeg"
+        elif target.suffix == ".png":
+            content_type = "image/png"
 
         data = target.read_bytes()
         self.send_response(200)
-        self.send_header("Content-Type", f"{content_type}; charset=utf-8")
+        charset = "" if content_type.startswith("image/") else "; charset=utf-8"
+        self.send_header("Content-Type", f"{content_type}{charset}")
         self.send_header("Content-Length", str(len(data)))
         self.end_headers()
-        self.wfile.write(data)
+        if not head_only:
+            self.wfile.write(data)
 
     def do_POST(self) -> None:
         parsed = urlparse(self.path)
@@ -198,7 +216,7 @@ class Handler(BaseHTTPRequestHandler):
 def main() -> None:
     import argparse
 
-    parser = argparse.ArgumentParser(description="Run the kT-RAM emulator UI")
+    parser = argparse.ArgumentParser(description="Run the kT-RAM Neural Lane Emulator UI")
     parser.add_argument("--host", default="127.0.0.1")
     parser.add_argument("--port", type=int, default=8000)
     parser.add_argument("--no-browser", action="store_true", help="do not open the UI automatically")
@@ -217,20 +235,20 @@ def main() -> None:
         raise SystemExit(f"No available port from {args.port} to {args.port + 19}")
 
     url = f"http://{args.host}:{args.port}"
-    print(f"kT emulator UI: {url}", flush=True)
+    print(f"kT-RAM Neural Lane Emulator: {url}", flush=True)
     if not args.no_browser:
         print("Opening browser...", flush=True)
         threading.Timer(0.4, webbrowser.open, args=(url,)).start()
     try:
         server.serve_forever()
     except KeyboardInterrupt:
-        print("\nStopping kT emulator UI...", flush=True)
+        print("\nStopping kT-RAM Neural Lane Emulator...", flush=True)
     finally:
         server.shutdown()
         server.server_close()
         SESSION.history.clear()
         gc.collect()
-        print("kT emulator UI stopped.", flush=True)
+        print("kT-RAM Neural Lane Emulator stopped.", flush=True)
 
 
 if __name__ == "__main__":
