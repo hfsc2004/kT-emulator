@@ -8,7 +8,7 @@ cd "$PROJECT_DIR"
 
 usage() {
   cat <<'EOF'
-kT-RAM Neural Lane Emulator one-stop setup
+kT-RAM Neural Lane Emulator Linux/macOS installation and run helper
 
 Usage:
   ./start.sh [command] [options]

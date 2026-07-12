@@ -24,30 +24,28 @@ The current UI focuses on the first useful surface: one lane, one address space,
 - Shows live activation, conductances, magnitude, history, visual gauges, and sample splits
 - Includes a skippable beginner tutorial for new kT-RAM users
 
-## One-Stop Setup
+## Installation
 
-```bash
-./start.sh
-```
+The launcher scripts check for Python and Git, create `.venv` if needed, install all Python dependencies, start the local UI server, and open the interface in your default browser.
 
-That is the normal one-stop command. It checks for Python and Git, creates `.venv` if needed, installs all Python dependencies, starts the local UI server, and opens the interface in your default browser.
-
-To install everything without starting the UI:
-
-```bash
-./start.sh setup
-```
-
-To check the local environment:
-
-```bash
-./start.sh doctor
-```
+| Platform | Start the UI | Install only | Check environment |
+| --- | --- | --- | --- |
+| Linux | `./start.sh` | `./start.sh setup` | `./start.sh doctor` |
+| macOS | `./start.command` | `./start.command setup` | `./start.command doctor` |
+| Windows | `start.bat` | `start.bat setup` | `start.bat doctor` |
 
 To start the server without opening a browser:
 
 ```bash
 ./start.sh --no-browser
+```
+
+```bash
+./start.command --no-browser
+```
+
+```bat
+start.bat --no-browser
 ```
 
 To stop the UI, press `Ctrl+C` in the terminal that started it.
@@ -60,29 +58,12 @@ The tutorial is still early. It is designed to stay skippable so experienced use
 
 ## Other Commands
 
-Open a Python shell with the virtual environment active:
-
-```bash
-./start.sh shell
-```
-
-Run the single-synapse command-line example:
-
-```bash
-./start.sh example
-```
-
-Force dependency installation:
-
-```bash
-./start.sh install
-```
-
-Show all setup and run commands:
-
-```bash
-./start.sh help
-```
+| Task | Linux | macOS | Windows |
+| --- | --- | --- | --- |
+| Open a Python shell | `./start.sh shell` | `./start.command shell` | `start.bat shell` |
+| Run the example | `./start.sh example` | `./start.command example` | `start.bat example` |
+| Force dependency installation | `./start.sh install` | `./start.command install` | `start.bat install` |
+| Show help | `./start.sh help` | `./start.command help` | `start.bat help` |
 
 ## Dependency
 
