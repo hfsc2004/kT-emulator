@@ -22,7 +22,8 @@ fi
 
 case "${1:-ui}" in
   ui)
-    exec python app.py
+    shift || true
+    exec python app.py "$@"
     ;;
   shell)
     shift || true
@@ -33,4 +34,4 @@ case "${1:-ui}" in
     ;;
 esac
 
-exec python "$@"
+exec python app.py "$@"
