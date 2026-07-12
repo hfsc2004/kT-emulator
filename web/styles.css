@@ -44,6 +44,22 @@ select {
   padding: 10px 0 18px;
 }
 
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  min-width: 0;
+}
+
+.brand img {
+  width: 56px;
+  height: 56px;
+  flex: 0 0 auto;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  object-fit: cover;
+}
+
 h1 {
   margin: 0;
   font-size: 28px;
@@ -263,6 +279,15 @@ canvas {
   .topbar {
     align-items: flex-start;
     flex-direction: column;
+  }
+
+  .brand {
+    align-items: flex-start;
+  }
+
+  .brand img {
+    width: 48px;
+    height: 48px;
   }
 
   .metrics {
