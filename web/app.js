@@ -10,7 +10,11 @@ const lessons = [
     body: "This is a software sandbox for one kT-RAM neural lane. For now, you are looking at one tiny memory element called a synapse.",
     task: "Start with a balanced synapse. The activation should sit near zero because the two conductances are equal.",
     focus: "activation",
-    actions: [{ label: "Load balanced preset", type: "preset", name: "balanced" }],
+    check: {
+      pending: "Load the balanced preset to start from a neutral synapse.",
+      complete: "Complete: balanced preset loaded. The synapse is ready to explore.",
+    },
+    actions: [{ label: "Load balanced preset", type: "preset", name: "balanced", check: "action-complete" }],
     details: [
       {
         title: "Scenario",
@@ -83,9 +87,13 @@ const lessons = [
     body: "In kT-RAM, the stored state and the operation are tied closely together. Conductance stores the learned state, and read plus feedback instructions interact with that state.",
     task: "Load a balanced synapse, then run FF once. Compare the visible flow with the CPU example.",
     focus: "balance",
+    check: {
+      pending: "Load the balanced preset, then run FF once.",
+      complete: "Complete: you read the selected synapse and saw its activation.",
+    },
     actions: [
       { label: "Load balanced preset", type: "preset", name: "balanced" },
-      { label: "Run FF", type: "evaluate", instruction: "FF" },
+      { label: "Run FF", type: "evaluate", instruction: "FF", check: "action-complete" },
     ],
     details: [
       {
@@ -189,9 +197,13 @@ const lessons = [
     body: "The synapse is made from two sides: Ga and Gb. The activation y comes from their balance. If Ga and Gb match, y is near zero.",
     task: "Read the synapse once with FF. Watch the conductance bars and the y gauge.",
     focus: "balance",
+    check: {
+      pending: "Reset to balanced, then run FF once.",
+      complete: "Complete: you read the balance between Ga and Gb.",
+    },
     actions: [
       { label: "Reset balanced", type: "preset", name: "balanced" },
-      { label: "Run FF", type: "evaluate", instruction: "FF" },
+      { label: "Run FF", type: "evaluate", instruction: "FF", check: "action-complete" },
     ],
     details: [
       {
@@ -215,9 +227,13 @@ const lessons = [
     body: "A read observes the synapse. Feedback nudges it. Running FF then RH is a simple cycle that pushes the stored state upward.",
     task: "Run five FF/RH cycles and watch the activation move step by step.",
     focus: "chart",
+    check: {
+      pending: "Reset to balanced, then run five FF/RH cycles.",
+      complete: "Complete: feedback cycles ran and changed the history.",
+    },
     actions: [
       { label: "Reset balanced", type: "preset", name: "balanced" },
-      { label: "Run 5 cycles", type: "cycle", read: "FF", feedback: "RH", count: 5 },
+      { label: "Run 5 cycles", type: "cycle", read: "FF", feedback: "RH", count: 5, check: "action-complete" },
     ],
     details: [
       {
@@ -283,9 +299,13 @@ const lessons = [
     body: "Low-voltage reads can act like samples. Near y = 0, the sign of the read can flip around like a soft coin toss.",
     task: "Sample FFLV forty times. The positive count shows how often the noisy read landed above zero.",
     focus: "samples",
+    check: {
+      pending: "Reset to balanced, then sample FFLV forty times.",
+      complete: "Complete: noisy samples collected. Compare the positive and negative counts.",
+    },
     actions: [
       { label: "Reset balanced", type: "preset", name: "balanced" },
-      { label: "Sample FFLV", type: "sample", instruction: "FFLV", count: 40 },
+      { label: "Sample FFLV", type: "sample", instruction: "FFLV", count: 40, check: "action-complete" },
     ],
     details: [
       {
@@ -309,9 +329,13 @@ const lessons = [
     body: "Magnitude is the total conductance. A higher magnitude means the same weight is harder to move, like a heavier object.",
     task: "Load the low and high magnitude presets. They have the same starting weight, but different stored evidence.",
     focus: "magnitude",
+    check: {
+      pending: "Load both magnitude presets to compare stored evidence.",
+      complete: "Complete: you loaded both low and high magnitude states.",
+    },
     actions: [
-      { label: "Low magnitude", type: "preset", name: "low-magnitude" },
-      { label: "High magnitude", type: "preset", name: "high-magnitude" },
+      { label: "Low magnitude", type: "preset", name: "low-magnitude", check: "collect-preset" },
+      { label: "High magnitude", type: "preset", name: "high-magnitude", check: "collect-preset" },
     ],
     details: [
       {
@@ -672,6 +696,28 @@ function updateTutorialCheck(action, state) {
   }
 
   const check = getTutorialCheck();
+  if (action.check === "action-complete") {
+    check.completed = true;
+    renderTutorialStatus(lesson.check.complete, "complete");
+    return;
+  }
+
+  if (action.check === "collect-preset") {
+    if (!check.presets) {
+      check.presets = new Set();
+    }
+    check.presets.add(action.name);
+    const required = new Set((lesson.actions || [])
+      .filter((lessonAction) => lessonAction.check === "collect-preset")
+      .map((lessonAction) => lessonAction.name));
+    check.completed = [...required].every((name) => check.presets.has(name));
+    const message = check.completed
+      ? lesson.check.complete
+      : `Loaded ${check.presets.size}/${required.size} presets. Load the other magnitude preset to finish.`;
+    renderTutorialStatus(message, check.completed ? "complete" : "pending");
+    return;
+  }
+
   if (action.record === "baseline-y") {
     check.baselineY = Number(state.y);
     check.completed = false;
