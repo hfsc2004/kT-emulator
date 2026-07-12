@@ -1,5 +1,11 @@
 #!/usr/bin/env python3
-"""Browser UI for exploring the kT-RAM single-synapse emulator."""
+"""Browser UI for exploring the kT-RAM single-synapse emulator.
+
+This project is a wrapper around Knowm Inc.'s `ktram-neural-core` package.
+The installed package metadata labels `ktram-neural-core` as MIT licensed.
+That software license does not grant rights to Knowm hardware, devices,
+patents, or methods modeled by the emulator.
+"""
 
 from __future__ import annotations
 

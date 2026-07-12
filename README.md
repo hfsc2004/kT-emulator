@@ -62,3 +62,16 @@ git+https://github.com/knowm/ktram-neural-core.git@chapter-4b#subdirectory=pytho
 ```
 
 The Python package name is `ktram-neural-core`; the import name is `ktram_neural_core`.
+
+## Attribution And Notices
+
+This project wraps Knowm Inc.'s `ktram-neural-core` package. The installed package metadata reports:
+
+```text
+Author: Knowm Inc.
+License: MIT
+```
+
+That MIT license label applies to the emulator software package. It does not grant rights to Knowm hardware, devices, patents, or methods modeled by the emulator. Knowm's blog text and images are separate copyrighted materials unless otherwise noted.
+
+See [NOTICE.md](NOTICE.md) for the project notice.

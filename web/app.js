@@ -1,3 +1,7 @@
+// UI wrapper for Knowm Inc.'s ktram-neural-core emulator.
+// ktram-neural-core package metadata labels the emulator software as MIT licensed.
+// That license does not grant rights to Knowm hardware, devices, patents, or methods.
+
 const instructions = ["FF", "FFLV", "RF", "RFLV", "FH", "FL", "FU", "FA", "FZ", "RH", "RL", "RU", "RA", "RZ"];
 const readInstructions = new Set(["FF", "FFLV", "RF", "RFLV"]);
 
