@@ -72,7 +72,7 @@ Goal: add an optional tutorial path for people who are new to kT-RAM and neural 
   - For conventional computers, connect bits, registers, memory addresses, arithmetic, and branching back to the high-level example.
   - For kT-RAM, connect AAT selection, paired conductances, differential weight, read voltage, noise, and feedback back to the same example.
   - Keep the low-level section grounded in what the current single-synapse emulator can demonstrate.
-- [ ] Add visual comparison aids.
+- [x] Add visual comparison aids.
   - Show a conventional computer flow: memory to CPU to memory.
   - Show a kT-RAM flow: selected synapse to activation to feedback-adjusted conductance.
   - Use side-by-side diagrams or cards only if they remain readable on mobile.

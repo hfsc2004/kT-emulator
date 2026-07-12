@@ -6,6 +6,10 @@
 
 Browser-based explorer for Knowm's kT-RAM neural lane emulator, with live controls, visual gauges, noisy read sampling, and an optional beginner tutorial.
 
+<p align="center">
+  <img src="web/assets/Screenshot.png" alt="kT-RAM Neural Lane Emulator browser interface" width="900">
+</p>
+
 This project wraps `ktram-neural-core`, the open Python emulator of the 2-1 kT-RAM neural lane described in Knowm's Neural Lane Emulator article. The goal is to make the emulator easier to explore without living entirely inside a Python prompt or notebook.
 
 The current UI focuses on the first useful surface: one lane, one address space, one differential pair selected by AAT `(0,)`.
@@ -20,13 +24,25 @@ The current UI focuses on the first useful surface: one lane, one address space,
 - Shows live activation, conductances, magnitude, history, visual gauges, and sample splits
 - Includes a skippable beginner tutorial for new kT-RAM users
 
-## Run
+## One-Stop Setup
 
 ```bash
 ./start.sh
 ```
 
-That creates `.venv` if needed, installs the emulator package if missing, starts the local UI server, and opens the interface in your default browser.
+That is the normal one-stop command. It checks for Python and Git, creates `.venv` if needed, installs all Python dependencies, starts the local UI server, and opens the interface in your default browser.
+
+To install everything without starting the UI:
+
+```bash
+./start.sh setup
+```
+
+To check the local environment:
+
+```bash
+./start.sh doctor
+```
 
 To start the server without opening a browser:
 
@@ -60,6 +76,12 @@ Force dependency installation:
 
 ```bash
 ./start.sh install
+```
+
+Show all setup and run commands:
+
+```bash
+./start.sh help
 ```
 
 ## Dependency

@@ -35,6 +35,10 @@ const lessons = [
         ],
       },
       {
+        title: "Flow",
+        flow: ["Memory", "CPU registers", "Arithmetic unit", "Memory"],
+      },
+      {
         title: "Low level",
         items: [
           "Bits encode the instruction, the address of the score, and the number one.",
@@ -71,6 +75,10 @@ const lessons = [
         ],
       },
       {
+        title: "Flow",
+        flow: ["AAT (0,)", "Ga/Gb state", "Activation y", "Feedback-adjusted conductance"],
+      },
+      {
         title: "Low level",
         items: [
           "AAT selects which synapse address is active. This tutorial uses AAT (0,).",
@@ -101,6 +109,19 @@ const lessons = [
           "Conventional computers usually separate storage and processing.",
           "kT-RAM makes memory behavior part of the computation being explored.",
           "The UI demonstrates the emulator model, not a complete physical hardware system.",
+        ],
+      },
+      {
+        title: "Two flows",
+        flowGroups: [
+          {
+            label: "Conventional",
+            steps: ["Memory", "CPU", "Memory"],
+          },
+          {
+            label: "kT-RAM",
+            steps: ["Selected synapse", "Activation", "Feedback"],
+          },
         ],
       },
     ],
@@ -341,8 +362,37 @@ function renderTutorialDetails(details) {
       card.appendChild(dl);
     }
 
+    if (section.flow) {
+      card.appendChild(renderFlow(section.flow));
+    }
+
+    if (section.flowGroups) {
+      const groups = document.createElement("div");
+      groups.className = "tutorial-flow-groups";
+      section.flowGroups.forEach((group) => {
+        const wrapper = document.createElement("div");
+        wrapper.className = "tutorial-flow-group";
+        const label = document.createElement("strong");
+        label.textContent = group.label;
+        wrapper.append(label, renderFlow(group.steps));
+        groups.appendChild(wrapper);
+      });
+      card.appendChild(groups);
+    }
+
     els.tutorialDetails.appendChild(card);
   });
+}
+
+function renderFlow(steps) {
+  const flow = document.createElement("ol");
+  flow.className = "tutorial-flow";
+  steps.forEach((step) => {
+    const item = document.createElement("li");
+    item.textContent = step;
+    flow.appendChild(item);
+  });
+  return flow;
 }
 
 async function runTutorialAction(action) {
