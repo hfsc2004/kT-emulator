@@ -125,6 +125,7 @@ Goal: add an optional tutorial path for people who are new to kT-RAM and neural 
 
 - [x] Add a tutorial panel or route, separate from the dense control panel.
 - [x] Add Back, Next, Restart, and Exit Tutorial controls.
+- [x] Make Restart return to the first lesson and clear tutorial progress.
 - [x] Highlight the UI element being discussed in the current step.
 - [x] Add controlled actions for tutorial steps, such as "Run FF once" or "Run 10 cycles".
 - [ ] Add inline checks that confirm the user completed the step.
