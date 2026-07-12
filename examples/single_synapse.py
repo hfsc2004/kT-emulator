@@ -2,6 +2,10 @@
 
 This follows the basic setup from Alex Nugent's "The Neural Lane Emulator":
 one lane, one address space, one differential pair selected by AAT ``(0,)``.
+
+This example uses Knowm Inc.'s `ktram-neural-core` package. The installed
+package metadata labels that emulator software as MIT licensed; that license
+does not grant rights to Knowm hardware, devices, patents, or methods.
 """
 
 from __future__ import annotations
