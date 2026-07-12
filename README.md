@@ -10,7 +10,7 @@ Browser-based explorer for Knowm's kT-RAM neural lane emulator, with live contro
   <img src="web/assets/Screenshot.png" alt="kT-RAM Neural Lane Emulator browser interface" width="900">
 </p>
 
-This project wraps `ktram-neural-core`, the open Python emulator of the 2-1 kT-RAM neural lane described in Knowm's Neural Lane Emulator article. The goal is to make the emulator easier to explore without living entirely inside a Python prompt or notebook.
+This project wraps `ktram-neural-core`, the open Python emulator of the 2-1 kT-RAM neural lane described in Knowm's [Neural Lane Emulator article](https://knowm.ai/blog/the-neural-lane-emulator/). The goal is to make the emulator easier to explore without living entirely inside a Python prompt or notebook.
 
 The current UI focuses on the first useful surface: one lane, one address space, one differential pair selected by AAT `(0,)`.
 
@@ -107,9 +107,15 @@ git+https://github.com/knowm/ktram-neural-core.git@chapter-4b#subdirectory=pytho
 
 The Python package name is `ktram-neural-core`; the import name is `ktram_neural_core`.
 
+## Knowm Resources
+
+- [Knowm Inc.](https://knowm.org)
+- [Knowm's Blog](https://knowm.ai)
+- [The Neural Lane Emulator](https://knowm.ai/blog/the-neural-lane-emulator/)
+
 ## Attribution And Notices
 
-This project wraps Knowm Inc.'s `ktram-neural-core` package. The installed package metadata reports:
+This project wraps [Knowm Inc.](https://knowm.org)'s `ktram-neural-core` package and follows the emulator work published on [Knowm's Blog](https://knowm.ai), including [The Neural Lane Emulator](https://knowm.ai/blog/the-neural-lane-emulator/). The installed package metadata reports:
 
 ```text
 Author: Knowm Inc.
