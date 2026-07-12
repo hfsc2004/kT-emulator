@@ -1,0 +1,148 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>kT Emulator</title>
+    <link rel="stylesheet" href="/styles.css">
+  </head>
+  <body>
+    <main class="shell">
+      <header class="topbar">
+        <div>
+          <h1>kT Emulator</h1>
+          <p>Single synapse neural lane</p>
+        </div>
+        <div class="status">
+          <span id="branch">AAT (0,)</span>
+          <strong id="step">0</strong>
+        </div>
+      </header>
+
+      <section class="metrics" aria-label="Current state">
+        <article>
+          <span>Activation</span>
+          <strong id="y">+0.000000</strong>
+        </article>
+        <article>
+          <span>Ga</span>
+          <strong id="ga">0.000000</strong>
+        </article>
+        <article>
+          <span>Gb</span>
+          <strong id="gb">0.000000</strong>
+        </article>
+        <article>
+          <span>Magnitude</span>
+          <strong id="magnitude">0.000000</strong>
+        </article>
+      </section>
+
+      <section class="workspace">
+        <aside class="panel controls">
+          <div class="section-title">Core</div>
+          <label>
+            <span>Model</span>
+            <select id="model">
+              <option value="float">float</option>
+              <option value="byte">byte</option>
+              <option value="rs">rs</option>
+              <option value="mss">mss</option>
+            </select>
+          </label>
+          <label>
+            <span>Init</span>
+            <select id="init">
+              <option value="medium">medium</option>
+              <option value="low">low</option>
+              <option value="high">high</option>
+              <option value="medium_noise">medium_noise</option>
+              <option value="medium_high_noise">medium_high_noise</option>
+              <option value="medium_noiseless">medium_noiseless</option>
+              <option value="low_noise">low_noise</option>
+              <option value="low_noise_small">low_noise_small</option>
+              <option value="low_noiseless">low_noiseless</option>
+              <option value="high_noise">high_noise</option>
+            </select>
+          </label>
+          <div class="row">
+            <label>
+              <span>Seed</span>
+              <input id="seed" type="number" value="1" min="0" step="1">
+            </label>
+            <label>
+              <span>Start y</span>
+              <input id="start-y" type="number" placeholder="auto" min="-1" max="1" step="0.05">
+            </label>
+          </div>
+          <label>
+            <span>Read noise</span>
+            <input id="read-noise" type="range" min="0" max="0.1" step="0.001" value="0.02">
+          </label>
+          <button id="reset" class="primary" type="button">Reset core</button>
+
+          <div class="section-title">Instruction</div>
+          <div class="instruction-grid" id="instructions"></div>
+
+          <div class="section-title">Cycle</div>
+          <div class="row">
+            <label>
+              <span>Read</span>
+              <select id="cycle-read">
+                <option>FF</option>
+                <option>FFLV</option>
+                <option>RF</option>
+                <option>RFLV</option>
+              </select>
+            </label>
+            <label>
+              <span>Feedback</span>
+              <select id="cycle-feedback">
+                <option>RH</option>
+                <option>RL</option>
+                <option>FH</option>
+                <option>FL</option>
+                <option>RU</option>
+                <option>RA</option>
+                <option>FU</option>
+                <option>FA</option>
+              </select>
+            </label>
+          </div>
+          <label>
+            <span>Count</span>
+            <input id="cycle-count" type="number" min="1" max="500" value="5">
+          </label>
+          <button id="run-cycle" type="button">Run cycle</button>
+
+          <div class="section-title">Sampling</div>
+          <label>
+            <span>Read-voltage noise dial</span>
+            <input id="noise" type="range" min="0" max="0.95" step="0.01" value="0">
+          </label>
+          <label>
+            <span>Samples</span>
+            <input id="sample-count" type="number" min="1" max="1000" value="40">
+          </label>
+          <button id="sample" type="button">Sample FFLV</button>
+        </aside>
+
+        <section class="panel chart-panel">
+          <div class="chart-head">
+            <div>
+              <div class="section-title">History</div>
+              <p id="last-instruction">reset</p>
+            </div>
+            <div id="sample-summary" class="sample-summary"></div>
+          </div>
+          <canvas id="chart" width="960" height="430" aria-label="Activation history chart"></canvas>
+          <div class="legend">
+            <span><i class="activation"></i> activation y</span>
+            <span><i class="magnitude"></i> magnitude</span>
+          </div>
+        </section>
+      </section>
+    </main>
+    <script src="/app.js"></script>
+  </body>
+</html>

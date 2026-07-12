@@ -13,4 +13,8 @@ source .venv/bin/activate
 
 python -m pip install -r requirements.txt
 
-python
+if [ "${1:-}" = "ui" ]; then
+  exec python app.py
+fi
+
+python "$@"
