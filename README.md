@@ -26,6 +26,13 @@ The current UI focuses on the first useful surface: one lane, one address space,
 
 ## Installation
 
+First, download the project with Git and enter the project folder:
+
+```bash
+git clone https://github.com/hfsc2004/kT-emulator.git
+cd kT-emulator
+```
+
 The launcher scripts check for Python and Git, create `.venv` if needed, install all Python dependencies, start the local UI server, and open the interface in your default browser.
 
 | Platform | Start the UI | Install only | Check environment |
