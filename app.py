@@ -3,6 +3,8 @@
 
 from __future__ import annotations
 
+import errno
+import gc
 import json
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
@@ -97,6 +99,11 @@ class EmulatorSession:
 
 
 SESSION = EmulatorSession()
+
+
+class EmulatorHTTPServer(ThreadingHTTPServer):
+    allow_reuse_address = True
+    daemon_threads = True
 
 
 class Handler(BaseHTTPRequestHandler):
@@ -194,9 +201,29 @@ def main() -> None:
     parser.add_argument("--port", type=int, default=8000)
     args = parser.parse_args()
 
-    server = ThreadingHTTPServer((args.host, args.port), Handler)
-    print(f"kT emulator UI: http://{args.host}:{args.port}")
-    server.serve_forever()
+    server = None
+    for port in range(args.port, args.port + 20):
+        try:
+            server = EmulatorHTTPServer((args.host, port), Handler)
+            args.port = port
+            break
+        except OSError as exc:
+            if exc.errno != errno.EADDRINUSE:
+                raise
+    if server is None:
+        raise SystemExit(f"No available port from {args.port} to {args.port + 19}")
+
+    print(f"kT emulator UI: http://{args.host}:{args.port}", flush=True)
+    try:
+        server.serve_forever()
+    except KeyboardInterrupt:
+        print("\nStopping kT emulator UI...", flush=True)
+    finally:
+        server.shutdown()
+        server.server_close()
+        SESSION.history.clear()
+        gc.collect()
+        print("kT emulator UI stopped.", flush=True)
 
 
 if __name__ == "__main__":
