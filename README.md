@@ -20,13 +20,25 @@ The current UI focuses on the first useful surface: one lane, one address space,
 - Shows live activation, conductances, magnitude, history, visual gauges, and sample splits
 - Includes a skippable beginner tutorial for new kT-RAM users
 
-## Run
+## One-Stop Setup
 
 ```bash
 ./start.sh
 ```
 
-That creates `.venv` if needed, installs the emulator package if missing, starts the local UI server, and opens the interface in your default browser.
+That is the normal one-stop command. It checks for Python and Git, creates `.venv` if needed, installs all Python dependencies, starts the local UI server, and opens the interface in your default browser.
+
+To install everything without starting the UI:
+
+```bash
+./start.sh setup
+```
+
+To check the local environment:
+
+```bash
+./start.sh doctor
+```
 
 To start the server without opening a browser:
 
@@ -60,6 +72,12 @@ Force dependency installation:
 
 ```bash
 ./start.sh install
+```
+
+Show all setup and run commands:
+
+```bash
+./start.sh help
 ```
 
 ## Dependency
