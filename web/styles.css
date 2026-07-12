@@ -335,6 +335,51 @@ label span {
   color: var(--muted);
 }
 
+.tutorial-flow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 18px;
+  align-items: center;
+  margin: 0;
+  padding: 0;
+  color: var(--text);
+  font-size: 13px;
+  list-style: none;
+}
+
+.tutorial-flow li {
+  position: relative;
+  min-width: 0;
+  padding: 7px 9px;
+  border: 1px solid var(--line);
+  border-radius: 4px;
+  background: var(--panel-2);
+}
+
+.tutorial-flow li:not(:last-child)::after {
+  content: "->";
+  position: absolute;
+  top: 50%;
+  right: -15px;
+  color: var(--green);
+  transform: translateY(-50%);
+}
+
+.tutorial-flow-groups {
+  display: grid;
+  gap: 10px;
+}
+
+.tutorial-flow-group {
+  display: grid;
+  gap: 6px;
+}
+
+.tutorial-flow-group strong {
+  color: var(--text);
+  font-size: 13px;
+}
+
 .tutorial-actions {
   display: flex;
   flex-wrap: wrap;
@@ -558,5 +603,19 @@ canvas {
 
   .tutorial-detail dd {
     margin-bottom: 6px;
+  }
+
+  .tutorial-flow {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+
+  .tutorial-flow li:not(:last-child)::after {
+    content: "|";
+    top: auto;
+    right: 50%;
+    bottom: -15px;
+    transform: translateX(50%);
   }
 }
