@@ -35,7 +35,7 @@ To stop the UI, press `Ctrl+C` in the terminal that started it.
 
 ## Tutorial Mode
 
-Click `Tutorial` in the top bar to open an optional beginner path. The first tutorial slice walks through a balanced synapse, conductance reads, simple feedback, noisy low-voltage sampling, and magnitude as stored evidence.
+Click `Tutorial` in the top bar to open an optional beginner path. The first tutorial slice walks through a balanced synapse, conductance reads, simple feedback, noisy low-voltage sampling, and magnitude as stored evidence. Visual cards show the `Ga`/`Gb` balance, a `-1` to `+1` weight gauge, and the positive/negative split from noisy reads.
 
 The tutorial is still early. It is designed to stay skippable so experienced users can continue using the main emulator controls directly.
 

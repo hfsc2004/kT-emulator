@@ -15,8 +15,8 @@ const lessons = [
   {
     title: "One synapse, two conductances",
     body: "The synapse is made from two sides: Ga and Gb. The activation y comes from their balance. If Ga and Gb match, y is near zero.",
-    task: "Read the synapse once with FF. Watch y, Ga, and Gb update in the metric boxes.",
-    focus: "conductance",
+    task: "Read the synapse once with FF. Watch the conductance bars and the y gauge.",
+    focus: "balance",
     actions: [
       { label: "Reset balanced", type: "preset", name: "balanced" },
       { label: "Run FF", type: "evaluate", instruction: "FF" },
@@ -36,7 +36,7 @@ const lessons = [
     title: "Noise can be useful",
     body: "Low-voltage reads can act like samples. Near y = 0, the sign of the read can flip around like a soft coin toss.",
     task: "Sample FFLV forty times. The positive count shows how often the noisy read landed above zero.",
-    focus: "activation",
+    focus: "samples",
     actions: [
       { label: "Reset balanced", type: "preset", name: "balanced" },
       { label: "Sample FFLV", type: "sample", instruction: "FFLV", count: 40 },
@@ -78,6 +78,15 @@ const els = {
   lastInstruction: document.querySelector("#last-instruction"),
   sampleSummary: document.querySelector("#sample-summary"),
   chart: document.querySelector("#chart"),
+  gaBar: document.querySelector("#ga-bar"),
+  gbBar: document.querySelector("#gb-bar"),
+  balanceNote: document.querySelector("#balance-note"),
+  weightFill: document.querySelector("#weight-fill"),
+  weightNeedle: document.querySelector("#weight-needle"),
+  weightNote: document.querySelector("#weight-note"),
+  negativeBar: document.querySelector("#negative-bar"),
+  positiveBar: document.querySelector("#positive-bar"),
+  sampleNote: document.querySelector("#sample-note"),
   tutorialToggle: document.querySelector("#tutorial-toggle"),
   tutorialPanel: document.querySelector("#tutorial-panel"),
   tutorialTitle: document.querySelector("#tutorial-title"),
@@ -125,8 +134,10 @@ function render(state) {
   if (state.sample) {
     els.sampleSummary.textContent =
       `mean ${fmt(state.sample.mean, 4)} | positive ${state.sample.positive}/${state.sample.count}`;
+    renderSamples(state.sample);
   }
 
+  renderVisuals(state);
   drawChart(state.history || []);
 }
 
@@ -142,6 +153,46 @@ function setFocus(target) {
   document.querySelectorAll(`[data-focus="${target}"]`).forEach((node) => {
     node.classList.add("focused");
   });
+}
+
+function clamp(value, min, max) {
+  return Math.min(max, Math.max(min, value));
+}
+
+function renderVisuals(state) {
+  const ga = Number(state.ga);
+  const gb = Number(state.gb);
+  const y = clamp(Number(state.y), -1, 1);
+  const maxG = Math.max(ga, gb, 0.000001);
+  const gaPct = (ga / maxG) * 100;
+  const gbPct = (gb / maxG) * 100;
+  const needlePct = ((y + 1) / 2) * 100;
+  const fillPct = Math.abs(y) * 50;
+
+  els.gaBar.style.width = `${gaPct}%`;
+  els.gbBar.style.width = `${gbPct}%`;
+  els.weightNeedle.style.left = `${needlePct}%`;
+  els.weightFill.style.left = y < 0 ? `${50 - fillPct}%` : "50%";
+  els.weightFill.style.width = `${fillPct}%`;
+
+  const stronger = Math.abs(ga - gb) < 1e-9 ? "balanced" : (ga > gb ? "Ga is larger" : "Gb is larger");
+  els.balanceNote.textContent = `${stronger}. The gap between Ga and Gb sets the sign and size of y.`;
+  els.weightNote.textContent = `y is ${fmt(y, 3)} on a scale from -1 to +1.`;
+}
+
+function renderSamples(sample) {
+  const total = Math.max(sample.count, 1);
+  const positive = sample.positive;
+  const negative = total - positive;
+  els.positiveBar.style.width = `${(positive / total) * 100}%`;
+  els.negativeBar.style.width = `${(negative / total) * 100}%`;
+  els.sampleNote.textContent = `${negative} negative and ${positive} positive samples out of ${total}.`;
+}
+
+function clearSamples() {
+  els.positiveBar.style.width = "0";
+  els.negativeBar.style.width = "0";
+  els.sampleNote.textContent = "Run Sample FFLV to see the noisy read split.";
 }
 
 function renderTutorial() {
@@ -168,6 +219,7 @@ async function runTutorialAction(action) {
   if (action.type === "preset") {
     state = await post("/api/preset", { name: action.name });
     els.sampleSummary.textContent = "";
+    clearSamples();
   } else if (action.type === "evaluate") {
     state = await post("/api/evaluate", { instruction: action.instruction, noise: 0 });
   } else if (action.type === "cycle") {
@@ -266,6 +318,7 @@ function wireInstructions() {
 
 els.reset.addEventListener("click", async () => {
   els.sampleSummary.textContent = "";
+  clearSamples();
   const state = await post("/api/reset", {
     model: els.model.value,
     init: els.init.value,

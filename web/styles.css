@@ -132,6 +132,123 @@ label span {
   line-height: 1.1;
 }
 
+.visuals {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 10px;
+  margin-bottom: 12px;
+}
+
+.visual-card {
+  min-height: 150px;
+  padding: 14px;
+  transition: border-color .15s ease, background .15s ease;
+}
+
+.visual-card.focused {
+  border-color: var(--green);
+  background: color-mix(in srgb, var(--green) 8%, var(--panel));
+}
+
+.bar-pair,
+.sample-bars {
+  display: grid;
+  gap: 10px;
+  margin-top: 14px;
+}
+
+.bar-pair span,
+.sample-bars span {
+  display: block;
+  margin-bottom: 5px;
+  color: var(--muted);
+  font-size: 12px;
+}
+
+.bar-track {
+  position: relative;
+  width: 100%;
+  height: 18px;
+  overflow: hidden;
+  border: 1px solid var(--line);
+  border-radius: 4px;
+  background: #12171b;
+}
+
+.bar-track i {
+  display: block;
+  width: 0;
+  height: 100%;
+  background: var(--green);
+  transition: width .18s ease;
+}
+
+.bar-track.negative i {
+  background: var(--red);
+}
+
+.bar-track.positive i {
+  background: var(--blue);
+}
+
+.weight-gauge {
+  margin-top: 18px;
+}
+
+.gauge-track {
+  position: relative;
+  height: 18px;
+  border: 1px solid var(--line);
+  border-radius: 4px;
+  background: linear-gradient(90deg, #3a2225 0%, #151b1f 50%, #17312a 100%);
+}
+
+.gauge-track::after {
+  content: "";
+  position: absolute;
+  top: -5px;
+  bottom: -5px;
+  left: 50%;
+  width: 1px;
+  background: var(--line);
+}
+
+#weight-fill {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 50%;
+  width: 0;
+  background: color-mix(in srgb, var(--green) 55%, transparent);
+  transition: left .18s ease, width .18s ease;
+}
+
+#weight-needle {
+  position: absolute;
+  top: -6px;
+  left: 50%;
+  width: 3px;
+  height: 30px;
+  border-radius: 2px;
+  background: var(--text);
+  transform: translateX(-50%);
+  transition: left .18s ease;
+}
+
+.gauge-labels {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 7px;
+  color: var(--muted);
+  font-size: 12px;
+}
+
+.visual-card p {
+  margin-top: 12px;
+  min-height: 36px;
+  font-size: 13px;
+}
+
 .workspace {
   display: grid;
   grid-template-columns: 340px minmax(0, 1fr);
@@ -328,6 +445,7 @@ canvas {
 
 @media (max-width: 940px) {
   .metrics,
+  .visuals,
   .workspace,
   .tutorial-panel {
     grid-template-columns: 1fr;
