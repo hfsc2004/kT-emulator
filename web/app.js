@@ -237,6 +237,48 @@ const lessons = [
     ],
   },
   {
+    title: "Project: teach a positive preference",
+    body: "Now use feedback for a small useful job: store a tiny preference that makes this synapse lean positive.",
+    task: "Reset, measure the starting activation, train with FF/RH cycles, then read again. The lesson is complete when y moves above its starting value.",
+    focus: "chart",
+    check: {
+      pending: "Measure the starting y, train with feedback, then read again.",
+      baselineMissing: "Measure the starting y first.",
+      complete: "Complete: y moved positive after feedback. You changed memory with training.",
+      incomplete: "Not complete yet: y has not moved positive from the starting read.",
+    },
+    actions: [
+      { label: "Reset balanced", type: "preset", name: "balanced", resetCheck: true },
+      { label: "Measure starting y", type: "evaluate", instruction: "FF", record: "baseline-y" },
+      { label: "Train positive", type: "cycle", read: "FF", feedback: "RH", count: 8 },
+      { label: "Read result", type: "evaluate", instruction: "FF", check: "positive-moved" },
+    ],
+    details: [
+      {
+        title: "Scenario",
+        items: [
+          "A simple filter may learn that one signal should usually count as yes.",
+          "This lesson stores that tiny yes preference in one synapse by using feedback.",
+        ],
+      },
+      {
+        title: "Why it matters",
+        items: [
+          "This is the smallest useful learning loop in the tutorial: read, train, read again.",
+          "If y moves positive, the feedback changed the stored conductance state.",
+        ],
+      },
+      {
+        title: "What to watch",
+        items: [
+          "The y gauge should move above its starting value.",
+          "The conductance bars should separate as one side becomes stronger.",
+          "The chart should show the training history instead of just a static value.",
+        ],
+      },
+    ],
+  },
+  {
     title: "Noise can be useful",
     body: "Low-voltage reads can act like samples. Near y = 0, the sign of the read can flip around like a soft coin toss.",
     task: "Sample FFLV forty times. The positive count shows how often the noisy read landed above zero.",
@@ -320,6 +362,7 @@ const lessons = [
   },
 ];
 let tutorialIndex = 0;
+const tutorialChecks = new Map();
 
 const els = {
   step: document.querySelector("#step"),
@@ -359,6 +402,7 @@ const els = {
   tutorialBody: document.querySelector("#tutorial-body"),
   tutorialTask: document.querySelector("#tutorial-task"),
   tutorialDetails: document.querySelector("#tutorial-details"),
+  tutorialStatus: document.querySelector("#tutorial-status"),
   tutorialActions: document.querySelector("#tutorial-actions"),
   tutorialProgress: document.querySelector("#tutorial-progress"),
   tutorialPrev: document.querySelector("#tutorial-prev"),
@@ -471,6 +515,7 @@ function renderTutorial() {
   els.tutorialPrev.disabled = tutorialIndex === 0;
   els.tutorialNext.disabled = tutorialIndex === lessons.length - 1;
   renderTutorialDetails(lesson.details || []);
+  renderTutorialStatus();
   els.tutorialActions.replaceChildren();
   (lesson.actions || []).forEach((action) => {
     const button = document.createElement("button");
@@ -480,6 +525,29 @@ function renderTutorial() {
     els.tutorialActions.appendChild(button);
   });
   setFocus(lesson.focus);
+}
+
+function getTutorialCheck() {
+  if (!tutorialChecks.has(tutorialIndex)) {
+    tutorialChecks.set(tutorialIndex, {});
+  }
+  return tutorialChecks.get(tutorialIndex);
+}
+
+function renderTutorialStatus(message, kind) {
+  const lesson = lessons[tutorialIndex];
+  const check = getTutorialCheck();
+  const text = message || (check.completed ? lesson.check?.complete : lesson.check?.pending);
+  els.tutorialStatus.textContent = text || "";
+  els.tutorialStatus.className = "tutorial-status";
+  if (text) {
+    els.tutorialStatus.classList.add(kind || (check.completed ? "complete" : "pending"));
+  }
+}
+
+function resetTutorialCheck() {
+  tutorialChecks.set(tutorialIndex, {});
+  renderTutorialStatus();
 }
 
 function renderTutorialDetails(details) {
@@ -553,6 +621,9 @@ async function runTutorialAction(action) {
     state = await post("/api/preset", { name: action.name });
     els.sampleSummary.textContent = "";
     clearSamples();
+    if (action.resetCheck) {
+      resetTutorialCheck();
+    }
   } else if (action.type === "evaluate") {
     state = await post("/api/evaluate", { instruction: action.instruction, noise: 0 });
   } else if (action.type === "cycle") {
@@ -571,6 +642,35 @@ async function runTutorialAction(action) {
   }
   if (state) {
     render(state);
+    updateTutorialCheck(action, state);
+  }
+}
+
+function updateTutorialCheck(action, state) {
+  const lesson = lessons[tutorialIndex];
+  if (!lesson.check || (!action.record && !action.check)) {
+    return;
+  }
+
+  const check = getTutorialCheck();
+  if (action.record === "baseline-y") {
+    check.baselineY = Number(state.y);
+    check.completed = false;
+    renderTutorialStatus(`Starting y recorded: ${fmt(check.baselineY, 4)}. Now train positive.`, "pending");
+    return;
+  }
+
+  if (action.check === "positive-moved") {
+    if (typeof check.baselineY !== "number") {
+      renderTutorialStatus(lesson.check.baselineMissing, "warning");
+      return;
+    }
+    const delta = Number(state.y) - check.baselineY;
+    check.completed = delta > 0.01;
+    const message = check.completed
+      ? `${lesson.check.complete} Change: ${fmt(delta, 4)}.`
+      : `${lesson.check.incomplete} Change: ${fmt(delta, 4)}.`;
+    renderTutorialStatus(message, check.completed ? "complete" : "warning");
   }
 }
 
@@ -701,6 +801,7 @@ els.tutorialNext.addEventListener("click", () => {
 });
 
 els.tutorialRestart.addEventListener("click", async () => {
+  resetTutorialCheck();
   const preset = (lessons[tutorialIndex].actions || []).find((action) => action.type === "preset");
   if (preset) {
     await runTutorialAction(preset);

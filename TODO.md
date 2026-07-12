@@ -77,7 +77,7 @@ Goal: add an optional tutorial path for people who are new to kT-RAM and neural 
 - [ ] Lesson 7 scenario: scaling one learned signal into a system.
   - Example: a face detector, weather model, or robot controller combines many small signals instead of trusting one measurement.
   - Connect that to many lanes, address spaces, and synapses working together.
-- [ ] Add a useful first project lesson: teach one synapse to lean positive.
+- [x] Add a useful first project lesson: teach one synapse to lean positive.
   - Scenario: storing a tiny preference after feedback, like "this input should usually count as yes."
   - Steps: reset balanced, read with `FF`, run several `FF/RH` cycles, read again, confirm `y` moved positive.
   - Success condition: `y` is greater than its starting value and the UI explains that feedback changed memory.
@@ -128,6 +128,7 @@ Goal: add an optional tutorial path for people who are new to kT-RAM and neural 
 - [x] Highlight the UI element being discussed in the current step.
 - [x] Add controlled actions for tutorial steps, such as "Run FF once" or "Run 10 cycles".
 - [ ] Add inline checks that confirm the user completed the step.
+  - First check added for "Project: teach a positive preference"; still needs coverage for the rest of the tutorial.
 - [ ] Add concise explanations next to the chart and metrics.
 - [ ] Add a glossary drawer or popover for terms.
 - [ ] Add a "Reset lesson state" button so users can recover from experiments.

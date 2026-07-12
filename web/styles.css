@@ -283,6 +283,24 @@ label span {
   color: var(--text);
 }
 
+.tutorial-status {
+  min-height: 22px;
+  margin-top: 12px;
+  font-size: 13px;
+}
+
+.tutorial-status.pending {
+  color: var(--muted);
+}
+
+.tutorial-status.complete {
+  color: var(--green);
+}
+
+.tutorial-status.warning {
+  color: var(--amber);
+}
+
 .tutorial-details {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
