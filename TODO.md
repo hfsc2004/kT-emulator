@@ -77,10 +77,10 @@ Goal: add an optional tutorial path for people who are new to kT-RAM and neural 
 
 ## Visualizations
 
-- [ ] Add paired bars for `Ga` and `Gb`.
-- [ ] Add a normalized weight gauge from `-1` to `+1`.
+- [x] Add paired bars for `Ga` and `Gb`.
+- [x] Add a normalized weight gauge from `-1` to `+1`.
 - [ ] Add magnitude/confidence visualization.
-- [ ] Add sample histogram for noisy reads.
+- [x] Add sample histogram for noisy reads.
 - [ ] Add chart markers for tutorial actions.
 - [ ] Add visual distinction between read instructions and feedback instructions.
 

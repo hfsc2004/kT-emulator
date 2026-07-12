@@ -42,6 +42,54 @@
         </article>
       </section>
 
+      <section class="visuals" aria-label="Learning visualizations">
+        <article class="panel visual-card" data-focus="balance">
+          <div class="section-title">Conductance Balance</div>
+          <div class="bar-pair">
+            <div>
+              <span>Ga</span>
+              <div class="bar-track"><i id="ga-bar"></i></div>
+            </div>
+            <div>
+              <span>Gb</span>
+              <div class="bar-track"><i id="gb-bar"></i></div>
+            </div>
+          </div>
+          <p id="balance-note">When Ga and Gb match, the activation sits near zero.</p>
+        </article>
+
+        <article class="panel visual-card" data-focus="gauge">
+          <div class="section-title">Weight Gauge</div>
+          <div class="weight-gauge">
+            <div class="gauge-track">
+              <i id="weight-fill"></i>
+              <b id="weight-needle"></b>
+            </div>
+            <div class="gauge-labels">
+              <span>-1</span>
+              <span>0</span>
+              <span>+1</span>
+            </div>
+          </div>
+          <p id="weight-note">The needle follows activation y.</p>
+        </article>
+
+        <article class="panel visual-card" data-focus="samples">
+          <div class="section-title">Noisy Read Samples</div>
+          <div class="sample-bars">
+            <div>
+              <span>Negative</span>
+              <div class="bar-track negative"><i id="negative-bar"></i></div>
+            </div>
+            <div>
+              <span>Positive</span>
+              <div class="bar-track positive"><i id="positive-bar"></i></div>
+            </div>
+          </div>
+          <p id="sample-note">Run Sample FFLV to see the noisy read split.</p>
+        </article>
+      </section>
+
       <section id="tutorial-panel" class="panel tutorial-panel" hidden>
         <div class="tutorial-main">
           <div class="section-title" id="tutorial-kicker">Tutorial</div>
