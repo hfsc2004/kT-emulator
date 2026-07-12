@@ -50,7 +50,7 @@ Goal: add an optional tutorial path for people who are new to kT-RAM and neural 
 - [ ] Lesson 7: From one synapse to bigger systems.
   - Explain that real uses combine many address spaces and lanes.
   - Preview classifiers, memory, attractors, and random sources without implementing them yet.
-  - Link back to Alex Nugent's article and the installed package.
+  - Link back to Knowm's Neural Lane Emulator article and the installed package.
 
 ## UI Work
 

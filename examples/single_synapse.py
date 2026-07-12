@@ -1,6 +1,6 @@
 """Single-synapse kT-RAM emulator example.
 
-This follows the basic setup from Alex Nugent's "The Neural Lane Emulator":
+This follows the basic setup from Knowm's "The Neural Lane Emulator":
 one lane, one address space, one differential pair selected by AAT ``(0,)``.
 
 This example uses Knowm Inc.'s `ktram-neural-core` package. The installed
