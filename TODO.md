@@ -52,6 +52,46 @@ Goal: add an optional tutorial path for people who are new to kT-RAM and neural 
   - Preview classifiers, memory, attractors, and random sources without implementing them yet.
   - Link back to Knowm's Neural Lane Emulator article and the installed package.
 
+## Lesson Scenarios And Real-World Framing
+
+- [x] Add a real-world scenario to every current tutorial step before the technical explanation.
+- [x] Add a short "why would someone do this?" prompt to every current tutorial step.
+- [ ] Lesson 1 scenario: a safe training sandbox.
+  - Example: before testing a new aircraft control idea, engineers use a simulator so mistakes do not damage real hardware.
+  - Connect that to this emulator as a safe place to learn how one kT-RAM lane behaves.
+- [ ] Lesson 2 scenario: comparing two signals.
+  - Example: a thermostat compares "too cold" and "too hot" signals before deciding which way to lean.
+  - Connect that to `Ga` and `Gb` as two sides whose difference creates activation `y`.
+- [ ] Lesson 3 scenario: checking a state without disturbing it much.
+  - Example: checking a battery level should not drain the battery significantly.
+  - Connect that to low-voltage reads like `FFLV` as a gentler way to sample the current state.
+- [ ] Lesson 4 scenario: teaching a simple preference.
+  - Example: a spam filter gets feedback that a message was spam, so it nudges future decisions.
+  - Connect that to `FF` plus `RH` or `RL` feedback changing the stored conductance state.
+- [ ] Lesson 5 scenario: confidence from repeated evidence.
+  - Example: one customer review is weak evidence, but hundreds of reviews are harder to overturn.
+  - Connect that to magnitude as stored evidence or inertia.
+- [ ] Lesson 6 scenario: making decisions under uncertainty.
+  - Example: a recommendation system may show different options when confidence is low, then settle as evidence grows.
+  - Connect that to noisy low-voltage sampling and positive/negative sample ratios.
+- [ ] Lesson 7 scenario: scaling one learned signal into a system.
+  - Example: a face detector, weather model, or robot controller combines many small signals instead of trusting one measurement.
+  - Connect that to many lanes, address spaces, and synapses working together.
+- [ ] Add a useful first project lesson: teach one synapse to lean positive.
+  - Scenario: storing a tiny preference after feedback, like "this input should usually count as yes."
+  - Steps: reset balanced, read with `FF`, run several `FF/RH` cycles, read again, confirm `y` moved positive.
+  - Success condition: `y` is greater than its starting value and the UI explains that feedback changed memory.
+
+## Emulator Roadmap Framing
+
+- [x] Add a tutorial ending that distinguishes current emulator scope from future directions.
+- [x] State that the current UI teaches primitive lane behavior: reads, feedback, noise, conductance balance, and stored evidence.
+- [x] Preview logic gates as a likely next educational layer.
+- [x] Preview supervised classifiers as a later layer built from feedback and examples.
+- [x] Preview auto-encoders as a later layer built from learned internal representations.
+- [ ] Add roadmap links or references when public articles/examples are available.
+- [ ] Add future lessons only after the emulator exposes matching runnable examples.
+
 ## Computer Model Comparison
 
 - [x] Add a tutorial segment comparing conventional computers with kT-RAM.

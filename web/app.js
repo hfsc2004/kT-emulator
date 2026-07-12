@@ -11,6 +11,22 @@ const lessons = [
     task: "Start with a balanced synapse. The activation should sit near zero because the two conductances are equal.",
     focus: "activation",
     actions: [{ label: "Load balanced preset", type: "preset", name: "balanced" }],
+    details: [
+      {
+        title: "Scenario",
+        items: [
+          "Before engineers test a new aircraft control idea on real hardware, they use a simulator.",
+          "This emulator is the same kind of safe sandbox, but for one kT-RAM neural lane.",
+        ],
+      },
+      {
+        title: "Why it matters",
+        items: [
+          "You can try reads, feedback, noise, and presets without damaging a device or needing special hardware.",
+          "Learning one lane first makes bigger kT-RAM systems easier to understand later.",
+        ],
+      },
+    ],
   },
   {
     title: "How a regular computer works",
@@ -18,6 +34,20 @@ const lessons = [
     task: "Follow the example as a mental model. No emulator action is needed yet.",
     focus: null,
     details: [
+      {
+        title: "Scenario",
+        items: [
+          "A game stores your score in memory while the CPU runs the rules.",
+          "When you collect a point, the CPU reads the score, adds one, and writes the new score back.",
+        ],
+      },
+      {
+        title: "Why it matters",
+        items: [
+          "This is the pattern most software follows: move data to the processor, change it, then store it again.",
+          "kT-RAM is easier to compare once that normal pattern is clear.",
+        ],
+      },
       {
         title: "High level",
         items: [
@@ -59,6 +89,20 @@ const lessons = [
     ],
     details: [
       {
+        title: "Scenario",
+        items: [
+          "Imagine a tiny spam filter learning whether one signal should count as more spam-like or less spam-like.",
+          "Instead of storing a normal number, this lane stores its learned state in conductance.",
+        ],
+      },
+      {
+        title: "Why it matters",
+        items: [
+          "This shows why someone would use feedback: to make future reads lean toward what the system has learned.",
+          "The emulator lets you see that stored state move instead of treating learning as a hidden black box.",
+        ],
+      },
+      {
         title: "High level",
         items: [
           "A selected synapse stores state as two conductances: Ga and Gb.",
@@ -94,6 +138,20 @@ const lessons = [
     task: "Use the side-by-side bridge to keep the terms straight before changing memory with feedback.",
     focus: "activation",
     details: [
+      {
+        title: "Scenario",
+        items: [
+          "A map is useful, but it is not the same thing as the road.",
+          "The computer comparison is a map: it helps you start, but it is not a perfect copy of kT-RAM behavior.",
+        ],
+      },
+      {
+        title: "Why it matters",
+        items: [
+          "The analogy prevents confusion between a software variable and a conductance state.",
+          "Knowing where the analogy breaks keeps the lesson honest about what the emulator demonstrates.",
+        ],
+      },
       {
         title: "Vocabulary bridge",
         pairs: [
@@ -135,6 +193,22 @@ const lessons = [
       { label: "Reset balanced", type: "preset", name: "balanced" },
       { label: "Run FF", type: "evaluate", instruction: "FF" },
     ],
+    details: [
+      {
+        title: "Scenario",
+        items: [
+          "A thermostat compares two pressures: too cold and too hot.",
+          "The decision comes from which side is stronger, not from either side alone.",
+        ],
+      },
+      {
+        title: "Why it matters",
+        items: [
+          "Ga and Gb work like two sides of a comparison.",
+          "The activation y tells you which side is winning and by how much.",
+        ],
+      },
+    ],
   },
   {
     title: "Feedback changes memory",
@@ -144,6 +218,22 @@ const lessons = [
     actions: [
       { label: "Reset balanced", type: "preset", name: "balanced" },
       { label: "Run 5 cycles", type: "cycle", read: "FF", feedback: "RH", count: 5 },
+    ],
+    details: [
+      {
+        title: "Scenario",
+        items: [
+          "A spam filter improves when you mark a message as spam.",
+          "That feedback nudges future decisions so similar messages are more likely to be flagged.",
+        ],
+      },
+      {
+        title: "Why it matters",
+        items: [
+          "Running FF then RH is a tiny version of learning from feedback.",
+          "You should see y move because the stored conductance state changed.",
+        ],
+      },
     ],
   },
   {
@@ -155,6 +245,22 @@ const lessons = [
       { label: "Reset balanced", type: "preset", name: "balanced" },
       { label: "Sample FFLV", type: "sample", instruction: "FFLV", count: 40 },
     ],
+    details: [
+      {
+        title: "Scenario",
+        items: [
+          "A recommendation system may try different options when it is unsure what you prefer.",
+          "As evidence grows, the choices become less random and more biased toward what it has learned.",
+        ],
+      },
+      {
+        title: "Why it matters",
+        items: [
+          "Noisy samples show uncertainty instead of hiding it.",
+          "The positive and negative counts help you see whether the lane is balanced or biased.",
+        ],
+      },
+    ],
   },
   {
     title: "Magnitude is stored evidence",
@@ -164,6 +270,52 @@ const lessons = [
     actions: [
       { label: "Low magnitude", type: "preset", name: "low-magnitude" },
       { label: "High magnitude", type: "preset", name: "high-magnitude" },
+    ],
+    details: [
+      {
+        title: "Scenario",
+        items: [
+          "One customer review is weak evidence. Hundreds of reviews are harder to overturn.",
+          "A system should change quickly when evidence is small and more slowly when evidence is large.",
+        ],
+      },
+      {
+        title: "Why it matters",
+        items: [
+          "Magnitude helps explain how much stored evidence is behind the current weight.",
+          "Two states can point the same direction but have different resistance to change.",
+        ],
+      },
+    ],
+  },
+  {
+    title: "Where this is heading",
+    body: "Right now, this tutorial teaches the primitive behavior: reads, feedback, noise, conductance balance, and stored evidence.",
+    task: "Use this as a roadmap. Logic gates, supervised classifiers, and auto-encoders build on the same lower-level ideas you just explored.",
+    focus: "chart",
+    details: [
+      {
+        title: "Current scope",
+        items: [
+          "One lane, one selected address, and one visible differential conductance pair.",
+          "Enough surface area to learn how reading and feedback change stored state.",
+        ],
+      },
+      {
+        title: "Near roadmap",
+        items: [
+          "Logic gates can show how simple computation is assembled from lane behavior.",
+          "Supervised classifiers can show how feedback trains decisions from examples.",
+          "Auto-encoders can show how systems learn compressed internal representations.",
+        ],
+      },
+      {
+        title: "Why it matters",
+        items: [
+          "The current emulator is the foundation, not the finish line.",
+          "If you understand one synapse changing after feedback, later gates and classifiers have a concrete place to start.",
+        ],
+      },
     ],
   },
 ];
