@@ -3,6 +3,10 @@
   --bg: #111417;
   --panel: #1b2025;
   --panel-2: #232a31;
+  --read-panel: #151a1f;
+  --read-panel-2: #101417;
+  --control-panel: #20272d;
+  --control-panel-2: #28313a;
   --text: #ecf2ef;
   --muted: #9baaa4;
   --line: #354048;
@@ -82,7 +86,7 @@ p {
   min-width: 54px;
   padding: 8px 10px;
   border: 1px solid var(--line);
-  background: var(--panel);
+  background: var(--read-panel);
   text-align: center;
 }
 
@@ -101,20 +105,25 @@ p {
 .metrics article,
 .panel {
   border: 1px solid var(--line);
-  background: var(--panel);
+  background: var(--read-panel);
 }
 
 .metrics article {
   min-height: 82px;
   padding: 14px;
   transition: border-color .15s ease, background .15s ease;
+  cursor: default;
 }
 
 .metrics article.focused,
-.controls .focused,
 .chart-panel.focused {
   border-color: var(--green);
-  background: color-mix(in srgb, var(--green) 8%, var(--panel));
+  background: color-mix(in srgb, var(--green) 8%, var(--read-panel));
+}
+
+.controls .focused {
+  border-color: var(--green);
+  background: color-mix(in srgb, var(--green) 8%, var(--control-panel));
 }
 
 .metrics span,
@@ -124,12 +133,50 @@ label span {
   font-size: 12px;
 }
 
+.metrics span {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.metrics em,
+.section-title em {
+  display: inline-flex;
+  align-items: center;
+  min-height: 18px;
+  padding: 1px 6px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  color: var(--muted);
+  font-size: 10px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 1;
+  text-transform: uppercase;
+}
+
+.metrics em {
+  border-color: #4b555c;
+  background: var(--read-panel-2);
+}
+
+.section-title em {
+  margin-left: 6px;
+  border-color: color-mix(in srgb, var(--green) 38%, var(--line));
+  color: var(--green);
+}
+
 .metrics strong {
   display: block;
   margin-top: 8px;
+  padding-top: 9px;
+  border-top: 1px solid var(--line);
   font-family: "SFMono-Regular", Consolas, monospace;
   font-size: 22px;
   line-height: 1.1;
+  user-select: text;
 }
 
 .visuals {
@@ -147,7 +194,60 @@ label span {
 
 .visual-card.focused {
   border-color: var(--green);
-  background: color-mix(in srgb, var(--green) 8%, var(--panel));
+  background: color-mix(in srgb, var(--green) 8%, var(--read-panel));
+}
+
+.tour-scrim {
+  position: fixed;
+  inset: 0;
+  z-index: 20;
+  background: rgb(0 0 0 / 56%);
+  pointer-events: none;
+}
+
+.tour-bubble {
+  position: fixed;
+  z-index: 40;
+  width: min(390px, calc(100vw - 24px));
+  padding: 14px;
+  border: 1px solid var(--green);
+  border-radius: 6px;
+  background: #1d2428;
+  box-shadow: 0 18px 60px rgb(0 0 0 / 45%);
+}
+
+.tour-bubble h2 {
+  margin: 5px 0 0;
+  font-size: 18px;
+  line-height: 1.2;
+}
+
+.tour-bubble p {
+  margin-top: 8px;
+  font-size: 14px;
+  line-height: 1.45;
+}
+
+.tour-nav {
+  display: grid;
+  grid-template-columns: auto 1fr auto auto;
+  gap: 8px;
+  align-items: center;
+  margin-top: 12px;
+}
+
+.tour-nav span {
+  color: var(--muted);
+  font-size: 13px;
+  text-align: center;
+}
+
+.tour-target {
+  position: relative;
+  z-index: 30;
+  outline: 2px solid var(--green);
+  outline-offset: 3px;
+  box-shadow: 0 0 0 6px rgb(65 209 152 / 18%);
 }
 
 .bar-pair,
@@ -172,7 +272,7 @@ label span {
   overflow: hidden;
   border: 1px solid var(--line);
   border-radius: 4px;
-  background: #12171b;
+  background: var(--read-panel-2);
 }
 
 .bar-track i {
@@ -371,7 +471,7 @@ label span {
   padding: 7px 9px;
   border: 1px solid var(--line);
   border-radius: 4px;
-  background: var(--panel-2);
+  background: var(--control-panel-2);
 }
 
 .tutorial-flow li:not(:last-child)::after {
@@ -432,6 +532,7 @@ label span {
   display: grid;
   gap: 12px;
   padding: 14px;
+  background: var(--control-panel);
 }
 
 .section-title {
@@ -459,7 +560,7 @@ input {
   min-height: 36px;
   border: 1px solid var(--line);
   border-radius: 4px;
-  background: var(--panel-2);
+  background: var(--control-panel-2);
   color: var(--text);
   padding: 7px 9px;
 }
@@ -473,7 +574,7 @@ button {
   min-height: 38px;
   border: 1px solid var(--line);
   border-radius: 4px;
-  background: var(--panel-2);
+  background: var(--control-panel-2);
   color: var(--text);
   cursor: pointer;
 }
@@ -510,6 +611,7 @@ button.primary {
 .chart-panel {
   min-height: 640px;
   padding: 16px;
+  background: var(--read-panel);
 }
 
 .chart-head {
@@ -526,7 +628,7 @@ canvas {
   aspect-ratio: 960 / 430;
   display: block;
   border: 1px solid var(--line);
-  background: #14191d;
+  background: var(--read-panel-2);
 }
 
 .legend,
@@ -635,5 +737,14 @@ canvas {
     right: 50%;
     bottom: -15px;
     transform: translateX(50%);
+  }
+
+  .tour-nav {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .tour-nav span {
+    grid-column: 1 / -1;
+    order: -1;
   }
 }
