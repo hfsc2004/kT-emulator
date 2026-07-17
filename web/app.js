@@ -1654,4 +1654,5 @@ window.addEventListener("keydown", (event) => {
 
 wireInstructions();
 wireTutorialJump();
+showTutorialPanel();
 getState().then(render);
