@@ -1,6 +1,6 @@
 # TODO: Optional Beginner Tutorial
 
-Current version: `v0.1.3`
+Current version: `v0.1.4`
 
 Goal: add an optional tutorial path for people who are new to kT-RAM and neural lanes. The tutorial should be understandable to a motivated 17-year-old: concrete language, short steps, visible cause/effect, and no assumed background in memristors or machine learning.
 
@@ -63,6 +63,28 @@ Goal: add an optional tutorial path for people who are new to kT-RAM and neural 
   - [x] Preview classifiers, memory, attractors, and random sources without implementing them yet.
   - [x] Link back to Knowm's Neural Lane Emulator article and the installed package.
 
+- [x] Lesson 8: Guided challenge.
+  - [x] Reset to a balanced state.
+  - [x] Record a baseline read.
+  - [x] Train a positive preference with repeated `FF/RH` cycles.
+  - [x] Verify that the final read moved positive from the baseline.
+  - [x] Ask the user to explain the result using `y`, `Ga`, `Gb`, and the chart.
+
+## Capability-Gated Future Lessons
+
+These are intentionally not current tutorial lessons until the emulator exposes runnable behavior for them. Do not add them to the tutorial dropdown as normal lessons while they are explanation-only.
+
+- [ ] Logic gates lesson.
+  - Blocked until the emulator exposes a runnable logic-gate example or multi-synapse composition that the UI can drive.
+- [ ] Supervised classifier lesson.
+  - Blocked until the emulator exposes a runnable classifier workflow with examples, labels, feedback, and visible training results.
+- [ ] Auto-encoder lesson.
+  - Blocked until the emulator exposes a runnable encoding/reconstruction workflow.
+- [ ] Multi-lane or multi-address AAT lesson.
+  - Blocked until the UI can select or visualize more than the current single visible address.
+- [ ] Attractor or memory-system lesson.
+  - Blocked until the emulator exposes a runnable state-recall or attractor demonstration.
+
 ## Lesson Scenarios And Real-World Framing
 
 - [x] Add a real-world scenario to every current tutorial step before the technical explanation.
@@ -70,24 +92,24 @@ Goal: add an optional tutorial path for people who are new to kT-RAM and neural 
 - [x] Lesson 1 scenario: a safe training sandbox.
   - [x] Example: before testing a new aircraft control idea, engineers use a simulator so mistakes do not damage real hardware.
   - [x] Connect that to this emulator as a safe place to learn how one kT-RAM lane behaves.
-- [ ] Lesson 2 scenario: comparing two signals.
-  - Example: a thermostat compares "too cold" and "too hot" signals before deciding which way to lean.
-  - Connect that to `Ga` and `Gb` as two sides whose difference creates activation `y`.
-- [ ] Lesson 3 scenario: checking a state without disturbing it much.
-  - Example: checking a battery level should not drain the battery significantly.
-  - Connect that to low-voltage reads like `FFLV` as a gentler way to sample the current state.
-- [ ] Lesson 4 scenario: teaching a simple preference.
-  - Example: a spam filter gets feedback that a message was spam, so it nudges future decisions.
-  - Connect that to `FF` plus `RH` or `RL` feedback changing the stored conductance state.
-- [ ] Lesson 5 scenario: confidence from repeated evidence.
-  - Example: one customer review is weak evidence, but hundreds of reviews are harder to overturn.
-  - Connect that to magnitude as stored evidence or inertia.
-- [ ] Lesson 6 scenario: making decisions under uncertainty.
-  - Example: a recommendation system may show different options when confidence is low, then settle as evidence grows.
-  - Connect that to noisy low-voltage sampling and positive/negative sample ratios.
-- [ ] Lesson 7 scenario: scaling one learned signal into a system.
-  - Example: a face detector, weather model, or robot controller combines many small signals instead of trusting one measurement.
-  - Connect that to many lanes, address spaces, and synapses working together.
+- [x] Lesson 2 scenario: comparing two signals.
+  - [x] Example: a thermostat compares "too cold" and "too hot" signals before deciding which way to lean.
+  - [x] Connect that to `Ga` and `Gb` as two sides whose difference creates activation `y`.
+- [x] Lesson 3 scenario: checking a state without disturbing it much.
+  - [x] Example: checking a battery level should not drain the battery significantly.
+  - [x] Connect that to low-voltage reads like `FFLV` as a gentler way to sample the current state.
+- [x] Lesson 4 scenario: teaching a simple preference.
+  - [x] Example: a spam filter gets feedback that a message was spam, so it nudges future decisions.
+  - [x] Connect that to `FF` plus `RH` or `RL` feedback changing the stored conductance state.
+- [x] Lesson 5 scenario: confidence from repeated evidence.
+  - [x] Example: one customer review is weak evidence, but hundreds of reviews are harder to overturn.
+  - [x] Connect that to magnitude as stored evidence or inertia.
+- [x] Lesson 6 scenario: making decisions under uncertainty.
+  - [x] Example: a recommendation system may show different options when confidence is low, then settle as evidence grows.
+  - [x] Connect that to noisy low-voltage sampling and positive/negative sample ratios.
+- [x] Lesson 7 scenario: scaling one learned signal into a system.
+  - [x] Example: a face detector, weather model, or robot controller combines many small signals instead of trusting one measurement.
+  - [x] Connect that to many lanes, address spaces, and synapses working together.
 - [x] Add a useful first project lesson: teach one synapse to lean positive.
   - Scenario: storing a tiny preference after feedback, like "this input should usually count as yes."
   - Steps: reset balanced, read with `FF`, run several `FF/RH` cycles, read again, confirm `y` moved positive.
@@ -203,4 +225,4 @@ Goal: add an optional tutorial path for people who are new to kT-RAM and neural 
 - [x] Should the tutorial be linear only, or allow jumping between lessons? Decision: add a tutorial dropdown so users can jump between current tutorial steps.
 - [ ] Should examples use only the `float` model at first?
 - [ ] Should we include diagrams, or keep everything driven by live emulator state?
-- [ ] Should the tutorial eventually include a small challenge/project at the end?
+- [x] Should the tutorial eventually include a small challenge/project at the end? Decision: add Lesson 8 as a guided read-train-read challenge.

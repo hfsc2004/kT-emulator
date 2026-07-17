@@ -4,12 +4,12 @@
 
 # kT-RAM Neural Lane Emulator
 
-Current version: `v0.1.3`
+Current version: `v0.1.4`
 
 Browser-based explorer for Knowm's kT-RAM neural lane emulator, with live controls, visual gauges, noisy read sampling, and an optional beginner tutorial.
 
 <p align="center">
-  <img src="web/assets/Screenshot.png?v=0.1.3" alt="kT-RAM Neural Lane Emulator browser interface" width="900">
+  <img src="web/assets/Screenshot.png?v=0.1.4" alt="kT-RAM Neural Lane Emulator browser interface" width="900">
 </p>
 
 This project wraps `ktram-neural-core`, the open Python emulator of the 2-1 kT-RAM neural lane described in Knowm's [Neural Lane Emulator article](https://knowm.ai/blog/the-neural-lane-emulator/). The goal is to make the emulator easier to explore without living entirely inside a Python prompt or notebook.
@@ -61,9 +61,9 @@ To stop the UI, press `Ctrl+C` in the terminal that started it.
 
 ## Tutorial Mode
 
-Click `Tutorial` in the top bar to open an optional beginner path. The first tutorial slice walks through a balanced synapse, conductance reads, simple feedback, noisy low-voltage sampling, and magnitude as stored evidence. Visual cards show the `Ga`/`Gb` balance, a `-1` to `+1` weight gauge, and the positive/negative split from noisy reads.
+Click `Tutorial` in the top bar to open the beginner path. The tutorial now opens by default and includes eight lessons covering the emulator sandbox, paired conductances, reads, feedback, magnitude, noisy sampling, bigger-system framing, and a guided read-train-read challenge. Visual cards show the `Ga`/`Gb` balance, a `-1` to `+1` weight gauge, and the positive/negative split from noisy reads.
 
-The tutorial is still early. It is designed to stay skippable so experienced users can continue using the main emulator controls directly.
+The tutorial stays skippable so experienced users can continue using the main emulator controls directly.
 
 ## Other Commands
 

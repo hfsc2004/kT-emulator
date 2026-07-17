@@ -1,5 +1,12 @@
 # Changelog
 
+## v0.1.4
+
+- Added real-world scenario and "why would someone do this?" framing across the tutorial lessons.
+- Added Lesson 8 as a guided read-train-read challenge that verifies a trained positive preference.
+- Clarified that future lessons requiring logic gates, classifiers, auto-encoders, multi-lane examples, or attractor behavior are capability-gated until the emulator can run them.
+- Updated README tutorial mode notes for the current eight-lesson flow.
+
 ## v0.1.3
 
 - Added brief mouse-over names for compact controls and instruction buttons.
