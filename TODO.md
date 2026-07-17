@@ -1,6 +1,6 @@
 # TODO: Optional Beginner Tutorial
 
-Current version: `v0.1.5`
+Current version: `v0.1.6`
 
 Goal: add an optional tutorial path for people who are new to kT-RAM and neural lanes. The tutorial should be understandable to a motivated 17-year-old: concrete language, short steps, visible cause/effect, and no assumed background in memristors or machine learning.
 
@@ -70,6 +70,12 @@ Goal: add an optional tutorial path for people who are new to kT-RAM and neural 
   - [x] Verify that the final read moved positive from the baseline.
   - [x] Ask the user to explain the result using `y`, `Ga`, `Gb`, and the chart.
 
+- [x] Lesson 9: Python CLI preview.
+  - [x] Add a watched virtual Linux CLI replay.
+  - [x] Show deterministic project setup commands.
+  - [x] Show a typed-out Python script that imports and uses `ktram_neural_core`.
+  - [x] Add optional canned typed practice without exposing a real shell.
+
 ## Capability-Gated Future Lessons
 
 These are intentionally not current tutorial lessons until the emulator exposes runnable behavior for them. Do not add them to the tutorial dropdown as normal lessons while they are explanation-only.
@@ -84,6 +90,49 @@ These are intentionally not current tutorial lessons until the emulator exposes 
   - Blocked until the UI can select or visualize more than the current single visible address.
 - [ ] Attractor or memory-system lesson.
   - Blocked until the emulator exposes a runnable state-recall or attractor demonstration.
+
+## Python Integration Tutorial Series
+
+Goal: add a separate tutorial path that teaches how to embed the emulator in a small utilitarian Python program. The UI should present a virtual Linux CLI that looks like a real terminal running Python commands, but the user does not need to type. Each step should reveal the command, the Python code, and the output as a scripted demonstration.
+
+- [x] Add a virtual CLI tutorial surface.
+  - [x] Make it look like a Linux terminal with prompt text, command output, Python file views, and run results.
+  - [x] Keep watched deterministic replay as the default lesson mode.
+  - [x] Add optional typed practice mode with deterministic canned responses, not a real shell.
+  - [ ] Use copyable command/code blocks only where helpful; do not require keyboard input.
+  - [x] Keep the virtual CLI visually distinct from the real emulator controls so users do not mistake it for a live shell.
+- [ ] Choose one real utilitarian example.
+  - [ ] Prefer a practical decision helper, such as a tiny sensor-threshold assistant, spam/not-spam toy filter, quality-control pass/fail helper, or recommendation preference demo.
+  - [ ] Use data small enough to show in the tutorial without scrolling through large files.
+  - [ ] Keep the example honest: one visible lane/synapse first unless the emulator/API grows beyond that.
+- [ ] Lesson CLI-1: create the project.
+  - [x] Show a virtual command like `mkdir ktram-demo && cd ktram-demo`.
+  - [x] Show creating a virtual environment and installing/importing the emulator dependency.
+  - [x] Explain what files will exist before showing code.
+- [ ] Lesson CLI-2: write the smallest Python script.
+  - [x] Show `demo.py` importing the emulator package.
+  - [x] Create/reset one lane or equivalent current emulator object.
+  - [x] Print initial `y`, `Ga`, `Gb`, and magnitude.
+- [ ] Lesson CLI-3: wrap reads and feedback in helper functions.
+  - [ ] Show a `read_state()` helper for read instructions.
+  - [ ] Show a `train_positive()` or equivalent helper that runs repeated read/feedback cycles.
+  - [ ] Print before/after state so the program output mirrors the browser tutorial.
+- [ ] Lesson CLI-4: connect the emulator to a utilitarian decision.
+  - [ ] Map a simple input signal to a read/train decision.
+  - [ ] Show a tiny dataset or sequence of examples.
+  - [ ] Keep the utility concrete, such as "prefer this option after repeated positive feedback" or "flag this input after training."
+- [ ] Lesson CLI-5: run and interpret the program.
+  - [ ] Show the virtual command `python demo.py`.
+  - [ ] Show realistic terminal output with state changes.
+  - [ ] Explain what changed in plain language and point back to the browser readings.
+- [ ] Lesson CLI-6: safe next steps.
+  - [ ] Explain what this toy program demonstrates.
+  - [ ] Explain what it does not demonstrate yet.
+  - [ ] Link the CLI example back to `examples/` and future runnable examples.
+- [ ] Add actual example files to back the virtual CLI tutorial.
+  - [ ] Add a runnable Python example matching the virtual CLI output.
+  - [ ] Add a short README or comments for running it locally.
+  - [ ] Add a smoke test or documented manual check so the scripted output does not drift from the code.
 
 ## Lesson Scenarios And Real-World Framing
 

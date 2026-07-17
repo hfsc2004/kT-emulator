@@ -1,5 +1,11 @@
 # Changelog
 
+## v0.1.6
+
+- Planned a future virtual Linux/Python CLI tutorial series for embedding the emulator in a utilitarian example program.
+- Added a reusable virtual CLI tutorial component with deterministic replay and optional canned typed practice.
+- Added Lesson 9 as a virtual Python CLI preview using the new terminal replay component.
+
 ## v0.1.5
 
 - Added concise read-only explanations to the top metrics and history chart.
