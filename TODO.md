@@ -1,6 +1,6 @@
 # TODO: Optional Beginner Tutorial
 
-Current version: `v0.1.1`
+Current version: `v0.1.2`
 
 Goal: add an optional tutorial path for people who are new to kT-RAM and neural lanes. The tutorial should be understandable to a motivated 17-year-old: concrete language, short steps, visible cause/effect, and no assumed background in memristors or machine learning.
 
