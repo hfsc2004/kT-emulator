@@ -1,5 +1,10 @@
 # Changelog
 
+## v0.1.2
+
+- Bumped project version after the tutorial and compact layout update.
+- Kept version references synchronized across the UI footer, README, TODO, and changelog.
+
 ## v0.1.1
 
 - Added an Interface Tour with guided bubbles for the main UI areas and instruction buttons.
