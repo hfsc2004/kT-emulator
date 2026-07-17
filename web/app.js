@@ -4,6 +4,22 @@
 
 const instructions = ["FF", "FFLV", "RF", "RFLV", "FH", "FL", "FU", "FA", "FZ", "RH", "RL", "RU", "RA", "RZ"];
 const readInstructions = new Set(["FF", "FFLV", "RF", "RFLV"]);
+const instructionTooltips = {
+  FF: "Forward read",
+  FFLV: "Forward low-voltage read",
+  RF: "Reverse read",
+  RFLV: "Reverse low-voltage read",
+  FH: "Forward high feedback",
+  FL: "Forward low feedback",
+  FU: "Forward H-gated up feedback",
+  FA: "Forward H-gated adaptive feedback",
+  FZ: "Forward zero feedback",
+  RH: "Reverse high feedback",
+  RL: "Reverse low feedback",
+  RU: "Reverse H-gated up feedback",
+  RA: "Reverse H-gated adaptive feedback",
+  RZ: "Reverse zero feedback",
+};
 const tourSteps = [
   {
     selector: ".controls",
@@ -1240,6 +1256,7 @@ function renderTutorial() {
     const button = document.createElement("button");
     button.type = "button";
     button.textContent = action.label;
+    button.title = action.label;
     button.addEventListener("click", () => runTutorialAction(action));
     els.tutorialActions.appendChild(button);
   });
@@ -1535,6 +1552,8 @@ function wireInstructions() {
     const button = document.createElement("button");
     button.type = "button";
     button.textContent = instruction;
+    button.title = instructionTooltips[instruction] || instruction;
+    button.setAttribute("aria-label", `${instruction}: ${button.title}`);
     button.className = readInstructions.has(instruction) ? "read" : "feedback";
     button.dataset.instruction = instruction;
     button.addEventListener("click", async () => {
