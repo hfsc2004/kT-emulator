@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>kT-RAM Neural Lane Emulator</title>
     <link rel="stylesheet" href="/styles.css">
+    <link rel="stylesheet" href="/virtual-cli.css">
   </head>
   <body>
     <main class="shell">
@@ -223,6 +224,20 @@
               <div class="tutorial-details" id="tutorial-details"></div>
               <p class="tutorial-status" id="tutorial-status"></p>
               <div class="tutorial-actions" id="tutorial-actions"></div>
+              <section id="virtual-cli" class="virtual-cli" hidden aria-label="Virtual Linux Python CLI">
+                <div class="virtual-cli-head">
+                  <span>virtual-cli</span>
+                  <div class="virtual-cli-tools">
+                    <button id="virtual-cli-mode" type="button" title="Enable typed practice mode">Enable typing</button>
+                    <button id="virtual-cli-replay" type="button" title="Replay virtual CLI script">Replay</button>
+                  </div>
+                </div>
+                <pre id="virtual-cli-output" aria-live="polite"></pre>
+                <form id="virtual-cli-form" class="virtual-cli-form" hidden>
+                  <label for="virtual-cli-input">demo@ktram:~$</label>
+                  <input id="virtual-cli-input" type="text" autocomplete="off" spellcheck="false" aria-label="Virtual CLI command">
+                </form>
+              </section>
             </div>
             <div class="tutorial-nav">
               <button id="tutorial-prev" type="button" title="Previous tutorial page or step">&lt;&lt; Back</button>
@@ -262,9 +277,10 @@
 
       <footer class="app-footer">
         <span>kT-RAM Neural Lane Emulator</span>
-        <strong>v0.1.5</strong>
+        <strong>v0.1.6</strong>
       </footer>
     </main>
+    <script src="/virtual-cli.js"></script>
     <script src="/app.js"></script>
   </body>
 </html>

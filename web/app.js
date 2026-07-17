@@ -1305,6 +1305,80 @@ const tutorialLessonGroups = [
       },
     ],
   },
+  {
+    id: "lesson-9",
+    menuLabel: "Lesson 9: Python CLI preview",
+    title: "Watch a Python integration demo",
+    source: "Local virtual CLI plan",
+    steps: [
+      {
+        title: "A terminal you can watch",
+        body: "This preview shows a scripted Linux-style CLI. It is not a real shell. The tutorial types commands and Python code so you can see what an emulator integration could look like.",
+        task: "Watch the terminal replay. Typed practice is optional and stays off by default.",
+        focus: "chart",
+        terminalScript: [
+          { prompt: "demo@ktram:~$", text: "mkdir ktram-demo && cd ktram-demo" },
+          { prompt: "demo@ktram:~/ktram-demo$", text: "python -m venv .venv" },
+          { prompt: "demo@ktram:~/ktram-demo$", text: "source .venv/bin/activate" },
+          { prompt: "(.venv) demo@ktram:~/ktram-demo$", text: "python --version" },
+          { output: "Python 3.12.3" },
+          { prompt: "(.venv) demo@ktram:~/ktram-demo$", text: "python -c \"import ktram_neural_core; print('ktram-neural-core ready')\"" },
+          { output: "ktram-neural-core ready" },
+        ],
+        details: [
+          {
+            title: "Why this exists",
+            items: [
+              "Later tutorials can show how a real Python program imports and uses the emulator.",
+              "The first version is deterministic: the user watches instead of typing.",
+            ],
+          },
+        ],
+      },
+      {
+        title: "Script the smallest program",
+        body: "The virtual CLI can reveal code as if someone typed it quickly. This keeps the lesson readable without opening a real shell.",
+        task: "Watch a tiny Python file appear, then run it.",
+        focus: "chart",
+        terminalScript: [
+          { prompt: "(.venv) demo@ktram:~/ktram-demo$", text: "cat > demo.py <<'PY'" },
+          { code: "from ktram_neural_core import Core\n\nZ = (0,)\ncore = Core(1, 1, spaces_per_lane=1, num_lanes=1, model=\"float\", init=\"medium\", seed=11, read_noise=0.02)\ncore.set_start_y(0, Z, 0.0, level=0.5)\n\nstart_y = core.evaluate(Z, \"FF\", noise=0.0)\nfor _ in range(10):\n    core.evaluate(Z, \"FF\", noise=0.0)\n    core.evaluate(Z, \"RH\", noise=0.0)\ntrained_y = core.evaluate(Z, \"FF\", noise=0.0)\nga, gb = core.read_gab(0, Z)\n\nprint(f\"start y:   {start_y:+.4f}\")\nprint(f\"trained y: {trained_y:+.4f}\")\nprint(f\"Ga/Gb:     {ga:.4f} / {gb:.4f}\")" },
+          { prompt: "", text: "PY" },
+          { prompt: "(.venv) demo@ktram:~/ktram-demo$", text: "python demo.py" },
+          { output: "start y:   +0.0000\ntrained y: +0.1372\nGa/Gb:     0.0584 / 0.0443" },
+        ],
+        details: [
+          {
+            title: "What to notice",
+            items: [
+              "The code follows the same read-train-read loop as Lesson 8.",
+              "The terminal output points back to the browser readings: y, Ga, and Gb.",
+            ],
+          },
+        ],
+      },
+      {
+        title: "Optional typed practice",
+        body: "The terminal can also accept safe canned commands. This is off by default so beginner lessons stay watch-only.",
+        task: "Use Enable typing only if you want to try the virtual commands.",
+        focus: "chart",
+        terminalScript: [
+          { output: "# Optional practice commands" },
+          { prompt: "demo@ktram:~$", text: "help" },
+          { output: "Try: help, ls, cat demo.py, python demo.py, clear" },
+        ],
+        details: [
+          {
+            title: "Guardrail",
+            items: [
+              "Typed practice is not a real system shell.",
+              "It only returns deterministic tutorial responses.",
+            ],
+          },
+        ],
+      },
+    ],
+  },
 ];
 const lessons = tutorialLessonGroups.flatMap((group, groupIndex) => {
   return group.steps.map((step, stepIndex) => ({
@@ -1327,6 +1401,7 @@ let tutorialIndex = 0;
 let tutorialPage = 0;
 let tourIndex = 0;
 let activeTourTarget = null;
+let virtualCli;
 const tutorialChecks = new Map();
 
 const els = {
@@ -1376,6 +1451,12 @@ const els = {
   tutorialNext: document.querySelector("#tutorial-next"),
   tutorialResetLesson: document.querySelector("#tutorial-reset-lesson"),
   tutorialExit: document.querySelector("#tutorial-exit"),
+  virtualCliPanel: document.querySelector("#virtual-cli"),
+  virtualCliOutput: document.querySelector("#virtual-cli-output"),
+  virtualCliReplay: document.querySelector("#virtual-cli-replay"),
+  virtualCliMode: document.querySelector("#virtual-cli-mode"),
+  virtualCliForm: document.querySelector("#virtual-cli-form"),
+  virtualCliInput: document.querySelector("#virtual-cli-input"),
   glossaryToggle: document.querySelector("#glossary-toggle"),
   glossaryScrim: document.querySelector("#glossary-scrim"),
   glossaryPanel: document.querySelector("#glossary-panel"),
@@ -1612,6 +1693,7 @@ function renderTutorial() {
   els.tutorialNext.textContent = "Next >>";
   els.tutorialNext.classList.toggle("has-more", hasMoreText);
   renderTutorialDetails(getTutorialPageDetails(lesson));
+  virtualCli.play(tutorialPage === 0 ? (lesson.terminalScript || []) : []);
   renderTutorialStatus();
   els.tutorialActions.replaceChildren();
   const actions = tutorialPage === 0 ? (lesson.actions || []) : [];
@@ -2043,5 +2125,13 @@ window.addEventListener("keydown", (event) => {
 wireInstructions();
 wireTutorialJump();
 renderGlossary();
+virtualCli = new window.VirtualCli({
+  panel: els.virtualCliPanel,
+  output: els.virtualCliOutput,
+  replayButton: els.virtualCliReplay,
+  modeButton: els.virtualCliMode,
+  form: els.virtualCliForm,
+  input: els.virtualCliInput,
+});
 showTutorialPanel();
 getState().then(render);

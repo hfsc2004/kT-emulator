@@ -1,0 +1,75 @@
+.virtual-cli {
+  margin-top: 10px;
+  overflow: hidden;
+  border: 1px solid #2b3940;
+  border-radius: 6px;
+  background: #070a0c;
+  box-shadow: inset 0 0 0 1px rgb(255 255 255 / 2%);
+}
+
+.virtual-cli-head {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  justify-content: space-between;
+  min-height: 32px;
+  padding: 5px 8px 5px 10px;
+  border-bottom: 1px solid #202b31;
+  background: #11181d;
+}
+
+.virtual-cli-head span,
+.virtual-cli-form label {
+  color: var(--green);
+  font-family: "SFMono-Regular", Consolas, monospace;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.virtual-cli-tools {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+}
+
+.virtual-cli-tools button {
+  min-height: 26px;
+  padding: 0 9px;
+  font-size: 12px;
+}
+
+.virtual-cli pre {
+  height: 166px;
+  margin: 0;
+  overflow: auto;
+  padding: 11px 12px;
+  color: #dce8df;
+  font-family: "SFMono-Regular", Consolas, monospace;
+  font-size: 12px;
+  line-height: 1.42;
+  white-space: pre-wrap;
+}
+
+.virtual-cli-form {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: 8px;
+  align-items: center;
+  padding: 8px 10px;
+  border-top: 1px solid #202b31;
+  background: #0c1114;
+}
+
+.virtual-cli-form[hidden] {
+  display: none;
+}
+
+.virtual-cli-form input {
+  min-height: 30px;
+  padding: 4px 6px;
+  border: 1px solid #26343b;
+  background: #050708;
+  color: #dce8df;
+  font-family: "SFMono-Regular", Consolas, monospace;
+  font-size: 12px;
+}
