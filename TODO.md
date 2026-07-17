@@ -1,6 +1,6 @@
 # TODO: Optional Beginner Tutorial
 
-Current version: `v0.1.7`
+Current version: `v0.1.8`
 
 Goal: add an optional tutorial path for people who are new to kT-RAM and neural lanes. The tutorial should be understandable to a motivated 17-year-old: concrete language, short steps, visible cause/effect, and no assumed background in memristors or machine learning.
 
@@ -19,6 +19,17 @@ Goal: add an optional tutorial path for people who are new to kT-RAM and neural 
 - [x] Add a clear way to return from tutorial mode to the normal dashboard.
 - [ ] Save no personal data; tutorial progress can stay in browser memory for now.
 - [x] Make every tutorial step runnable with the current single-synapse emulator before expanding to larger examples.
+
+## External Monitor API
+
+- [x] Add a local monitor API for external programs to stream emulator snapshots into the visual dashboard.
+- [x] Split monitor server logic into `monitor_api.py`.
+- [x] Split browser monitor polling into `web/monitor.js`.
+- [x] Add single-event, series, state, and reset endpoints under `/api/monitor/...`.
+- [x] Render monitor snapshots through the existing activation, conductance, magnitude, history, and gauge visuals.
+- [x] Document a fail-safe Python `MonitorClient` that lets user programs keep normal output while also mirroring state to the browser.
+- [ ] Add a dedicated in-app Monitor Mode indicator/control panel with pause/resume and clear controls.
+- [ ] Add runnable example files for monitored user programs.
 
 ## Tutorial Structure
 

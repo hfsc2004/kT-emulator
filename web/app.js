@@ -1408,6 +1408,7 @@ let virtualCli;
 const tutorialChecks = new Map();
 
 const els = {
+  branch: document.querySelector("#branch"),
   step: document.querySelector("#step"),
   y: document.querySelector("#y"),
   ga: document.querySelector("#ga"),
@@ -1501,17 +1502,22 @@ async function getState() {
 }
 
 function render(state) {
+  const isMonitor = state.mode === "monitor";
+  els.branch.textContent = isMonitor ? `Monitor: ${state.source || "external"}` : "AAT (0,)";
   els.step.textContent = state.step;
   els.y.textContent = fmt(state.y);
   els.ga.textContent = Number(state.ga).toFixed(6);
   els.gb.textContent = Number(state.gb).toFixed(6);
   els.magnitude.textContent = Number(state.magnitude).toFixed(6);
-  els.lastInstruction.textContent = state.instruction;
+  els.lastInstruction.textContent = isMonitor ? (state.label || state.instruction) : state.instruction;
 
   if (state.sample) {
     els.sampleSummary.textContent =
       `mean ${fmt(state.sample.mean, 4)} | positive ${state.sample.positive}/${state.sample.count}`;
     renderSamples(state.sample);
+  } else if (isMonitor) {
+    els.sampleSummary.textContent = "";
+    clearSamples();
   }
 
   renderVisuals(state);
@@ -2185,4 +2191,7 @@ virtualCli = new window.VirtualCli({
   onAction: runVirtualCliAction,
 });
 showTutorialPanel();
-getState().then(render);
+getState().then((state) => {
+  render(state);
+  new window.MonitorBridge({ render, getState }).start();
+});

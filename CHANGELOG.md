@@ -1,5 +1,13 @@
 # Changelog
 
+## v0.1.8
+
+- Added a local Monitor API so external programs can stream neural activity snapshots into the dashboard visuals.
+- Split monitor server logic into `monitor_api.py` and browser polling into `web/monitor.js`.
+- Added `/api/monitor/state`, `/api/monitor/event`, `/api/monitor/series`, and `/api/monitor/reset` endpoints.
+- Updated the UI to render external monitor snapshots through the existing readings, chart, conductance balance, and weight gauge.
+- Expanded README with Monitor API endpoint docs, JSON payloads, a fail-safe Python `MonitorClient`, and a fork-output example.
+
 ## v0.1.7
 
 - Updated Lesson 9 copy so the Python CLI preview explains the emulator workflow instead of the tutorial mechanism.

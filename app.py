@@ -19,6 +19,7 @@ from pathlib import Path
 from urllib.parse import urlparse
 
 from ktram_neural_core import Core, INSTRUCTIONS
+from monitor_api import MonitorSession
 
 ROOT = Path(__file__).resolve().parent
 STATIC = ROOT / "web"
@@ -131,6 +132,9 @@ class EmulatorSession:
 SESSION = EmulatorSession()
 
 
+MONITOR = MonitorSession()
+
+
 class EmulatorHTTPServer(ThreadingHTTPServer):
     allow_reuse_address = True
     daemon_threads = True
@@ -145,12 +149,20 @@ class Handler(BaseHTTPRequestHandler):
         if parsed.path == "/api/state":
             self.send_json(SESSION.snapshot("state", SESSION.core.lane(0).y))
             return
+        if parsed.path == "/api/monitor/state":
+            self.send_json(MONITOR.current())
+            return
 
         self.send_static(parsed.path)
 
     def do_HEAD(self) -> None:
         parsed = urlparse(self.path)
         if parsed.path == "/api/state":
+            self.send_response(200)
+            self.send_header("Content-Type", "application/json; charset=utf-8")
+            self.end_headers()
+            return
+        if parsed.path == "/api/monitor/state":
             self.send_response(200)
             self.send_header("Content-Type", "application/json; charset=utf-8")
             self.end_headers()
@@ -215,6 +227,13 @@ class Handler(BaseHTTPRequestHandler):
                     str(data.get("instruction", "FFLV")),
                     noise=float(data.get("noise", 0.0)),
                 )
+            elif parsed.path == "/api/monitor/reset":
+                self.send_json(MONITOR.reset())
+                return
+            elif parsed.path in {"/api/monitor/event", "/api/monitor/state"}:
+                state = MONITOR.ingest(data)
+            elif parsed.path == "/api/monitor/series":
+                state = MONITOR.ingest_series(data)
             else:
                 self.send_error(404)
                 return

@@ -4,12 +4,12 @@
 
 # kT-RAM Neural Lane Emulator
 
-Current version: `v0.1.7`
+Current version: `v0.1.8`
 
 Browser-based explorer for Knowm's kT-RAM neural lane emulator, with live controls, visual gauges, noisy read sampling, and an optional beginner tutorial.
 
 <p align="center">
-  <img src="web/assets/Screenshot-v0.1.7.png" alt="kT-RAM Neural Lane Emulator browser interface" width="900">
+  <img src="web/assets/Screenshot-v0.1.8.png" alt="kT-RAM Neural Lane Emulator browser interface" width="900">
 </p>
 
 This project wraps `ktram-neural-core`, the open Python emulator of the 2-1 kT-RAM neural lane described in Knowm's [Neural Lane Emulator article](https://knowm.ai/blog/the-neural-lane-emulator/). The goal is to make the emulator easier to explore without living entirely inside a Python prompt or notebook.
@@ -25,6 +25,7 @@ The current UI focuses on the first useful surface: one lane, one address space,
 - Samples noisy sub-threshold reads
 - Shows live activation, conductances, magnitude, history, visual gauges, and sample splits
 - Includes a skippable beginner tutorial for new kT-RAM users
+- Provides a local Monitor API so external Python programs can stream neural state snapshots into the visual dashboard
 
 ## Installation
 
@@ -70,6 +71,134 @@ For teachers and parents: the tutorial is intended as a concrete introduction to
 Known limitations: the current UI demonstrates one lane, one selected address, and one visible differential conductance pair. It is an educational emulator surface, not a full hardware simulator UI, and future lessons for logic gates, classifiers, auto-encoders, multi-lane examples, or attractor behavior should wait until those behaviors are runnable in the app.
 
 See [NOTICE.md](NOTICE.md) for attribution and IP/license notes.
+
+## Monitor API
+
+The app includes a local monitor API for external programs that want to drive the visual dashboard while they run. Think of it like connecting an oscilloscope to a circuit: your program sends neural-lane snapshots, and the browser shows activation, conductance balance, magnitude, gauge position, and history.
+
+The monitor API is local to the running app server. If the UI is open at `http://127.0.0.1:8000`, post monitor events to that same origin.
+
+| Endpoint | Method | Purpose |
+| --- | --- | --- |
+| `/api/monitor/state` | `GET` | Read the latest monitor stream state. |
+| `/api/monitor/state` | `POST` | Send one external state snapshot. |
+| `/api/monitor/event` | `POST` | Alias for sending one external state snapshot. |
+| `/api/monitor/series` | `POST` | Send multiple snapshots at once. |
+| `/api/monitor/reset` | `POST` | Clear the monitor stream and return the UI to normal emulator state on the next poll. |
+
+A single snapshot should include `y`, `ga`, and `gb`. `magnitude` defaults to `ga + gb` when omitted.
+
+```json
+{
+  "source": "my-python-run",
+  "label": "train step 12",
+  "instruction": "RH",
+  "step": 12,
+  "y": 0.1372,
+  "ga": 0.0584,
+  "gb": 0.0443,
+  "magnitude": 0.1027
+}
+```
+
+Minimal Python helper using only the standard library:
+
+```python
+import json
+import urllib.request
+import urllib.error
+
+class MonitorClient:
+    def __init__(self, url="http://127.0.0.1:8000", source="user-program"):
+        self.url = url.rstrip("/")
+        self.source = source
+        self.enabled = True
+
+    def send(self, *, label, instruction, step, y, ga, gb, magnitude=None):
+        if not self.enabled:
+            return None
+        event = {
+            "source": self.source,
+            "label": label,
+            "instruction": instruction,
+            "step": step,
+            "y": y,
+            "ga": ga,
+            "gb": gb,
+        }
+        if magnitude is not None:
+            event["magnitude"] = magnitude
+        data = json.dumps(event).encode("utf-8")
+        request = urllib.request.Request(
+            f"{self.url}/api/monitor/event",
+            data=data,
+            headers={"Content-Type": "application/json"},
+            method="POST",
+        )
+        try:
+            with urllib.request.urlopen(request, timeout=0.2) as response:
+                return json.loads(response.read().decode("utf-8"))
+        except (OSError, urllib.error.URLError, TimeoutError):
+            # Keep the user's program running even when the visual monitor is closed.
+            self.enabled = False
+            return None
+```
+
+Use that helper to fork your program output: keep printing or saving results normally, and also send a copy of each neural state to the monitor.
+
+```python
+from ktram_neural_core import Core
+
+Z = (0,)
+core = Core(1, 1, spaces_per_lane=1, num_lanes=1, model="float", init="medium")
+monitor = MonitorClient(source="read-train-read-demo")
+
+def report(step, label, instruction, y):
+    ga, gb = core.read_gab(0, Z)
+
+    # Your program's normal output still happens.
+    print(f"{step:02d} {label:16s} y={y:+.4f} Ga={ga:.4f} Gb={gb:.4f}")
+
+    # A copy of the same state goes to the browser dashboard when it is open.
+    monitor.send(
+        label=label,
+        instruction=instruction,
+        step=step,
+        y=y,
+        ga=ga,
+        gb=gb,
+    )
+
+step = 0
+y = core.evaluate(Z, "FF", noise=0.0)
+report(step, "starting read", "FF", y)
+
+for _ in range(10):
+    step += 1
+    y = core.evaluate(Z, "FF", noise=0.0)
+    report(step, "read before RH", "FF", y)
+
+    step += 1
+    y = core.evaluate(Z, "RH", noise=0.0)
+    report(step, "feedback RH", "RH", y)
+
+step += 1
+y = core.evaluate(Z, "FF", noise=0.0)
+report(step, "trained read", "FF", y)
+```
+
+For a series:
+
+```json
+{
+  "reset": true,
+  "source": "batch-demo",
+  "events": [
+    { "label": "start", "instruction": "FF", "y": 0.0, "ga": 0.05, "gb": 0.05 },
+    { "label": "trained", "instruction": "RH", "y": 0.14, "ga": 0.058, "gb": 0.044 }
+  ]
+}
+```
 
 ## Other Commands
 
