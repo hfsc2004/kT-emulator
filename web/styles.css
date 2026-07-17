@@ -196,13 +196,13 @@ label span {
 .visuals {
   display: grid;
   grid-template-columns: 1fr;
-  gap: 8px;
+  gap: 6px;
   align-content: start;
 }
 
 .visual-card {
   min-height: 0;
-  padding: 12px;
+  padding: 9px 10px;
   transition: border-color .15s ease, background .15s ease;
 }
 
@@ -355,14 +355,14 @@ label span {
 .bar-pair,
 .sample-bars {
   display: grid;
-  gap: 10px;
-  margin-top: 14px;
+  gap: 6px;
+  margin-top: 8px;
 }
 
 .bar-pair span,
 .sample-bars span {
   display: block;
-  margin-bottom: 5px;
+  margin-bottom: 3px;
   color: var(--muted);
   font-size: 12px;
 }
@@ -370,7 +370,7 @@ label span {
 .bar-track {
   position: relative;
   width: 100%;
-  height: 18px;
+  height: 15px;
   overflow: hidden;
   border: 1px solid var(--line);
   border-radius: 4px;
@@ -394,12 +394,12 @@ label span {
 }
 
 .weight-gauge {
-  margin-top: 18px;
+  margin-top: 10px;
 }
 
 .gauge-track {
   position: relative;
-  height: 18px;
+  height: 15px;
   border: 1px solid var(--line);
   border-radius: 4px;
   background: linear-gradient(90deg, #3a2225 0%, #151b1f 50%, #17312a 100%);
@@ -427,10 +427,10 @@ label span {
 
 #weight-needle {
   position: absolute;
-  top: -6px;
+  top: -5px;
   left: 50%;
   width: 3px;
-  height: 30px;
+  height: 25px;
   border-radius: 2px;
   background: var(--text);
   transform: translateX(-50%);
@@ -440,15 +440,16 @@ label span {
 .gauge-labels {
   display: flex;
   justify-content: space-between;
-  margin-top: 7px;
+  margin-top: 5px;
   color: var(--muted);
   font-size: 12px;
 }
 
 .visual-card p {
-  margin-top: 8px;
+  margin-top: 6px;
   min-height: 0;
-  font-size: 13px;
+  font-size: 12px;
+  line-height: 1.3;
 }
 
 .workspace {
@@ -477,7 +478,7 @@ label span {
   grid-template-rows: minmax(0, 1fr) auto;
   gap: 12px;
   align-items: start;
-  height: 504px;
+  height: 580px;
   padding: 14px;
   overflow: hidden;
 }
@@ -499,6 +500,7 @@ label span {
 }
 
 .tutorial-main {
+  position: relative;
   min-height: 0;
   overflow: hidden;
 }
@@ -511,6 +513,63 @@ label span {
 
 #tutorial-task {
   color: var(--text);
+}
+
+.tutorial-panel.has-cli .tutorial-main h2 {
+  margin-top: 2px;
+  font-size: 16px;
+}
+
+.tutorial-panel.has-cli .tutorial-main p {
+  margin-top: 3px;
+  font-size: 12px;
+  line-height: 1.3;
+}
+
+.tutorial-panel.has-cli .tutorial-details {
+  margin-top: 0;
+}
+
+.tutorial-panel.has-cli .tutorial-details:not(:empty) {
+  position: absolute;
+  top: 168px;
+  right: 16px;
+  z-index: 3;
+  width: min(420px, calc(100% - 32px));
+  max-width: 420px;
+  padding: 12px 14px;
+  border: 1px solid #b79567;
+  border-radius: 6px;
+  background: #ead9bd;
+  color: #3b2a16;
+  box-shadow: 0 12px 28px rgb(0 0 0 / 38%);
+  pointer-events: none;
+}
+
+.tutorial-panel.has-cli .tutorial-details:not(:empty)::before {
+  content: "";
+  position: absolute;
+  bottom: -8px;
+  right: 32px;
+  width: 12px;
+  height: 12px;
+  border-right: 1px solid #b79567;
+  border-bottom: 1px solid #b79567;
+  background: #ead9bd;
+  transform: rotate(45deg);
+}
+
+.tutorial-panel.has-cli .tutorial-detail {
+  padding-left: 0;
+  border-left: 0;
+}
+
+.tutorial-panel.has-cli .tutorial-detail h3 {
+  color: #2f2111;
+}
+
+.tutorial-panel.has-cli .tutorial-detail ul {
+  color: #4e3a21;
 }
 
 .tutorial-status {
@@ -642,6 +701,8 @@ label span {
 }
 
 .tutorial-nav {
+  position: relative;
+  z-index: 5;
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 8px;

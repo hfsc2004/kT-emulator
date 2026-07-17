@@ -1,5 +1,13 @@
 # Changelog
 
+## v0.1.7
+
+- Updated Lesson 9 copy so the Python CLI preview explains the emulator workflow instead of the tutorial mechanism.
+- Wired the scripted `python demo.py` replay to run the live emulator sequence and update readings, history, conductance balance, and gauge visuals.
+- Kept the virtual terminal visible on CLI detail pages and added beige overlay callouts for explanatory notes.
+- Removed the visible typed-practice control while keeping the internal deterministic typed-command capability available for future lessons.
+- Tightened the right-side visual cards and enlarged the tutorial area for the CLI lesson.
+
 ## v0.1.6
 
 - Planned a future virtual Linux/Python CLI tutorial series for embedding the emulator in a utilitarian example program.

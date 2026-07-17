@@ -1,19 +1,23 @@
 // Scripted tutorial terminal. This is intentionally not a real shell.
 
 class VirtualCli {
-  constructor({ panel, output, replayButton, modeButton, form, input }) {
+  constructor({ panel, output, replayButton, modeButton, form, input, onAction }) {
     this.panel = panel;
     this.output = output;
     this.replayButton = replayButton;
     this.modeButton = modeButton;
     this.form = form;
     this.input = input;
+    this.onAction = onAction || (() => {});
     this.script = [];
     this.timer = null;
+    this.playToken = 0;
     this.typingEnabled = false;
 
     this.replayButton.addEventListener("click", () => this.play(this.script));
-    this.modeButton.addEventListener("click", () => this.toggleTyping());
+    if (this.modeButton) {
+      this.modeButton.addEventListener("click", () => this.toggleTyping());
+    }
     this.form.addEventListener("submit", (event) => {
       event.preventDefault();
       this.runTypedCommand();
@@ -22,6 +26,7 @@ class VirtualCli {
 
   play(script = []) {
     this.stop();
+    this.playToken += 1;
     this.script = script;
     this.output.textContent = "";
     if (!script.length) {
@@ -30,10 +35,11 @@ class VirtualCli {
       return;
     }
     this.panel.hidden = false;
-    this.typeBlock(0);
+    this.typeBlock(0, this.playToken);
   }
 
   stop() {
+    this.playToken += 1;
     if (this.timer) {
       clearTimeout(this.timer);
       this.timer = null;
@@ -47,21 +53,42 @@ class VirtualCli {
   setTyping(enabled) {
     this.typingEnabled = enabled;
     this.form.hidden = !enabled;
-    this.modeButton.textContent = enabled ? "Disable typing" : "Enable typing";
+    if (this.modeButton) {
+      this.modeButton.textContent = enabled ? "Disable typing" : "Enable typing";
+    }
     if (enabled) {
       this.input.focus();
     }
   }
 
-  typeBlock(index) {
+  typeBlock(index, playToken = this.playToken) {
+    if (playToken !== this.playToken) {
+      return;
+    }
     if (index >= this.script.length) {
       return;
     }
     const block = this.script[index];
     const text = this.formatBlock(block);
     const instant = Boolean(block.output);
-    this.typeText(text, instant, () => {
-      this.timer = setTimeout(() => this.typeBlock(index + 1), 120);
+    this.typeText(text, instant, async () => {
+      if (playToken !== this.playToken) {
+        return;
+      }
+      if (block.action) {
+        try {
+          const result = await this.onAction(block.action);
+          if (result) {
+            this.append(`${result}\n`);
+          }
+        } catch (error) {
+          this.append(`Tutorial action failed: ${error.message}\n`);
+        }
+      }
+      if (playToken !== this.playToken) {
+        return;
+      }
+      this.timer = setTimeout(() => this.typeBlock(index + 1, playToken), 120);
     });
   }
 

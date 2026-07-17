@@ -1308,13 +1308,13 @@ const tutorialLessonGroups = [
   {
     id: "lesson-9",
     menuLabel: "Lesson 9: Python CLI preview",
-    title: "Watch a Python integration demo",
-    source: "Local virtual CLI plan",
+    title: "Drive the emulator from Python",
+    source: "Python integration preview",
     steps: [
       {
-        title: "A terminal you can watch",
-        body: "This preview shows a scripted Linux-style CLI. It is not a real shell. The tutorial types commands and Python code so you can see what an emulator integration could look like.",
-        task: "Watch the terminal replay. Typed practice is optional and stays off by default.",
+        title: "Prepare the Python workspace",
+        body: "A Python project starts by creating a small workspace, activating an environment, and confirming that the kT-RAM core package can be imported.",
+        task: "Follow the setup commands. They prepare the same kind of project folder a real Python example would use.",
         focus: "chart",
         terminalScript: [
           { prompt: "demo@ktram:~$", text: "mkdir ktram-demo && cd ktram-demo" },
@@ -1327,52 +1327,55 @@ const tutorialLessonGroups = [
         ],
         details: [
           {
-            title: "Why this exists",
+            title: "What this proves",
             items: [
-              "Later tutorials can show how a real Python program imports and uses the emulator.",
-              "The first version is deterministic: the user watches instead of typing.",
+              "Python can load the emulator core.",
+              "The example has an isolated project environment.",
+              "The next step can focus on emulator behavior instead of setup.",
             ],
           },
         ],
       },
       {
-        title: "Script the smallest program",
-        body: "The virtual CLI can reveal code as if someone typed it quickly. This keeps the lesson readable without opening a real shell.",
-        task: "Watch a tiny Python file appear, then run it.",
+        title: "Write a read-train-read program",
+        body: "The program creates one neutral kT-RAM lane, reads its starting activation, applies repeated FF/RH feedback, then reads the trained state and conductance pair.",
+        task: "Use the numbered comments in the code as the map: create the lane, read y, train with feedback, then read y again.",
         focus: "chart",
         terminalScript: [
           { prompt: "(.venv) demo@ktram:~/ktram-demo$", text: "cat > demo.py <<'PY'" },
-          { code: "from ktram_neural_core import Core\n\nZ = (0,)\ncore = Core(1, 1, spaces_per_lane=1, num_lanes=1, model=\"float\", init=\"medium\", seed=11, read_noise=0.02)\ncore.set_start_y(0, Z, 0.0, level=0.5)\n\nstart_y = core.evaluate(Z, \"FF\", noise=0.0)\nfor _ in range(10):\n    core.evaluate(Z, \"FF\", noise=0.0)\n    core.evaluate(Z, \"RH\", noise=0.0)\ntrained_y = core.evaluate(Z, \"FF\", noise=0.0)\nga, gb = core.read_gab(0, Z)\n\nprint(f\"start y:   {start_y:+.4f}\")\nprint(f\"trained y: {trained_y:+.4f}\")\nprint(f\"Ga/Gb:     {ga:.4f} / {gb:.4f}\")" },
+          { code: "from ktram_neural_core import Core\n\n# 1. Create one neutral kT-RAM lane.\nZ = (0,)\ncore = Core(1, 1, spaces_per_lane=1, num_lanes=1, model=\"float\", init=\"medium\", seed=11, read_noise=0.02)\ncore.set_start_y(0, Z, 0.0, level=0.5)\n\n# 2. Read the starting activation with FF.\nstart_y = core.evaluate(Z, \"FF\", noise=0.0)\n\n# 3. Apply ten FF/RH read-feedback cycles.\nfor _ in range(10):\n    core.evaluate(Z, \"FF\", noise=0.0)\n    core.evaluate(Z, \"RH\", noise=0.0)\n\n# 4. Read again and inspect the conductance pair.\ntrained_y = core.evaluate(Z, \"FF\", noise=0.0)\nga, gb = core.read_gab(0, Z)\n\nprint(f\"start y:   {start_y:+.4f}\")\nprint(f\"trained y: {trained_y:+.4f}\")\nprint(f\"Ga/Gb:     {ga:.4f} / {gb:.4f}\")" },
           { prompt: "", text: "PY" },
-          { prompt: "(.venv) demo@ktram:~/ktram-demo$", text: "python demo.py" },
-          { output: "start y:   +0.0000\ntrained y: +0.1372\nGa/Gb:     0.0584 / 0.0443" },
+          { output: "# Next, the tutorial runs the same read-train-read sequence in the emulator UI." },
+          { prompt: "(.venv) demo@ktram:~/ktram-demo$", text: "python demo.py", action: "run-python-demo" },
         ],
         details: [
           {
-            title: "What to notice",
+            title: "Program flow",
             items: [
-              "The code follows the same read-train-read loop as Lesson 8.",
-              "The terminal output points back to the browser readings: y, Ga, and Gb.",
+              "FF reads the current activation.",
+              "RH supplies feedback that changes the stored conductance balance.",
+              "The final read checks whether training moved the lane.",
             ],
           },
         ],
       },
       {
-        title: "Optional typed practice",
-        body: "The terminal can also accept safe canned commands. This is off by default so beginner lessons stay watch-only.",
-        task: "Use Enable typing only if you want to try the virtual commands.",
+        title: "Run Python and watch the emulator",
+        body: "When the program runs, the main emulator panels update with the same sequence: reset to neutral, read the starting state, train with FF/RH cycles, then read the trained state.",
+        task: "Watch Activation, Ga/Gb, Conductance Balance, and History change as the Python command runs.",
         focus: "chart",
         terminalScript: [
-          { output: "# Optional practice commands" },
-          { prompt: "demo@ktram:~$", text: "help" },
-          { output: "Try: help, ls, cat demo.py, python demo.py, clear" },
+          { output: "# Running demo.py now drives the emulator panels beside this terminal." },
+          { output: "# Watch Activation, Ga/Gb, the History chart, and Conductance Balance update." },
+          { prompt: "(.venv) demo@ktram:~/ktram-demo$", text: "python demo.py", action: "run-python-demo" },
         ],
         details: [
           {
-            title: "Guardrail",
+            title: "What changed",
             items: [
-              "Typed practice is not a real system shell.",
-              "It only returns deterministic tutorial responses.",
+              "The starting read is neutral.",
+              "Repeated feedback moves the stored conductance balance.",
+              "The final read shows the trained state.",
             ],
           },
         ],
@@ -1690,10 +1693,16 @@ function renderTutorial() {
   els.tutorialPrev.disabled = tutorialIndex === 0 && tutorialPage === 0;
   els.tutorialNext.disabled = tutorialIndex === lessons.length - 1 && tutorialPage === pageCount - 1;
   const hasMoreText = tutorialPage < pageCount - 1;
+  const hasTerminal = Boolean(lesson.terminalScript?.length);
+  els.tutorialPanel.classList.toggle("has-cli", hasTerminal);
   els.tutorialNext.textContent = "Next >>";
   els.tutorialNext.classList.toggle("has-more", hasMoreText);
   renderTutorialDetails(getTutorialPageDetails(lesson));
-  virtualCli.play(tutorialPage === 0 ? (lesson.terminalScript || []) : []);
+  if (hasTerminal && tutorialPage === 0) {
+    virtualCli.play(lesson.terminalScript);
+  } else if (!hasTerminal) {
+    virtualCli.play([]);
+  }
   renderTutorialStatus();
   els.tutorialActions.replaceChildren();
   const actions = tutorialPage === 0 ? (lesson.actions || []) : [];
@@ -1897,6 +1906,47 @@ async function runTutorialAction(action) {
     render(state);
     updateTutorialCheck(action, state);
   }
+}
+
+function pause(ms) {
+  return new Promise((resolve) => {
+    window.setTimeout(resolve, ms);
+  });
+}
+
+async function runVirtualCliAction(action) {
+  if (action !== "run-python-demo") {
+    return "";
+  }
+
+  els.sampleSummary.textContent = "";
+  clearSamples();
+
+  let state = await post("/api/preset", { name: "balanced" });
+  render(state);
+  await pause(450);
+
+  const startingState = await post("/api/evaluate", { instruction: "FF", noise: 0 });
+  render(startingState);
+  await pause(650);
+
+  state = await post("/api/cycle", {
+    read: "FF",
+    feedback: "RH",
+    count: 10,
+    noise: 0,
+  });
+  render(state);
+  await pause(650);
+
+  const trainedState = await post("/api/evaluate", { instruction: "FF", noise: 0 });
+  render(trainedState);
+
+  return [
+    `start y:   ${fmt(startingState.y, 4)}`,
+    `trained y: ${fmt(trainedState.y, 4)}`,
+    `Ga/Gb:     ${Number(trainedState.ga).toFixed(4)} / ${Number(trainedState.gb).toFixed(4)}`,
+  ].join("\n");
 }
 
 function updateTutorialCheck(action, state) {
@@ -2132,6 +2182,7 @@ virtualCli = new window.VirtualCli({
   modeButton: els.virtualCliMode,
   form: els.virtualCliForm,
   input: els.virtualCliInput,
+  onAction: runVirtualCliAction,
 });
 showTutorialPanel();
 getState().then(render);
