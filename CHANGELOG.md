@@ -1,5 +1,12 @@
 # Changelog
 
+## v0.1.5
+
+- Added concise read-only explanations to the top metrics and history chart.
+- Added an instruction legend that distinguishes read buttons from feedback buttons.
+- Added a glossary dialog for common emulator and tutorial terms.
+- Expanded README tutorial documentation with teacher/parent framing, limitations, and attribution links.
+
 ## v0.1.4
 
 - Added real-world scenario and "why would someone do this?" framing across the tutorial lessons.

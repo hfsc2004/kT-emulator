@@ -1,6 +1,6 @@
 # TODO: Optional Beginner Tutorial
 
-Current version: `v0.1.4`
+Current version: `v0.1.5`
 
 Goal: add an optional tutorial path for people who are new to kT-RAM and neural lanes. The tutorial should be understandable to a motivated 17-year-old: concrete language, short steps, visible cause/effect, and no assumed background in memristors or machine learning.
 
@@ -165,8 +165,8 @@ These are intentionally not current tutorial lessons until the emulator exposes 
 - [x] Add controlled actions for tutorial steps, such as "Run FF once" or "Run 10 cycles".
 - [x] Add inline checks that confirm the user completed current action-based tutorial steps.
   - Informational comparison and roadmap steps remain read-only for now.
-- [ ] Add concise explanations next to the chart and metrics.
-- [ ] Add a glossary drawer or popover for terms.
+- [x] Add concise explanations next to the chart and metrics.
+- [x] Add a glossary drawer or popover for terms.
 - [x] Add a "Reset lesson state" button so users can recover from experiments.
 - [ ] Make tutorial text fit on mobile and desktop without overlapping controls.
 
@@ -188,7 +188,7 @@ These are intentionally not current tutorial lessons until the emulator exposes 
 - [ ] Add magnitude/confidence visualization.
 - [x] Add sample histogram for noisy reads.
 - [ ] Add chart markers for tutorial actions.
-- [ ] Add visual distinction between read instructions and feedback instructions.
+- [x] Add visual distinction between read instructions and feedback instructions.
 
 ## Content Standards
 
@@ -213,11 +213,11 @@ These are intentionally not current tutorial lessons until the emulator exposes 
 
 ## Documentation
 
-- [ ] Add a README section for tutorial mode once implemented.
-- [ ] Add a short "For teachers/parents" note explaining what the tutorial covers.
-- [ ] Link to `NOTICE.md` from tutorial attribution text.
-- [ ] Document how to run examples from the command line.
-- [ ] Document known limitations: single-synapse first, not a full hardware simulator UI yet.
+- [x] Add a README section for tutorial mode once implemented.
+- [x] Add a short "For teachers/parents" note explaining what the tutorial covers.
+- [x] Link to `NOTICE.md` from tutorial attribution text.
+- [x] Document how to run examples from the command line.
+- [x] Document known limitations: single-synapse first, not a full hardware simulator UI yet.
 
 ## Open Questions
 
