@@ -4,6 +4,269 @@
 
 const instructions = ["FF", "FFLV", "RF", "RFLV", "FH", "FL", "FU", "FA", "FZ", "RH", "RL", "RU", "RA", "RZ"];
 const readInstructions = new Set(["FF", "FFLV", "RF", "RFLV"]);
+const tourSteps = [
+  {
+    selector: "#branch",
+    title: "AAT Indicator",
+    body: "AAT is the active address selection. This is a read-only status label; the first interface stays on AAT (0,), so every action targets the same visible synapse.",
+  },
+  {
+    selector: "#tutorial-toggle",
+    title: "Tutorial Button",
+    body: "This opens or hides the lesson panel. Lessons teach concepts with short explanations and controlled emulator actions.",
+  },
+  {
+    selector: "#tour-start",
+    title: "Interface Tour Button",
+    body: "This starts the guided bubble tour. Use it when you want to know what each window and control does.",
+  },
+  {
+    selector: "#step",
+    title: "Step Counter",
+    body: "This read-only number increases as the emulator runs instructions, cycles, and resets. It helps you see that the state has advanced.",
+  },
+  {
+    selector: ".metrics",
+    title: "Read-Only State Window",
+    body: "These four cards are measurements, not inputs. They summarize the selected synapse right now: activation, the two conductances, and total magnitude.",
+  },
+  {
+    selector: "#y",
+    title: "Activation y",
+    body: "Activation is a read-only result. Positive means the selected synapse leans one way, negative means it leans the other way, and zero means balanced.",
+  },
+  {
+    selector: "#ga",
+    title: "Ga Conductance",
+    body: "Ga is a read-only conductance measurement for one side of the differential pair. The emulator compares Ga and Gb to produce activation y.",
+  },
+  {
+    selector: "#gb",
+    title: "Gb Conductance",
+    body: "Gb is the read-only conductance measurement for the other side of the pair. When Ga and Gb are equal, activation stays near zero.",
+  },
+  {
+    selector: "#magnitude",
+    title: "Magnitude",
+    body: "Magnitude is a read-only total stored conductance. Higher magnitude means more stored evidence and usually slower movement after feedback.",
+  },
+  {
+    selector: "[data-focus='balance']",
+    title: "Conductance Balance Window",
+    body: "This window turns Ga and Gb into paired bars so the balance is visible without reading the numbers alone.",
+  },
+  {
+    selector: "[data-focus='gauge']",
+    title: "Weight Gauge Window",
+    body: "This gauge maps activation onto a -1 to +1 scale. The center is balanced, the right side is positive, and the left side is negative.",
+  },
+  {
+    selector: "[data-focus='samples']",
+    title: "Noisy Read Samples Window",
+    body: "This window shows how many low-voltage reads landed positive or negative during sampling.",
+  },
+  {
+    selector: ".tutorial-panel",
+    title: "Tutorial Lesson Window",
+    body: "This panel holds the concept lesson, task, action buttons, completion status, and lesson navigation.",
+    showTutorial: true,
+  },
+  {
+    selector: "#tutorial-prev",
+    title: "Tutorial Back Button",
+    body: "Back moves to the previous lesson step without resetting the emulator state.",
+    showTutorial: true,
+  },
+  {
+    selector: "#tutorial-next",
+    title: "Tutorial Next Button",
+    body: "Next moves to the next lesson step. Some steps also have action checks that confirm you ran the intended operation.",
+    showTutorial: true,
+  },
+  {
+    selector: "#tutorial-reset-lesson",
+    title: "Reset Lesson Button",
+    body: "Reset Lesson returns the current lesson to its expected starting state, usually by loading the lesson preset.",
+    showTutorial: true,
+  },
+  {
+    selector: "#tutorial-restart",
+    title: "Tutorial Restart Button",
+    body: "Restart sends the lesson flow back to the first tutorial step and clears the lesson completion checks.",
+    showTutorial: true,
+  },
+  {
+    selector: "#tutorial-exit",
+    title: "Tutorial Exit Button",
+    body: "Exit hides the lesson panel and leaves the main emulator dashboard available for free exploration.",
+    showTutorial: true,
+  },
+  {
+    selector: ".controls",
+    title: "Adjustable Control Window",
+    body: "This left panel is the main place where you can change things: reset the core, run instructions, run cycles, and collect noisy samples.",
+  },
+  {
+    selector: "#model",
+    title: "Model Selector",
+    body: "Model chooses the emulator representation. Start with float while learning because it is the easiest to interpret.",
+  },
+  {
+    selector: "#init",
+    title: "Init Selector",
+    body: "Init chooses the starting conductance pattern used when you reset the core.",
+  },
+  {
+    selector: "#seed",
+    title: "Seed Input",
+    body: "Seed controls repeatable random initialization. The same seed and settings should start the emulator the same way.",
+  },
+  {
+    selector: "#start-y",
+    title: "Start y Input",
+    body: "Start y can request a starting activation between -1 and +1. Leave it blank when you want the selected init preset to decide.",
+  },
+  {
+    selector: "#read-noise",
+    title: "Read Noise Slider",
+    body: "Read noise sets the core noise used after reset. Higher values make low-voltage reads vary more.",
+  },
+  {
+    selector: "#reset",
+    title: "Reset Core Button",
+    body: "Reset core rebuilds the emulator with the selected model, init, seed, read noise, and optional starting activation.",
+  },
+  {
+    selector: "#instructions",
+    title: "Instruction Button Grid",
+    body: "These are the Chapter 4b emulator instruction buttons exposed by ktram-neural-core. Blue buttons are reads; amber buttons are feedback/update instructions.",
+  },
+  {
+    selector: "[data-instruction='FF']",
+    title: "FF Instruction",
+    body: "FF is a forward read. The core computes Vy from the selected devices and stores the resulting activation y.",
+  },
+  {
+    selector: "[data-instruction='FFLV']",
+    title: "FFLV Instruction",
+    body: "FFLV is a forward low-voltage read. In the Chapter 4b emulator, low voltage means the read uses the sub-threshold V_app path.",
+  },
+  {
+    selector: "[data-instruction='RF']",
+    title: "RF Instruction",
+    body: "RF is a reverse read. Like FF, it computes Vy from the devices and updates the retained activation y, but with reverse direction.",
+  },
+  {
+    selector: "[data-instruction='RFLV']",
+    title: "RFLV Instruction",
+    body: "RFLV is a reverse low-voltage read. It combines reverse direction with the sub-threshold V_app path.",
+  },
+  {
+    selector: "[data-instruction='FH']",
+    title: "FH Instruction",
+    body: "FH is forward feedback with coefficient -1. It forces Vy from the feedback rule instead of computing y from a read.",
+  },
+  {
+    selector: "[data-instruction='FL']",
+    title: "FL Instruction",
+    body: "FL is forward feedback with coefficient +1. Feedback updates conductance while leaving the retained y from the last read unchanged.",
+  },
+  {
+    selector: "[data-instruction='FU']",
+    title: "FU Instruction",
+    body: "FU is forward feedback with coefficient +1 multiplied by H(y), where H(y) is +1 when y is nonnegative and -1 when y is negative.",
+  },
+  {
+    selector: "[data-instruction='FA']",
+    title: "FA Instruction",
+    body: "FA is forward feedback with coefficient -1 multiplied by H(y). It depends on the sign of the retained activation y.",
+  },
+  {
+    selector: "[data-instruction='FZ']",
+    title: "FZ Instruction",
+    body: "FZ is forward feedback with coefficient 0. It still runs through the update path with the forward applied voltage.",
+  },
+  {
+    selector: "[data-instruction='RH']",
+    title: "RH Instruction",
+    body: "RH is reverse feedback with coefficient +1. The first training lesson pairs FF then RH to demonstrate a positive-moving feedback cycle.",
+  },
+  {
+    selector: "[data-instruction='RL']",
+    title: "RL Instruction",
+    body: "RL is reverse feedback with coefficient -1. Compare it with RH to see how coefficient sign changes the update.",
+  },
+  {
+    selector: "[data-instruction='RU']",
+    title: "RU Instruction",
+    body: "RU is reverse feedback with coefficient +1 multiplied by H(y), so it depends on whether the last retained y was positive or negative.",
+  },
+  {
+    selector: "[data-instruction='RA']",
+    title: "RA Instruction",
+    body: "RA is reverse feedback with coefficient -1 multiplied by H(y). It is the reverse-direction H(y)-gated counterpart to FA.",
+  },
+  {
+    selector: "[data-instruction='RZ']",
+    title: "RZ Instruction",
+    body: "RZ is reverse feedback with coefficient 0. It uses the reverse applied voltage while forcing the feedback coefficient to zero.",
+  },
+  {
+    selector: "#cycle-read",
+    title: "Cycle Read Selector",
+    body: "This chooses the read instruction used at the start of each cycle.",
+  },
+  {
+    selector: "#cycle-feedback",
+    title: "Cycle Feedback Selector",
+    body: "This chooses the feedback instruction paired with the cycle read.",
+  },
+  {
+    selector: "#cycle-count",
+    title: "Cycle Count Input",
+    body: "Count controls how many read/feedback pairs run when you press Run cycle.",
+  },
+  {
+    selector: "#run-cycle",
+    title: "Run Cycle Button",
+    body: "Run cycle repeats the selected read and feedback pair. This is the fastest way to watch feedback change memory over time.",
+  },
+  {
+    selector: "#noise",
+    title: "Sampling Noise Dial",
+    body: "This noise dial is sent with free-exploration instruction, cycle, and sample actions. It lets you explore noisier behavior.",
+  },
+  {
+    selector: "#sample-count",
+    title: "Sample Count Input",
+    body: "Samples controls how many low-voltage reads are collected when you press Sample FFLV.",
+  },
+  {
+    selector: "#sample",
+    title: "Sample FFLV Button",
+    body: "Sample FFLV collects repeated low-voltage reads and updates the positive/negative sample window.",
+  },
+  {
+    selector: ".chart-panel",
+    title: "History Window",
+    body: "This chart tracks activation y and magnitude as the emulator runs. It is the best place to see learning unfold over multiple steps.",
+  },
+  {
+    selector: "#last-instruction",
+    title: "Last Instruction",
+    body: "This text shows the most recent reset, instruction, cycle, or sample action.",
+  },
+  {
+    selector: "#sample-summary",
+    title: "Sample Summary",
+    body: "After sampling, this area shows the sample mean and how many reads landed positive.",
+  },
+  {
+    selector: ".legend",
+    title: "Chart Legend",
+    body: "Green is activation y. Amber is magnitude. Reading both together helps separate direction from stored evidence.",
+  },
+];
 const lessons = [
   {
     title: "What is this emulator?",
@@ -386,6 +649,8 @@ const lessons = [
   },
 ];
 let tutorialIndex = 0;
+let tourIndex = 0;
+let activeTourTarget = null;
 const tutorialChecks = new Map();
 
 const els = {
@@ -434,6 +699,15 @@ const els = {
   tutorialResetLesson: document.querySelector("#tutorial-reset-lesson"),
   tutorialRestart: document.querySelector("#tutorial-restart"),
   tutorialExit: document.querySelector("#tutorial-exit"),
+  tourStart: document.querySelector("#tour-start"),
+  tourScrim: document.querySelector("#tour-scrim"),
+  tourBubble: document.querySelector("#tour-bubble"),
+  tourTitle: document.querySelector("#tour-title"),
+  tourBody: document.querySelector("#tour-body"),
+  tourProgress: document.querySelector("#tour-progress"),
+  tourPrev: document.querySelector("#tour-prev"),
+  tourNext: document.querySelector("#tour-next"),
+  tourClose: document.querySelector("#tour-close"),
 };
 
 function fmt(value, digits = 6) {
@@ -489,6 +763,86 @@ function setFocus(target) {
   document.querySelectorAll(`[data-focus="${target}"]`).forEach((node) => {
     node.classList.add("focused");
   });
+}
+
+function clearTourHighlight() {
+  if (activeTourTarget) {
+    activeTourTarget.classList.remove("tour-target");
+    activeTourTarget = null;
+  }
+}
+
+function positionTourBubble(target) {
+  const targetRect = target.getBoundingClientRect();
+  const bubbleRect = els.tourBubble.getBoundingClientRect();
+  const margin = 12;
+  const viewportWidth = window.innerWidth;
+  const viewportHeight = window.innerHeight;
+  const spaceBelow = viewportHeight - targetRect.bottom;
+  const placeBelow = spaceBelow >= bubbleRect.height + margin || targetRect.top < bubbleRect.height + margin;
+  const top = placeBelow
+    ? targetRect.bottom + margin
+    : targetRect.top - bubbleRect.height - margin;
+  const centeredLeft = targetRect.left + (targetRect.width / 2) - (bubbleRect.width / 2);
+  const left = clamp(centeredLeft, margin, viewportWidth - bubbleRect.width - margin);
+
+  els.tourBubble.style.top = `${Math.max(margin, top)}px`;
+  els.tourBubble.style.left = `${left}px`;
+}
+
+function renderTour() {
+  const step = tourSteps[tourIndex];
+  if (!step) {
+    closeTour();
+    return;
+  }
+
+  if (step.showTutorial && els.tutorialPanel.hidden) {
+    els.tutorialPanel.hidden = false;
+    renderTutorial();
+  }
+
+  const target = document.querySelector(step.selector);
+  if (!target) {
+    tourIndex = Math.min(tourIndex + 1, tourSteps.length - 1);
+    renderTour();
+    return;
+  }
+
+  clearTourHighlight();
+  activeTourTarget = target;
+  target.classList.add("tour-target");
+  target.scrollIntoView({ block: "center", inline: "nearest", behavior: "smooth" });
+
+  els.tourTitle.textContent = step.title;
+  els.tourBody.textContent = step.body;
+  els.tourProgress.textContent = `${tourIndex + 1} / ${tourSteps.length}`;
+  els.tourPrev.disabled = tourIndex === 0;
+  els.tourNext.textContent = tourIndex === tourSteps.length - 1 ? "Finish" : "Next";
+  els.tourScrim.hidden = false;
+  els.tourBubble.hidden = false;
+
+  window.setTimeout(() => positionTourBubble(target), 220);
+}
+
+function startTour() {
+  tourIndex = 0;
+  renderTour();
+}
+
+function closeTour() {
+  clearTourHighlight();
+  els.tourScrim.hidden = true;
+  els.tourBubble.hidden = true;
+}
+
+function moveTour(delta) {
+  if (tourIndex === tourSteps.length - 1 && delta > 0) {
+    closeTour();
+    return;
+  }
+  tourIndex = clamp(tourIndex + delta, 0, tourSteps.length - 1);
+  renderTour();
 }
 
 function clamp(value, min, max) {
@@ -747,7 +1101,7 @@ function drawChart(history) {
   const pad = 42;
 
   ctx.clearRect(0, 0, w, h);
-  ctx.fillStyle = "#14191d";
+  ctx.fillStyle = "#101417";
   ctx.fillRect(0, 0, w, h);
 
   ctx.strokeStyle = "#354048";
@@ -803,6 +1157,7 @@ function wireInstructions() {
     button.type = "button";
     button.textContent = instruction;
     button.className = readInstructions.has(instruction) ? "read" : "feedback";
+    button.dataset.instruction = instruction;
     button.addEventListener("click", async () => {
       const state = await post("/api/evaluate", {
         instruction,
@@ -872,6 +1227,33 @@ els.tutorialRestart.addEventListener("click", restartTutorial);
 els.tutorialExit.addEventListener("click", () => {
   els.tutorialPanel.hidden = true;
   setFocus(null);
+});
+
+els.tourStart.addEventListener("click", startTour);
+
+els.tourPrev.addEventListener("click", () => moveTour(-1));
+
+els.tourNext.addEventListener("click", () => moveTour(1));
+
+els.tourClose.addEventListener("click", closeTour);
+
+window.addEventListener("resize", () => {
+  if (!els.tourBubble.hidden && activeTourTarget) {
+    positionTourBubble(activeTourTarget);
+  }
+});
+
+window.addEventListener("keydown", (event) => {
+  if (els.tourBubble.hidden) {
+    return;
+  }
+  if (event.key === "Escape") {
+    closeTour();
+  } else if (event.key === "ArrowRight") {
+    moveTour(1);
+  } else if (event.key === "ArrowLeft") {
+    moveTour(-1);
+  }
 });
 
 wireInstructions();

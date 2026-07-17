@@ -124,6 +124,7 @@ Goal: add an optional tutorial path for people who are new to kT-RAM and neural 
 ## UI Work
 
 - [x] Add a tutorial panel or route, separate from the dense control panel.
+- [x] Add a guided bubble tour that explains the main windows, controls, and instruction buttons.
 - [x] Add Back, Next, Restart, and Exit Tutorial controls.
 - [x] Make Restart return to the first lesson and clear tutorial progress.
 - [x] Highlight the UI element being discussed in the current step.
