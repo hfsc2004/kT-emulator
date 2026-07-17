@@ -1,6 +1,16 @@
 # TODO: Optional Beginner Tutorial
 
+Current version: `v0.1.1`
+
 Goal: add an optional tutorial path for people who are new to kT-RAM and neural lanes. The tutorial should be understandable to a motivated 17-year-old: concrete language, short steps, visible cause/effect, and no assumed background in memristors or machine learning.
+
+## Version And Release Tracking
+
+- [x] Start version tracking at `v0.1.1`.
+- [x] Show the current version in the UI footer.
+- [x] Keep the current version visible in `README.md`.
+- [x] Add `CHANGELOG.md` for release notes.
+- [ ] Keep `README.md`, `TODO.md`, `CHANGELOG.md`, and the UI footer in sync when the version changes.
 
 ## Product Shape
 
@@ -12,53 +22,54 @@ Goal: add an optional tutorial path for people who are new to kT-RAM and neural 
 
 ## Tutorial Structure
 
-- [ ] Lesson 1: What is this emulator?
-  - Explain that the app is a safe software sandbox for a kT-RAM neural lane.
-  - Define lane, synapse, AAT, read, feedback, conductance, and weight in plain language.
-  - Show where `y`, `Ga`, `Gb`, and magnitude appear in the UI.
+- [x] Expand tutorial lessons from single-slide summaries into multi-step guided flows.
+- [x] Lesson 1: What is this emulator?
+  - [x] Explain that the app is a safe software sandbox for a kT-RAM neural lane.
+  - [x] Define lane, synapse, AAT, read, feedback, conductance, and weight in plain language.
+  - [x] Show where `y`, `Ga`, `Gb`, and magnitude appear in the UI.
 
-- [ ] Lesson 2: One synapse, two conductances.
-  - Explain that the visible weight comes from the difference between `Ga` and `Gb`.
-  - Let the user reset to a known starting weight.
-  - Ask the user to run `FF` and observe the activation.
-  - Add a small visual showing `Ga` vs `Gb` as a balance scale or paired bars.
+- [x] Lesson 2: One synapse, two conductances.
+  - [x] Explain that the visible weight comes from the difference between `Ga` and `Gb`.
+  - [x] Let the user reset to a known starting weight.
+  - [x] Ask the user to run `FF` and observe the activation.
+  - [x] Add a small visual showing `Ga` vs `Gb` as a balance scale or paired bars.
 
-- [ ] Lesson 3: Reading without changing much.
-  - Explain read instructions at a high level.
-  - Compare `FF` and `FFLV`.
-  - Show that low-voltage reads can sample the state with less disturbance.
-  - Add a prompt asking the user to take several samples and notice variation.
+- [x] Lesson 3: Reading without changing much.
+  - [x] Explain read instructions at a high level.
+  - [x] Compare `FF` and `FFLV`.
+  - [x] Show that low-voltage reads can sample the state with less disturbance.
+  - [x] Add a prompt asking the user to take several samples and notice variation.
 
-- [ ] Lesson 4: Feedback changes memory.
-  - Explain feedback as the instruction that nudges the synapse.
-  - Run a simple `FF` then `RH` cycle.
-  - Show the weight moving step by step.
-  - Ask the user to predict whether `RH` or `RL` moves the activation up or down.
+- [x] Lesson 4: Feedback changes memory.
+  - [x] Explain feedback as the instruction that nudges the synapse.
+  - [x] Run a simple `FF` then `RH` cycle.
+  - [x] Show the weight moving step by step.
+  - [x] Ask the user to predict whether `RH` or `RL` moves the activation up or down.
 
-- [ ] Lesson 5: Magnitude as confidence/inertia.
-  - Explain magnitude as how much evidence has built up.
-  - Demonstrate that higher magnitude changes more slowly.
-  - Show two preset starting states with the same weight but different magnitude.
-  - Add a chart annotation that points out slower movement.
+- [x] Lesson 5: Magnitude as confidence/inertia.
+  - [x] Explain magnitude as how much evidence has built up.
+  - [x] Demonstrate that higher magnitude changes more slowly.
+  - [x] Show two preset starting states with the same weight but different magnitude.
+  - [ ] Add a chart annotation that points out slower movement.
 
-- [ ] Lesson 6: Noise and sampling.
-  - Explain noise as useful randomness, not just error.
-  - Use `FFLV` samples near `y = 0` to show a coin-like outcome.
-  - Bias the weight and show the positive/negative sample ratio change.
-  - Explain the idea behind `P(+) = Phi(w / sigma)` without requiring calculus.
+- [x] Lesson 6: Noise and sampling.
+  - [x] Explain noise as useful randomness, not just error.
+  - [x] Use `FFLV` samples near `y = 0` to show a coin-like outcome.
+  - [x] Bias the weight and show the positive/negative sample ratio change.
+  - [x] Explain the idea behind `P(+) = Phi(w / sigma)` without requiring calculus.
 
-- [ ] Lesson 7: From one synapse to bigger systems.
-  - Explain that real uses combine many address spaces and lanes.
-  - Preview classifiers, memory, attractors, and random sources without implementing them yet.
-  - Link back to Knowm's Neural Lane Emulator article and the installed package.
+- [x] Lesson 7: From one synapse to bigger systems.
+  - [x] Explain that real uses combine many address spaces and lanes.
+  - [x] Preview classifiers, memory, attractors, and random sources without implementing them yet.
+  - [x] Link back to Knowm's Neural Lane Emulator article and the installed package.
 
 ## Lesson Scenarios And Real-World Framing
 
 - [x] Add a real-world scenario to every current tutorial step before the technical explanation.
 - [x] Add a short "why would someone do this?" prompt to every current tutorial step.
-- [ ] Lesson 1 scenario: a safe training sandbox.
-  - Example: before testing a new aircraft control idea, engineers use a simulator so mistakes do not damage real hardware.
-  - Connect that to this emulator as a safe place to learn how one kT-RAM lane behaves.
+- [x] Lesson 1 scenario: a safe training sandbox.
+  - [x] Example: before testing a new aircraft control idea, engineers use a simulator so mistakes do not damage real hardware.
+  - [x] Connect that to this emulator as a safe place to learn how one kT-RAM lane behaves.
 - [ ] Lesson 2 scenario: comparing two signals.
   - Example: a thermostat compares "too cold" and "too hot" signals before deciding which way to lean.
   - Connect that to `Ga` and `Gb` as two sides whose difference creates activation `y`.
@@ -125,8 +136,9 @@ Goal: add an optional tutorial path for people who are new to kT-RAM and neural 
 
 - [x] Add a tutorial panel or route, separate from the dense control panel.
 - [x] Add a guided bubble tour that explains the main windows, controls, and instruction buttons.
-- [x] Add Back, Next, Restart, and Exit Tutorial controls.
-- [x] Make Restart return to the first lesson and clear tutorial progress.
+- [x] Rearrange the UI into a compact app shell with top readings, persistent left controls, chart plus visual readouts, and a toggleable tutorial panel beneath the right-side displays.
+- [x] Keep the tutorial panel a fixed size and page long lesson text so navigation controls stay in place.
+- [x] Add Back, Next, Reset Lesson, and Close tutorial controls.
 - [x] Highlight the UI element being discussed in the current step.
 - [x] Add controlled actions for tutorial steps, such as "Run FF once" or "Run 10 cycles".
 - [x] Add inline checks that confirm the user completed current action-based tutorial steps.
@@ -188,7 +200,7 @@ Goal: add an optional tutorial path for people who are new to kT-RAM and neural 
 ## Open Questions
 
 - [ ] Should tutorial progress reset on refresh or persist in local storage?
-- [ ] Should the tutorial be linear only, or allow jumping between lessons?
+- [x] Should the tutorial be linear only, or allow jumping between lessons? Decision: add a tutorial dropdown so users can jump between current tutorial steps.
 - [ ] Should examples use only the `float` model at first?
 - [ ] Should we include diagrams, or keep everything driven by live emulator state?
 - [ ] Should the tutorial eventually include a small challenge/project at the end?

@@ -37,7 +37,7 @@ select {
 .shell {
   width: min(1400px, 100%);
   margin: 0 auto;
-  padding: 20px;
+  padding: 14px 18px;
 }
 
 .topbar {
@@ -45,7 +45,7 @@ select {
   align-items: center;
   justify-content: space-between;
   gap: 16px;
-  padding: 10px 0 18px;
+  padding: 6px 0 10px;
 }
 
 .brand {
@@ -66,7 +66,7 @@ select {
 
 h1 {
   margin: 0;
-  font-size: 28px;
+  font-size: 24px;
   line-height: 1.1;
 }
 
@@ -98,8 +98,8 @@ p {
 .metrics {
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
-  gap: 10px;
-  margin-bottom: 12px;
+  gap: 8px;
+  margin-bottom: 10px;
 }
 
 .metrics article,
@@ -109,8 +109,8 @@ p {
 }
 
 .metrics article {
-  min-height: 82px;
-  padding: 14px;
+  min-height: 58px;
+  padding: 9px 11px;
   transition: border-color .15s ease, background .15s ease;
   cursor: default;
 }
@@ -170,25 +170,25 @@ label span {
 
 .metrics strong {
   display: block;
-  margin-top: 8px;
-  padding-top: 9px;
+  margin-top: 5px;
+  padding-top: 5px;
   border-top: 1px solid var(--line);
   font-family: "SFMono-Regular", Consolas, monospace;
-  font-size: 22px;
+  font-size: 18px;
   line-height: 1.1;
   user-select: text;
 }
 
 .visuals {
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 10px;
-  margin-bottom: 12px;
+  grid-template-columns: 1fr;
+  gap: 8px;
+  align-content: start;
 }
 
 .visual-card {
-  min-height: 150px;
-  padding: 14px;
+  min-height: 0;
+  padding: 12px;
   transition: border-color .15s ease, background .15s ease;
 }
 
@@ -228,15 +228,29 @@ label span {
   line-height: 1.45;
 }
 
-.tour-nav {
+.tour-controls {
+  position: fixed;
+  left: 50%;
+  bottom: 14px;
+  z-index: 45;
   display: grid;
   grid-template-columns: auto 1fr auto auto;
   gap: 8px;
   align-items: center;
-  margin-top: 12px;
+  width: min(520px, calc(100vw - 24px));
+  padding: 10px;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  background: #1d2428;
+  box-shadow: 0 14px 42px rgb(0 0 0 / 40%);
+  transform: translateX(-50%);
 }
 
-.tour-nav span {
+.tour-controls[hidden] {
+  display: none;
+}
+
+.tour-controls span {
   color: var(--muted);
   font-size: 13px;
   text-align: center;
@@ -344,39 +358,67 @@ label span {
 }
 
 .visual-card p {
-  margin-top: 12px;
-  min-height: 36px;
+  margin-top: 8px;
+  min-height: 0;
   font-size: 13px;
 }
 
 .workspace {
   display: grid;
-  grid-template-columns: 340px minmax(0, 1fr);
+  grid-template-columns: minmax(300px, 360px) minmax(0, 1fr);
   gap: 12px;
   align-items: start;
 }
 
-.tutorial-panel {
+.side-column {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) auto;
-  gap: 16px;
+  gap: 8px;
+}
+
+.main-stage {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(230px, 280px);
+  gap: 10px;
   align-items: start;
-  margin-bottom: 12px;
-  padding: 16px;
+}
+
+.tutorial-panel {
+  grid-column: 1 / -1;
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: minmax(0, 1fr) auto;
+  gap: 12px;
+  align-items: start;
+  height: 504px;
+  padding: 14px;
+  overflow: hidden;
 }
 
 .tutorial-panel[hidden] {
   display: none;
 }
 
+.tutorial-head {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 8px;
+}
+
 .tutorial-main h2 {
   margin: 4px 0 0;
-  font-size: 20px;
+  font-size: 17px;
   line-height: 1.2;
+}
+
+.tutorial-main {
+  min-height: 0;
+  overflow: hidden;
 }
 
 .tutorial-main p {
   max-width: 78ch;
+  font-size: 13px;
+  line-height: 1.4;
 }
 
 #tutorial-task {
@@ -384,8 +426,8 @@ label span {
 }
 
 .tutorial-status {
-  min-height: 22px;
-  margin-top: 12px;
+  min-height: 20px;
+  margin-top: 9px;
   font-size: 13px;
 }
 
@@ -403,9 +445,9 @@ label span {
 
 .tutorial-details {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  grid-template-columns: 1fr;
   gap: 10px;
-  margin-top: 14px;
+  margin-top: 10px;
 }
 
 .tutorial-detail {
@@ -502,7 +544,8 @@ label span {
   display: flex;
   flex-wrap: wrap;
   gap: 8px;
-  margin-top: 12px;
+  margin-top: 10px;
+  min-height: 36px;
 }
 
 .tutorial-actions button {
@@ -512,16 +555,42 @@ label span {
 
 .tutorial-nav {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(92px, 1fr));
+  grid-template-columns: 1fr 1fr;
   gap: 8px;
   align-items: center;
+  align-self: end;
 }
 
 .tutorial-nav span {
   grid-column: 1 / -1;
+  order: -1;
   color: var(--muted);
   font-size: 13px;
   text-align: center;
+}
+
+.tutorial-nav button.has-more {
+  border-color: color-mix(in srgb, var(--green) 70%, var(--line));
+  animation: more-pulse 1.8s ease-in-out infinite;
+}
+
+@keyframes more-pulse {
+  0%,
+  100% {
+    box-shadow: 0 0 0 0 rgb(65 209 152 / 0%);
+  }
+
+  50% {
+    box-shadow: 0 0 0 4px rgb(65 209 152 / 14%);
+  }
+}
+
+.tutorial-select {
+  min-width: 0;
+}
+
+.tutorial-select span {
+  margin-bottom: 5px;
 }
 
 .panel {
@@ -530,7 +599,7 @@ label span {
 
 .controls {
   display: grid;
-  gap: 12px;
+  gap: 10px;
   padding: 14px;
   background: var(--control-panel);
 }
@@ -592,6 +661,7 @@ button.primary {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   gap: 6px;
+  border-radius: 6px;
 }
 
 .instruction-grid button {
@@ -609,8 +679,8 @@ button.primary {
 }
 
 .chart-panel {
-  min-height: 640px;
-  padding: 16px;
+  min-height: 0;
+  padding: 14px;
   background: var(--read-panel);
 }
 
@@ -660,9 +730,37 @@ canvas {
   background: var(--amber);
 }
 
+.app-footer {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 12px;
+  align-items: center;
+  justify-content: center;
+  padding: 10px 0 2px;
+  color: var(--muted);
+  font-size: 12px;
+}
+
+.app-footer strong {
+  color: var(--text);
+  font-family: "SFMono-Regular", Consolas, monospace;
+  font-size: 12px;
+}
+
+@media (max-width: 1160px) {
+  .main-stage {
+    grid-template-columns: 1fr;
+  }
+
+  .visuals {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
 @media (max-width: 940px) {
   .metrics,
   .visuals,
+  .main-stage,
   .workspace,
   .tutorial-panel {
     grid-template-columns: 1fr;
@@ -670,6 +768,10 @@ canvas {
 
   .tutorial-nav {
     grid-template-columns: repeat(auto-fit, minmax(92px, 1fr));
+  }
+
+  .tutorial-select {
+    grid-column: auto;
   }
 
   .tutorial-nav span {
@@ -708,6 +810,10 @@ canvas {
     grid-template-columns: 1fr;
   }
 
+  .tutorial-head {
+    grid-template-columns: 1fr;
+  }
+
   .tutorial-nav {
     grid-template-columns: 1fr 1fr;
   }
@@ -739,11 +845,11 @@ canvas {
     transform: translateX(50%);
   }
 
-  .tour-nav {
+  .tour-controls {
     grid-template-columns: 1fr 1fr;
   }
 
-  .tour-nav span {
+  .tour-controls span {
     grid-column: 1 / -1;
     order: -1;
   }

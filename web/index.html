@@ -43,76 +43,9 @@
         </article>
       </section>
 
-      <section class="visuals" aria-label="Learning visualizations">
-        <article class="panel visual-card" data-focus="balance">
-          <div class="section-title">Conductance Balance</div>
-          <div class="bar-pair">
-            <div>
-              <span>Ga</span>
-              <div class="bar-track"><i id="ga-bar"></i></div>
-            </div>
-            <div>
-              <span>Gb</span>
-              <div class="bar-track"><i id="gb-bar"></i></div>
-            </div>
-          </div>
-          <p id="balance-note">When Ga and Gb match, the activation sits near zero.</p>
-        </article>
-
-        <article class="panel visual-card" data-focus="gauge">
-          <div class="section-title">Weight Gauge</div>
-          <div class="weight-gauge">
-            <div class="gauge-track">
-              <i id="weight-fill"></i>
-              <b id="weight-needle"></b>
-            </div>
-            <div class="gauge-labels">
-              <span>-1</span>
-              <span>0</span>
-              <span>+1</span>
-            </div>
-          </div>
-          <p id="weight-note">The needle follows activation y.</p>
-        </article>
-
-        <article class="panel visual-card" data-focus="samples">
-          <div class="section-title">Noisy Read Samples</div>
-          <div class="sample-bars">
-            <div>
-              <span>Negative</span>
-              <div class="bar-track negative"><i id="negative-bar"></i></div>
-            </div>
-            <div>
-              <span>Positive</span>
-              <div class="bar-track positive"><i id="positive-bar"></i></div>
-            </div>
-          </div>
-          <p id="sample-note">Run Sample FFLV to see the noisy read split.</p>
-        </article>
-      </section>
-
-      <section id="tutorial-panel" class="panel tutorial-panel" hidden>
-        <div class="tutorial-main">
-          <div class="section-title" id="tutorial-kicker">Tutorial</div>
-          <h2 id="tutorial-title">What is this emulator?</h2>
-          <p id="tutorial-body"></p>
-          <p id="tutorial-task"></p>
-          <div class="tutorial-details" id="tutorial-details"></div>
-          <p class="tutorial-status" id="tutorial-status"></p>
-          <div class="tutorial-actions" id="tutorial-actions"></div>
-        </div>
-        <div class="tutorial-nav">
-          <button id="tutorial-prev" type="button">Back</button>
-          <span id="tutorial-progress">1 / 1</span>
-          <button id="tutorial-next" type="button">Next</button>
-          <button id="tutorial-reset-lesson" type="button">Reset Lesson</button>
-          <button id="tutorial-restart" type="button">Restart</button>
-          <button id="tutorial-exit" type="button">Exit</button>
-        </div>
-      </section>
-
       <section class="workspace">
-        <aside class="panel controls">
+        <aside class="side-column">
+          <section id="controls-panel" class="panel controls">
           <div class="section-title">Core <em>adjustable</em></div>
           <label>
             <span>Model</span>
@@ -198,21 +131,97 @@
             <input id="sample-count" type="number" min="1" max="1000" value="40">
           </label>
           <button id="sample" type="button">Sample FFLV</button>
+          </section>
         </aside>
 
-        <section class="panel chart-panel">
-          <div class="chart-head">
-            <div>
-              <div class="section-title">History</div>
-              <p id="last-instruction">reset</p>
+        <section class="main-stage">
+          <section class="panel chart-panel">
+            <div class="chart-head">
+              <div>
+                <div class="section-title">History</div>
+                <p id="last-instruction">reset</p>
+              </div>
+              <div id="sample-summary" class="sample-summary"></div>
             </div>
-            <div id="sample-summary" class="sample-summary"></div>
-          </div>
-          <canvas id="chart" width="960" height="430" aria-label="Activation history chart"></canvas>
-          <div class="legend">
-            <span><i class="activation"></i> activation y</span>
-            <span><i class="magnitude"></i> magnitude</span>
-          </div>
+            <canvas id="chart" width="960" height="430" aria-label="Activation history chart"></canvas>
+            <div class="legend">
+              <span><i class="activation"></i> activation y</span>
+              <span><i class="magnitude"></i> magnitude</span>
+            </div>
+          </section>
+
+          <section class="visuals" aria-label="Learning visualizations">
+            <article class="panel visual-card" data-focus="balance">
+              <div class="section-title">Conductance Balance</div>
+              <div class="bar-pair">
+                <div>
+                  <span>Ga</span>
+                  <div class="bar-track"><i id="ga-bar"></i></div>
+                </div>
+                <div>
+                  <span>Gb</span>
+                  <div class="bar-track"><i id="gb-bar"></i></div>
+                </div>
+              </div>
+              <p id="balance-note">When Ga and Gb match, the activation sits near zero.</p>
+            </article>
+
+            <article class="panel visual-card" data-focus="gauge">
+              <div class="section-title">Weight Gauge</div>
+              <div class="weight-gauge">
+                <div class="gauge-track">
+                  <i id="weight-fill"></i>
+                  <b id="weight-needle"></b>
+                </div>
+                <div class="gauge-labels">
+                  <span>-1</span>
+                  <span>0</span>
+                  <span>+1</span>
+                </div>
+              </div>
+              <p id="weight-note">The needle follows activation y.</p>
+            </article>
+
+            <article class="panel visual-card" data-focus="samples">
+              <div class="section-title">Noisy Read Samples</div>
+              <div class="sample-bars">
+                <div>
+                  <span>Negative</span>
+                  <div class="bar-track negative"><i id="negative-bar"></i></div>
+                </div>
+                <div>
+                  <span>Positive</span>
+                  <div class="bar-track positive"><i id="positive-bar"></i></div>
+                </div>
+              </div>
+              <p id="sample-note">Run Sample FFLV to see the noisy read split.</p>
+            </article>
+          </section>
+
+          <section id="tutorial-panel" class="panel tutorial-panel" hidden>
+            <div class="tutorial-main">
+              <div class="tutorial-head">
+                <div class="section-title" id="tutorial-kicker">Tutorial</div>
+                <label class="tutorial-select">
+                  <span>Jump to</span>
+                  <select id="tutorial-jump"></select>
+                </label>
+              </div>
+              <h2 id="tutorial-title">What is this emulator?</h2>
+              <p id="tutorial-body"></p>
+              <p id="tutorial-task"></p>
+              <div class="tutorial-details" id="tutorial-details"></div>
+              <p class="tutorial-status" id="tutorial-status"></p>
+              <div class="tutorial-actions" id="tutorial-actions"></div>
+            </div>
+            <div class="tutorial-nav">
+              <button id="tutorial-prev" type="button">&lt;&lt; Back</button>
+              <span id="tutorial-progress">1 / 1</span>
+              <button id="tutorial-next" type="button">Next</button>
+              <button id="tutorial-reset-lesson" type="button">Reset Lesson</button>
+              <button id="tutorial-exit" type="button">Close</button>
+            </div>
+          </section>
         </section>
       </section>
 
@@ -221,13 +230,18 @@
         <div class="section-title" id="tour-kicker">Interface Tour</div>
         <h2 id="tour-title"></h2>
         <p id="tour-body"></p>
-        <div class="tour-nav">
-          <button id="tour-prev" type="button">Back</button>
-          <span id="tour-progress">1 / 1</span>
-          <button id="tour-next" type="button">Next</button>
-          <button id="tour-close" type="button">Close</button>
-        </div>
       </section>
+      <nav id="tour-controls" class="tour-controls" hidden aria-label="Interface tour controls">
+        <button id="tour-prev" type="button">Back</button>
+        <span id="tour-progress">1 / 1</span>
+        <button id="tour-next" type="button">Next</button>
+        <button id="tour-close" type="button">Close</button>
+      </nav>
+
+      <footer class="app-footer">
+        <span>kT-RAM Neural Lane Emulator</span>
+        <strong>v0.1.1</strong>
+      </footer>
     </main>
     <script src="/app.js"></script>
   </body>

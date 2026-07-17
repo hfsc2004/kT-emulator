@@ -4,6 +4,8 @@
 
 # kT-RAM Neural Lane Emulator
 
+Current version: `v0.1.1`
+
 Browser-based explorer for Knowm's kT-RAM neural lane emulator, with live controls, visual gauges, noisy read sampling, and an optional beginner tutorial.
 
 <p align="center">
