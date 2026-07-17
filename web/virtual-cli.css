@@ -1,5 +1,5 @@
 .virtual-cli {
-  margin-top: 10px;
+  margin-top: 8px;
   overflow: hidden;
   border: 1px solid #2b3940;
   border-radius: 6px;
@@ -48,6 +48,14 @@
   font-size: 12px;
   line-height: 1.42;
   white-space: pre-wrap;
+}
+
+.tutorial-panel.has-cli .virtual-cli pre {
+  height: 238px;
+}
+
+.tutorial-panel.has-cli .virtual-cli-head {
+  min-height: 30px;
 }
 
 .virtual-cli-form {
