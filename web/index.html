@@ -19,6 +19,7 @@
         <div class="status">
           <span id="branch">AAT (0,)</span>
           <button id="tutorial-toggle" type="button" title="Show tutorial panel">Tutorial</button>
+          <button id="glossary-toggle" type="button" title="Open glossary">Glossary</button>
           <button id="tour-start" type="button" title="Start interface tour">Interface Tour</button>
           <strong id="step">0</strong>
         </div>
@@ -28,18 +29,22 @@
         <article data-focus="activation">
           <span>Activation <em>reading</em></span>
           <strong id="y">+0.000000</strong>
+          <p class="metric-note">Current output from the selected conductance pair.</p>
         </article>
         <article data-focus="conductance">
           <span>Ga <em>reading</em></span>
           <strong id="ga">0.000000</strong>
+          <p class="metric-note">One side of the stored differential state.</p>
         </article>
         <article data-focus="conductance">
           <span>Gb <em>reading</em></span>
           <strong id="gb">0.000000</strong>
+          <p class="metric-note">The opposing side used to compute activation.</p>
         </article>
         <article data-focus="magnitude">
           <span>Magnitude <em>reading</em></span>
           <strong id="magnitude">0.000000</strong>
+          <p class="metric-note">Total stored evidence behind the current lean.</p>
         </article>
       </section>
 
@@ -88,6 +93,10 @@
           <button id="reset" class="primary" type="button" title="Rebuild the emulator state">Reset core</button>
 
           <div class="section-title">Instruction <em>actions</em></div>
+          <div class="instruction-legend" aria-label="Instruction types">
+            <span><i class="read"></i>Read</span>
+            <span><i class="feedback"></i>Feedback</span>
+          </div>
           <div class="instruction-grid" id="instructions"></div>
 
           <div class="section-title">Cycle <em>adjustable</em></div>
@@ -140,6 +149,7 @@
               <div>
                 <div class="section-title">History</div>
                 <p id="last-instruction">reset</p>
+                <p class="chart-note">Each action appends the latest activation and magnitude so training movement is visible.</p>
               </div>
               <div id="sample-summary" class="sample-summary"></div>
             </div>
@@ -238,9 +248,21 @@
         <button id="tour-close" type="button" title="End interface tour">Close</button>
       </nav>
 
+      <div id="glossary-scrim" class="glossary-scrim" hidden></div>
+      <section id="glossary-panel" class="glossary-panel" hidden aria-modal="true" role="dialog" aria-labelledby="glossary-title">
+        <div class="glossary-head">
+          <div>
+            <div class="section-title">Glossary</div>
+            <h2 id="glossary-title">Terms used in the emulator</h2>
+          </div>
+          <button id="glossary-close" type="button" title="Close glossary">Close</button>
+        </div>
+        <div id="glossary-list" class="glossary-list"></div>
+      </section>
+
       <footer class="app-footer">
         <span>kT-RAM Neural Lane Emulator</span>
-        <strong>v0.1.4</strong>
+        <strong>v0.1.5</strong>
       </footer>
     </main>
     <script src="/app.js"></script>

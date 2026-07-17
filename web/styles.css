@@ -109,7 +109,7 @@ p {
 }
 
 .metrics article {
-  min-height: 58px;
+  min-height: 88px;
   padding: 9px 11px;
   transition: border-color .15s ease, background .15s ease;
   cursor: default;
@@ -177,6 +177,20 @@ label span {
   font-size: 18px;
   line-height: 1.1;
   user-select: text;
+}
+
+.metric-note {
+  margin-top: 6px;
+  color: var(--muted);
+  font-size: 11px;
+  line-height: 1.25;
+}
+
+.chart-note {
+  max-width: 56ch;
+  color: var(--muted);
+  font-size: 12px;
+  line-height: 1.3;
 }
 
 .visuals {
@@ -262,6 +276,80 @@ label span {
   outline: 2px solid var(--green);
   outline-offset: 3px;
   box-shadow: 0 0 0 6px rgb(65 209 152 / 18%);
+}
+
+.glossary-scrim {
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  background: rgb(0 0 0 / 58%);
+}
+
+.glossary-scrim[hidden],
+.glossary-panel[hidden] {
+  display: none;
+}
+
+.glossary-panel {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  z-index: 55;
+  display: grid;
+  grid-template-rows: auto minmax(0, 1fr);
+  width: min(720px, calc(100vw - 28px));
+  max-height: min(760px, calc(100vh - 28px));
+  padding: 16px;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  background: #1d2428;
+  box-shadow: 0 18px 70px rgb(0 0 0 / 50%);
+  transform: translate(-50%, -50%);
+}
+
+.glossary-head {
+  display: flex;
+  gap: 12px;
+  align-items: start;
+  justify-content: space-between;
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--line);
+}
+
+.glossary-head h2 {
+  margin: 5px 0 0;
+  font-size: 18px;
+  line-height: 1.2;
+}
+
+.glossary-list {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+  min-height: 0;
+  margin-top: 14px;
+  overflow: auto;
+  padding-right: 4px;
+}
+
+.glossary-term {
+  min-width: 0;
+  padding: 10px 11px;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  background: var(--read-panel);
+}
+
+.glossary-term dt {
+  color: var(--text);
+  font-weight: 700;
+}
+
+.glossary-term dd {
+  margin: 5px 0 0;
+  color: var(--muted);
+  font-size: 13px;
+  line-height: 1.35;
 }
 
 .bar-pair,
@@ -664,6 +752,35 @@ button.primary {
   border-radius: 6px;
 }
 
+.instruction-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 12px;
+  margin: -4px 0 8px;
+  color: var(--muted);
+  font-size: 12px;
+}
+
+.instruction-legend span {
+  display: inline-flex;
+  gap: 5px;
+  align-items: center;
+}
+
+.instruction-legend i {
+  width: 8px;
+  height: 8px;
+  border-radius: 2px;
+}
+
+.instruction-legend i.read {
+  background: var(--blue);
+}
+
+.instruction-legend i.feedback {
+  background: var(--amber);
+}
+
 .instruction-grid button {
   min-width: 0;
   font-family: "SFMono-Regular", Consolas, monospace;
@@ -776,6 +893,10 @@ canvas {
 
   .tutorial-nav span {
     grid-column: 1 / -1;
+  }
+
+  .glossary-list {
+    grid-template-columns: 1fr;
   }
 
   .metrics {

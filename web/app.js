@@ -20,6 +20,24 @@ const instructionTooltips = {
   RA: "Reverse H-gated adaptive feedback",
   RZ: "Reverse zero feedback",
 };
+const glossaryTerms = [
+  ["Activation y", "The current output read from the selected conductance pair. Positive means the pair leans one way; negative means it leans the other way."],
+  ["AAT", "Activation Address Tuple. In this UI it is fixed at (0,), meaning one selected address is visible."],
+  ["Conductance", "The stored state used by the emulator. This UI shows the pair as Ga and Gb."],
+  ["Ga", "One side of the visible differential conductance pair."],
+  ["Gb", "The opposing side of the visible differential conductance pair."],
+  ["Magnitude", "Ga plus Gb. It acts like stored evidence behind the current lean."],
+  ["Read", "An instruction such as FF or RF that observes the current state and reports activation y."],
+  ["Low-voltage read", "A read such as FFLV or RFLV that makes noisy sampling behavior easier to see."],
+  ["Feedback", "An instruction such as RH or RL that nudges stored conductance instead of only reporting y."],
+  ["Cycle", "A repeated read plus feedback pair. Cycles make training movement visible in the chart."],
+  ["Preset", "A known starting state used by tutorial steps, such as balanced, positive, negative, low magnitude, or high magnitude."],
+  ["Noise", "Random variation used when sampling reads. More noise can make results spread out more."],
+  ["Weight", "The visible lean created by the balance between Ga and Gb."],
+  ["Lane", "The emulator structure being explored. This UI currently shows one lane and one selected address."],
+  ["Synapse", "The selected adaptive memory element represented here by the Ga/Gb conductance pair."],
+  ["History", "The chart record of activation and magnitude after actions run."],
+];
 const tourSteps = [
   {
     selector: ".controls",
@@ -1358,6 +1376,11 @@ const els = {
   tutorialNext: document.querySelector("#tutorial-next"),
   tutorialResetLesson: document.querySelector("#tutorial-reset-lesson"),
   tutorialExit: document.querySelector("#tutorial-exit"),
+  glossaryToggle: document.querySelector("#glossary-toggle"),
+  glossaryScrim: document.querySelector("#glossary-scrim"),
+  glossaryPanel: document.querySelector("#glossary-panel"),
+  glossaryList: document.querySelector("#glossary-list"),
+  glossaryClose: document.querySelector("#glossary-close"),
   tourStart: document.querySelector("#tour-start"),
   tourScrim: document.querySelector("#tour-scrim"),
   tourBubble: document.querySelector("#tour-bubble"),
@@ -1419,6 +1442,18 @@ function showTutorialPanel() {
 function hideTutorialPanel() {
   els.tutorialPanel.hidden = true;
   setFocus(null);
+}
+
+function showGlossary() {
+  els.glossaryScrim.hidden = false;
+  els.glossaryPanel.hidden = false;
+  els.glossaryClose.focus();
+}
+
+function hideGlossary() {
+  els.glossaryScrim.hidden = true;
+  els.glossaryPanel.hidden = true;
+  els.glossaryToggle.focus();
 }
 
 function setFocus(target) {
@@ -1632,6 +1667,21 @@ function wireTutorialJump() {
     option.textContent = group.menuLabel;
     els.tutorialJump.appendChild(option);
   });
+}
+
+function renderGlossary() {
+  const fragment = document.createDocumentFragment();
+  glossaryTerms.forEach(([term, definition]) => {
+    const entry = document.createElement("dl");
+    const title = document.createElement("dt");
+    const body = document.createElement("dd");
+    entry.className = "glossary-term";
+    title.textContent = term;
+    body.textContent = definition;
+    entry.append(title, body);
+    fragment.appendChild(entry);
+  });
+  els.glossaryList.replaceChildren(fragment);
 }
 
 function getTutorialCheck() {
@@ -1953,6 +2003,12 @@ els.tutorialResetLesson.addEventListener("click", resetLessonState);
 
 els.tutorialExit.addEventListener("click", hideTutorialPanel);
 
+els.glossaryToggle.addEventListener("click", showGlossary);
+
+els.glossaryClose.addEventListener("click", hideGlossary);
+
+els.glossaryScrim.addEventListener("click", hideGlossary);
+
 els.tourStart.addEventListener("click", startTour);
 
 els.tourPrev.addEventListener("click", () => moveTour(-1));
@@ -1968,6 +2024,10 @@ window.addEventListener("resize", () => {
 });
 
 window.addEventListener("keydown", (event) => {
+  if (!els.glossaryPanel.hidden && event.key === "Escape") {
+    hideGlossary();
+    return;
+  }
   if (els.tourBubble.hidden) {
     return;
   }
@@ -1982,5 +2042,6 @@ window.addEventListener("keydown", (event) => {
 
 wireInstructions();
 wireTutorialJump();
+renderGlossary();
 showTutorialPanel();
 getState().then(render);
