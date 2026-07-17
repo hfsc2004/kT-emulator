@@ -6,102 +6,6 @@ const instructions = ["FF", "FFLV", "RF", "RFLV", "FH", "FL", "FU", "FA", "FZ", 
 const readInstructions = new Set(["FF", "FFLV", "RF", "RFLV"]);
 const tourSteps = [
   {
-    selector: "#branch",
-    title: "AAT Indicator",
-    body: "AAT is the active address selection. This is a read-only status label; the first interface stays on AAT (0,), so every action targets the same visible synapse.",
-  },
-  {
-    selector: "#tutorial-toggle",
-    title: "Tutorial Button",
-    body: "This opens or hides the lesson panel. Lessons teach concepts with short explanations and controlled emulator actions.",
-  },
-  {
-    selector: "#tour-start",
-    title: "Interface Tour Button",
-    body: "This starts the guided bubble tour. Use it when you want to know what each window and control does.",
-  },
-  {
-    selector: "#step",
-    title: "Step Counter",
-    body: "This read-only number increases as the emulator runs instructions, cycles, and resets. It helps you see that the state has advanced.",
-  },
-  {
-    selector: ".metrics",
-    title: "Read-Only State Window",
-    body: "These four cards are measurements, not inputs. They summarize the selected synapse right now: activation, the two conductances, and total magnitude.",
-  },
-  {
-    selector: "#y",
-    title: "Activation y",
-    body: "Activation is a read-only result. Positive means the selected synapse leans one way, negative means it leans the other way, and zero means balanced.",
-  },
-  {
-    selector: "#ga",
-    title: "Ga Conductance",
-    body: "Ga is a read-only conductance measurement for one side of the differential pair. The emulator compares Ga and Gb to produce activation y.",
-  },
-  {
-    selector: "#gb",
-    title: "Gb Conductance",
-    body: "Gb is the read-only conductance measurement for the other side of the pair. When Ga and Gb are equal, activation stays near zero.",
-  },
-  {
-    selector: "#magnitude",
-    title: "Magnitude",
-    body: "Magnitude is a read-only total stored conductance. Higher magnitude means more stored evidence and usually slower movement after feedback.",
-  },
-  {
-    selector: "[data-focus='balance']",
-    title: "Conductance Balance Window",
-    body: "This window turns Ga and Gb into paired bars so the balance is visible without reading the numbers alone.",
-  },
-  {
-    selector: "[data-focus='gauge']",
-    title: "Weight Gauge Window",
-    body: "This gauge maps activation onto a -1 to +1 scale. The center is balanced, the right side is positive, and the left side is negative.",
-  },
-  {
-    selector: "[data-focus='samples']",
-    title: "Noisy Read Samples Window",
-    body: "This window shows how many low-voltage reads landed positive or negative during sampling.",
-  },
-  {
-    selector: ".tutorial-panel",
-    title: "Tutorial Lesson Window",
-    body: "This panel holds the concept lesson, task, action buttons, completion status, and lesson navigation.",
-    showTutorial: true,
-  },
-  {
-    selector: "#tutorial-prev",
-    title: "Tutorial Back Button",
-    body: "Back moves to the previous lesson step without resetting the emulator state.",
-    showTutorial: true,
-  },
-  {
-    selector: "#tutorial-next",
-    title: "Tutorial Next Button",
-    body: "Next moves to the next lesson step. Some steps also have action checks that confirm you ran the intended operation.",
-    showTutorial: true,
-  },
-  {
-    selector: "#tutorial-reset-lesson",
-    title: "Reset Lesson Button",
-    body: "Reset Lesson returns the current lesson to its expected starting state, usually by loading the lesson preset.",
-    showTutorial: true,
-  },
-  {
-    selector: "#tutorial-restart",
-    title: "Tutorial Restart Button",
-    body: "Restart sends the lesson flow back to the first tutorial step and clears the lesson completion checks.",
-    showTutorial: true,
-  },
-  {
-    selector: "#tutorial-exit",
-    title: "Tutorial Exit Button",
-    body: "Exit hides the lesson panel and leaves the main emulator dashboard available for free exploration.",
-    showTutorial: true,
-  },
-  {
     selector: ".controls",
     title: "Adjustable Control Window",
     body: "This left panel is the main place where you can change things: reset the core, run instructions, run cycles, and collect noisy samples.",
@@ -247,6 +151,46 @@ const tourSteps = [
     body: "Sample FFLV collects repeated low-voltage reads and updates the positive/negative sample window.",
   },
   {
+    selector: ".metrics",
+    title: "Read-Only State Window",
+    body: "These four cards are measurements, not inputs. They summarize the selected synapse right now: activation, the two conductances, and total magnitude.",
+  },
+  {
+    selector: "#y",
+    title: "Activation y",
+    body: "Activation is a read-only result. Positive means the selected synapse leans one way, negative means it leans the other way, and zero means balanced.",
+  },
+  {
+    selector: "#ga",
+    title: "Ga Conductance",
+    body: "Ga is a read-only conductance measurement for one side of the differential pair. The emulator compares Ga and Gb to produce activation y.",
+  },
+  {
+    selector: "#gb",
+    title: "Gb Conductance",
+    body: "Gb is the read-only conductance measurement for the other side of the pair. When Ga and Gb are equal, activation stays near zero.",
+  },
+  {
+    selector: "#magnitude",
+    title: "Magnitude",
+    body: "Magnitude is a read-only total stored conductance. Higher magnitude means more stored evidence and usually slower movement after feedback.",
+  },
+  {
+    selector: "[data-focus='balance']",
+    title: "Conductance Balance Window",
+    body: "This window turns Ga and Gb into paired bars so the balance is visible without reading the numbers alone.",
+  },
+  {
+    selector: "[data-focus='gauge']",
+    title: "Weight Gauge Window",
+    body: "This gauge maps activation onto a -1 to +1 scale. The center is balanced, the right side is positive, and the left side is negative.",
+  },
+  {
+    selector: "[data-focus='samples']",
+    title: "Noisy Read Samples Window",
+    body: "This window shows how many low-voltage reads landed positive or negative during sampling.",
+  },
+  {
     selector: ".chart-panel",
     title: "History Window",
     body: "This chart tracks activation y and magnitude as the emulator runs. It is the best place to see learning unfold over multiple steps.",
@@ -266,389 +210,759 @@ const tourSteps = [
     title: "Chart Legend",
     body: "Green is activation y. Amber is magnitude. Reading both together helps separate direction from stored evidence.",
   },
+  {
+    selector: ".tutorial-panel",
+    title: "Tutorial Lesson Window",
+    body: "This panel holds the concept lesson, task, action buttons, completion status, and lesson navigation.",
+  },
+  {
+    selector: "#tutorial-prev",
+    title: "Tutorial Back Button",
+    body: "Back moves to the previous lesson step without resetting the emulator state.",
+  },
+  {
+    selector: "#tutorial-next",
+    title: "Tutorial Next Button",
+    body: "Next moves to the next lesson step. Some steps also have action checks that confirm you ran the intended operation.",
+  },
+  {
+    selector: "#tutorial-reset-lesson",
+    title: "Reset Lesson Button",
+    body: "Reset Lesson returns the current lesson to its expected starting state, usually by loading the lesson preset.",
+  },
+  {
+    selector: "#branch",
+    title: "AAT Indicator",
+    body: "AAT is the active address selection. This is a read-only status label; the first interface stays on AAT (0,), so every action targets the same visible synapse.",
+  },
+  {
+    selector: "#step",
+    title: "Step Counter",
+    body: "This read-only number increases as the emulator runs instructions, cycles, and resets. It helps you see that the state has advanced.",
+  },
+  {
+    selector: "#tour-start",
+    title: "Interface Tour Button",
+    body: "This starts the guided bubble tour. Use it when you want to know what each window and control does.",
+  },
 ];
-const lessons = [
+const tutorialLessonGroups = [
   {
+    id: "lesson-1",
+    menuLabel: "Lesson 1: Emulator sandbox",
     title: "What is this emulator?",
-    body: "This is a software sandbox for one kT-RAM neural lane. For now, you are looking at one tiny memory element called a synapse.",
-    task: "Start with a balanced synapse. The activation should sit near zero because the two conductances are equal.",
-    focus: "activation",
-    check: {
-      pending: "Load the balanced preset to start from a neutral synapse.",
-      complete: "Complete: balanced preset loaded. The synapse is ready to explore.",
-    },
-    actions: [{ label: "Load balanced preset", type: "preset", name: "balanced", check: "action-complete" }],
-    details: [
+    source: "Knowm Index, Chapters 3b, 4, and 4b",
+    steps: [
       {
-        title: "Scenario",
-        items: [
-          "Before engineers test a new aircraft control idea on real hardware, they use a simulator.",
-          "This emulator is the same kind of safe sandbox, but for one kT-RAM neural lane.",
-        ],
-      },
-      {
-        title: "Why it matters",
-        items: [
-          "You can try reads, feedback, noise, and presets without damaging a device or needing special hardware.",
-          "Learning one lane first makes bigger kT-RAM systems easier to understand later.",
-        ],
-      },
-    ],
-  },
-  {
-    title: "How a regular computer works",
-    body: "A conventional computer keeps most memory and processing separate. The CPU fetches instructions, reads data from memory, works on that data, then writes results back.",
-    task: "Follow the example as a mental model. No emulator action is needed yet.",
-    focus: null,
-    details: [
-      {
-        title: "Scenario",
-        items: [
-          "A game stores your score in memory while the CPU runs the rules.",
-          "When you collect a point, the CPU reads the score, adds one, and writes the new score back.",
-        ],
-      },
-      {
-        title: "Why it matters",
-        items: [
-          "This is the pattern most software follows: move data to the processor, change it, then store it again.",
-          "kT-RAM is easier to compare once that normal pattern is clear.",
-        ],
-      },
-      {
-        title: "High level",
-        items: [
-          "Memory stores instructions and values.",
-          "The CPU runs instructions one step at a time.",
-          "A program usually moves data from memory to the CPU, changes it, then stores the result.",
-        ],
-      },
-      {
-        title: "Example",
-        items: [
-          "A program reads a score from memory.",
-          "The CPU adds one point.",
-          "The program writes the new score back to memory.",
-        ],
-      },
-      {
-        title: "Flow",
-        flow: ["Memory", "CPU registers", "Arithmetic unit", "Memory"],
-      },
-      {
-        title: "Low level",
-        items: [
-          "Bits encode the instruction, the address of the score, and the number one.",
-          "Registers hold the score while the CPU arithmetic unit changes it.",
-          "A branch can choose the next instruction when a condition is true or false.",
-        ],
-      },
-    ],
-  },
-  {
-    title: "How kT-RAM is different",
-    body: "In kT-RAM, the stored state and the operation are tied closely together. Conductance stores the learned state, and read plus feedback instructions interact with that state.",
-    task: "Load a balanced synapse, then run FF once. Compare the visible flow with the CPU example.",
-    focus: "balance",
-    check: {
-      pending: "Load the balanced preset, then run FF once.",
-      complete: "Complete: you read the selected synapse and saw its activation.",
-    },
-    actions: [
-      { label: "Load balanced preset", type: "preset", name: "balanced" },
-      { label: "Run FF", type: "evaluate", instruction: "FF", check: "action-complete" },
-    ],
-    details: [
-      {
-        title: "Scenario",
-        items: [
-          "Imagine a tiny spam filter learning whether one signal should count as more spam-like or less spam-like.",
-          "Instead of storing a normal number, this lane stores its learned state in conductance.",
-        ],
-      },
-      {
-        title: "Why it matters",
-        items: [
-          "This shows why someone would use feedback: to make future reads lean toward what the system has learned.",
-          "The emulator lets you see that stored state move instead of treating learning as a hidden black box.",
-        ],
-      },
-      {
-        title: "High level",
-        items: [
-          "A selected synapse stores state as two conductances: Ga and Gb.",
-          "A read produces activation y from the balance between those conductances.",
-          "Feedback can nudge the conductances, so the stored state changes.",
-        ],
-      },
-      {
-        title: "Same example",
-        items: [
-          "Instead of reading a score into a CPU register, the lane reads a selected synapse.",
-          "The result is an activation: y leans negative, balanced, or positive.",
-          "Feedback is like updating the stored evidence for the next read.",
-        ],
-      },
-      {
-        title: "Flow",
-        flow: ["AAT (0,)", "Ga/Gb state", "Activation y", "Feedback-adjusted conductance"],
-      },
-      {
-        title: "Low level",
-        items: [
-          "AAT selects which synapse address is active. This tutorial uses AAT (0,).",
-          "The differential weight comes from Ga minus Gb, normalized into y.",
-          "Read voltage, noise, and feedback instructions control how strongly the emulator samples or changes the state.",
-        ],
-      },
-    ],
-  },
-  {
-    title: "Where the analogy breaks",
-    body: "The comparison is useful, but it is not exact. A software variable is not the same thing as conductance, and this app is an emulator of one small lane surface.",
-    task: "Use the side-by-side bridge to keep the terms straight before changing memory with feedback.",
-    focus: "activation",
-    details: [
-      {
-        title: "Scenario",
-        items: [
-          "A map is useful, but it is not the same thing as the road.",
-          "The computer comparison is a map: it helps you start, but it is not a perfect copy of kT-RAM behavior.",
-        ],
-      },
-      {
-        title: "Why it matters",
-        items: [
-          "The analogy prevents confusion between a software variable and a conductance state.",
-          "Knowing where the analogy breaks keeps the lesson honest about what the emulator demonstrates.",
-        ],
-      },
-      {
-        title: "Vocabulary bridge",
-        pairs: [
-          ["Memory address", "AAT selects an address-like synapse location."],
-          ["Stored value", "Ga and Gb hold conductance state, not a normal integer variable."],
-          ["CPU result", "Activation y is the read result from the selected lane state."],
-          ["Write back", "Feedback changes conductance instead of storing a copied value."],
-        ],
-      },
-      {
-        title: "Keep separate",
-        items: [
-          "Conventional computers usually separate storage and processing.",
-          "kT-RAM makes memory behavior part of the computation being explored.",
-          "The UI demonstrates the emulator model, not a complete physical hardware system.",
-        ],
-      },
-      {
-        title: "Two flows",
-        flowGroups: [
+        title: "A safe place to experiment",
+        body: "This is a safe software sandbox for one kT-RAM neural lane. It lets you try the ideas before touching hardware or larger examples.",
+        task: "Start by loading a balanced synapse. The top readings should show a neutral state.",
+        focus: "activation",
+        check: {
+          pending: "Load the balanced preset to start from a neutral synapse.",
+          complete: "Complete: balanced preset loaded. The synapse is ready to explore.",
+        },
+        actions: [{ label: "Load balanced preset", type: "preset", name: "balanced", check: "action-complete" }],
+        details: [
           {
-            label: "Conventional",
-            steps: ["Memory", "CPU", "Memory"],
+            title: "Scenario",
+            items: [
+              "Before engineers test a new aircraft control idea on real hardware, they use a simulator.",
+              "This emulator is the same kind of safe sandbox, but for one kT-RAM neural lane.",
+            ],
           },
           {
-            label: "kT-RAM",
-            steps: ["Selected synapse", "Activation", "Feedback"],
+            title: "Source idea",
+            items: [
+              "Knowm's reader map frames the series as a thermodynamic neural processor built in the open.",
+              "Chapter 4b narrows that story to an open Python emulator and one-synapse checks.",
+            ],
+          },
+        ],
+      },
+      {
+        title: "The normal computer pattern",
+        body: "A conventional computer usually keeps memory and processing separate. It reads data from memory, works on it in the CPU, then writes a result back.",
+        task: "Use this as the comparison point. No emulator action is needed on this step.",
+        focus: null,
+        details: [
+          {
+            title: "Example",
+            flow: ["Memory", "CPU registers", "Arithmetic unit", "Memory"],
+          },
+          {
+            title: "Why it matters",
+            items: [
+              "Most software moves data to the processor before it can change that data.",
+              "kT-RAM is easier to understand once that normal separation is clear.",
+            ],
+          },
+        ],
+      },
+      {
+        title: "What changes in kT-RAM",
+        body: "In kT-RAM, reading memory is already part of computing with it. The stored conductance state and the operation are tied together.",
+        task: "Load a balanced synapse, then run FF once. Watch the activation update from the selected state.",
+        focus: "balance",
+        check: {
+          pending: "Load the balanced preset, then run FF once.",
+          complete: "Complete: you read the selected synapse and saw its activation.",
+        },
+        actions: [
+          { label: "Load balanced preset", type: "preset", name: "balanced" },
+          { label: "Run FF", type: "evaluate", instruction: "FF", check: "action-complete" },
+        ],
+        details: [
+          {
+            title: "kT-RAM flow",
+            flow: ["AAT (0,)", "Ga/Gb state", "Activation y", "Feedback can adjust conductance"],
+          },
+          {
+            title: "Why it matters",
+            items: [
+              "The emulator lets you see stored state move instead of treating learning as a hidden black box.",
+              "This app is an emulator model, not a full physical hardware simulator.",
+            ],
+          },
+        ],
+      },
+      {
+        title: "The words you need",
+        body: "The tutorial uses a small vocabulary. Learn these words once and the rest of the controls become easier to read.",
+        task: "Read the vocabulary bridge, then look for those words in the UI.",
+        focus: "activation",
+        details: [
+          {
+            title: "Vocabulary",
+            pairs: [
+              ["Lane", "One path through the emulator that reads selected synapses and produces activation."],
+              ["Synapse", "The tiny stored state you are exploring in this first UI."],
+              ["AAT", "The address selection. Here it stays at (0,), so one synapse is selected."],
+              ["Read", "An instruction such as FF that measures the selected state and updates y."],
+              ["Feedback", "An instruction such as RH or RL that nudges stored conductance."],
+              ["Conductance", "Stored state shown as Ga and Gb."],
+              ["Weight", "The visible lean that comes from comparing Ga and Gb."],
+            ],
+          },
+        ],
+      },
+      {
+        title: "Where the readings live",
+        body: "The top state cards are measurements, not controls. They show what the selected synapse looks like right now.",
+        task: "Find y, Ga, Gb, and magnitude in the top read-only cards.",
+        focus: "activation",
+        details: [
+          {
+            title: "Where to look",
+            pairs: [
+              ["y", "Activation card at the top. It is the read result."],
+              ["Ga", "Top state card and the first conductance balance bar."],
+              ["Gb", "Top state card and the second conductance balance bar."],
+              ["Magnitude", "Top state card. It is Ga plus Gb, the amount of stored evidence."],
+            ],
+          },
+          {
+            title: "What you should see",
+            items: [
+              "Balanced presets should put y near zero.",
+              "Ga and Gb should be close to each other.",
+            ],
+          },
+        ],
+      },
+      {
+        title: "Keep the analogy honest",
+        body: "The computer comparison is useful, but it is only a map. A software variable is not the same thing as conductance.",
+        task: "Use this bridge before moving into the conductance lesson.",
+        focus: "activation",
+        details: [
+          {
+            title: "Vocabulary bridge",
+            pairs: [
+              ["Memory address", "AAT selects an address-like synapse location."],
+              ["Stored value", "Ga and Gb hold conductance state, not a normal integer variable."],
+              ["CPU result", "Activation y is the read result from the selected lane state."],
+              ["Write back", "Feedback changes conductance instead of storing a copied value."],
+            ],
           },
         ],
       },
     ],
   },
   {
+    id: "lesson-2",
+    menuLabel: "Lesson 2: Two conductances",
     title: "One synapse, two conductances",
-    body: "The synapse is made from two sides: Ga and Gb. The activation y comes from their balance. If Ga and Gb match, y is near zero.",
-    task: "Read the synapse once with FF. Watch the conductance bars and the y gauge.",
-    focus: "balance",
-    check: {
-      pending: "Reset to balanced, then run FF once.",
-      complete: "Complete: you read the balance between Ga and Gb.",
-    },
-    actions: [
-      { label: "Reset balanced", type: "preset", name: "balanced" },
-      { label: "Run FF", type: "evaluate", instruction: "FF", check: "action-complete" },
-    ],
-    details: [
+    source: "Knowm Chapter 3b",
+    steps: [
       {
-        title: "Scenario",
-        items: [
-          "A thermostat compares two pressures: too cold and too hot.",
-          "The decision comes from which side is stronger, not from either side alone.",
+        title: "A synapse has two sides",
+        body: "Knowm's Chapter 3b builds a kT-bit from two memristors. In this app, those two sides are shown as Ga and Gb.",
+        task: "Load the balanced preset and look at the Conductance Balance window.",
+        focus: "balance",
+        check: {
+          pending: "Load the balanced preset to compare the two sides.",
+          complete: "Complete: balanced preset loaded. Ga and Gb should be close.",
+        },
+        actions: [{ label: "Load balanced preset", type: "preset", name: "balanced", check: "action-complete" }],
+        details: [
+          {
+            title: "Scenario",
+            items: [
+              "A thermostat compares too-cold and too-hot signals before deciding which way to lean.",
+              "Ga and Gb are also two sides of a comparison.",
+            ],
+          },
         ],
       },
       {
-        title: "Why it matters",
-        items: [
-          "Ga and Gb work like two sides of a comparison.",
-          "The activation y tells you which side is winning and by how much.",
+        title: "Balance creates activation",
+        body: "A read reports the balance between the two conductances as activation y. If the sides match, y sits near zero.",
+        task: "Run FF once. Watch y and the Weight Gauge.",
+        focus: "gauge",
+        check: {
+          pending: "Run FF once to read the balanced pair.",
+          complete: "Complete: FF read the pair and updated y.",
+        },
+        actions: [{ label: "Run FF", type: "evaluate", instruction: "FF", check: "action-complete" }],
+        details: [
+          {
+            title: "What to watch",
+            items: [
+              "The y value should stay near zero when Ga and Gb are similar.",
+              "The gauge needle should stay near the center.",
+            ],
+          },
+        ],
+      },
+      {
+        title: "Bias the pair positive",
+        body: "A positive preset starts with one side stronger. The app uses this to make the weight lean positive without asking you to tune conductances by hand.",
+        task: "Load the positive preset and compare the bars.",
+        focus: "balance",
+        check: {
+          pending: "Load the positive preset.",
+          complete: "Complete: positive preset loaded. The pair is no longer balanced.",
+        },
+        actions: [{ label: "Load positive preset", type: "preset", name: "positive", check: "action-complete" }],
+        details: [
+          {
+            title: "What you should see",
+            items: [
+              "The Weight Gauge should lean right.",
+              "The conductance bars should no longer match exactly.",
+            ],
+          },
+        ],
+      },
+      {
+        title: "Bias the pair negative",
+        body: "A negative preset leans the opposite direction. This makes the conductance balance feel like a comparison rather than a single stored number.",
+        task: "Load the negative preset and compare it with the previous positive state.",
+        focus: "gauge",
+        check: {
+          pending: "Load the negative preset.",
+          complete: "Complete: negative preset loaded. The gauge should lean the other way.",
+        },
+        actions: [{ label: "Load negative preset", type: "preset", name: "negative", check: "action-complete" }],
+        details: [
+          {
+            title: "Why it matters",
+            items: [
+              "The visible weight comes from the relationship between Ga and Gb.",
+              "The pair carries more information than one ordinary scalar weight.",
+            ],
+          },
+        ],
+      },
+      {
+        title: "Lesson check",
+        body: "You have now seen balanced, positive, and negative states. The same two readings, Ga and Gb, explain all three.",
+        task: "Reset balanced when you are ready for the read-instruction lesson.",
+        focus: "balance",
+        actions: [{ label: "Reset balanced", type: "preset", name: "balanced" }],
+        details: [
+          {
+            title: "Summary",
+            items: [
+              "Ga and Gb are the two conductance sides.",
+              "y is the normalized read result from their balance.",
+              "The bars and gauge are read-only views of that state.",
+            ],
+          },
         ],
       },
     ],
   },
   {
+    id: "lesson-3",
+    menuLabel: "Lesson 3: Reads and low voltage",
+    title: "Reading without changing much",
+    source: "Knowm Chapters 3b and 4b",
+    steps: [
+      {
+        title: "A read reports y",
+        body: "Read instructions compute activation y from the selected conductance pair. In this UI, the basic read is FF.",
+        task: "Load balanced, then run FF.",
+        focus: "activation",
+        check: {
+          pending: "Load balanced, then run FF once.",
+          complete: "Complete: FF read the selected synapse.",
+        },
+        actions: [
+          { label: "Load balanced", type: "preset", name: "balanced" },
+          { label: "Run FF", type: "evaluate", instruction: "FF", check: "action-complete" },
+        ],
+        details: [
+          {
+            title: "Read instructions",
+            items: [
+              "FF and RF are standard reads.",
+              "FFLV and RFLV are low-voltage reads.",
+            ],
+          },
+        ],
+      },
+      {
+        title: "Low voltage reads",
+        body: "Chapter 3b treats low-voltage reading as a way to sample the state. Lower read voltage makes noisy samples more visible.",
+        task: "Run FFLV once and compare it with the last FF read.",
+        focus: "activation",
+        check: {
+          pending: "Run FFLV once.",
+          complete: "Complete: FFLV read the state through the low-voltage path.",
+        },
+        actions: [{ label: "Run FFLV", type: "evaluate", instruction: "FFLV", check: "action-complete" }],
+        details: [
+          {
+            title: "What to notice",
+            items: [
+              "A single low-voltage read may not look dramatic.",
+              "The difference becomes clearer when you collect many samples.",
+            ],
+          },
+        ],
+      },
+      {
+        title: "Sample a balanced pair",
+        body: "Near y = 0, noisy low-voltage reads can land on either side. The split shows uncertainty instead of hiding it.",
+        task: "Sample FFLV forty times from a balanced state.",
+        focus: "samples",
+        check: {
+          pending: "Reset balanced, then sample FFLV forty times.",
+          complete: "Complete: balanced samples collected. Compare positive and negative counts.",
+        },
+        actions: [
+          { label: "Reset balanced", type: "preset", name: "balanced" },
+          { label: "Sample FFLV", type: "sample", instruction: "FFLV", count: 40, check: "action-complete" },
+        ],
+        details: [
+          {
+            title: "What you should see",
+            items: [
+              "The positive and negative bars should both have activity.",
+              "A balanced state should feel coin-like, not locked to one answer.",
+            ],
+          },
+        ],
+      },
+      {
+        title: "Read gently, then decide later",
+        body: "The point of a read is to observe the current state. The point of feedback is to change it. Keeping those ideas separate makes the instruction grid less mysterious.",
+        task: "Use this step as a vocabulary check before feedback changes memory.",
+        focus: "instructions",
+        details: [
+          {
+            title: "Bridge",
+            pairs: [
+              ["Read", "Reports y from the selected state."],
+              ["Low-voltage read", "Samples the state with more visible randomness."],
+              ["Feedback", "Changes conductance instead of only reporting y."],
+            ],
+          },
+        ],
+      },
+    ],
+  },
+  {
+    id: "lesson-4",
+    menuLabel: "Lesson 4: Feedback changes memory",
     title: "Feedback changes memory",
-    body: "A read observes the synapse. Feedback nudges it. Running FF then RH is a simple cycle that pushes the stored state upward.",
-    task: "Run five FF/RH cycles and watch the activation move step by step.",
-    focus: "chart",
-    check: {
-      pending: "Reset to balanced, then run five FF/RH cycles.",
-      complete: "Complete: feedback cycles ran and changed the history.",
-    },
-    actions: [
-      { label: "Reset balanced", type: "preset", name: "balanced" },
-      { label: "Run 5 cycles", type: "cycle", read: "FF", feedback: "RH", count: 5, check: "action-complete" },
-    ],
-    details: [
+    source: "Knowm Chapters 3b and 4b",
+    steps: [
       {
-        title: "Scenario",
-        items: [
-          "A spam filter improves when you mark a message as spam.",
-          "That feedback nudges future decisions so similar messages are more likely to be flagged.",
+        title: "Feedback is the nudge",
+        body: "A read observes the synapse. Feedback nudges the stored conductances. This is the smallest learning loop in the emulator.",
+        task: "Reset balanced so the next feedback action starts from a clear state.",
+        focus: "chart",
+        actions: [{ label: "Reset balanced", type: "preset", name: "balanced" }],
+        details: [
+          {
+            title: "Scenario",
+            items: [
+              "A spam filter improves when you mark a message as spam.",
+              "That feedback nudges future decisions so similar signals are more likely to be flagged.",
+            ],
+          },
         ],
       },
       {
-        title: "Why it matters",
-        items: [
-          "Running FF then RH is a tiny version of learning from feedback.",
-          "You should see y move because the stored conductance state changed.",
-        ],
-      },
-    ],
-  },
-  {
-    title: "Project: teach a positive preference",
-    body: "Now use feedback for a small useful job: store a tiny preference that makes this synapse lean positive.",
-    task: "Reset, measure the starting activation, train with FF/RH cycles, then read again. The lesson is complete when y moves above its starting value.",
-    focus: "chart",
-    check: {
-      pending: "Measure the starting y, train with feedback, then read again.",
-      baselineMissing: "Measure the starting y first.",
-      complete: "Complete: y moved positive after feedback. You changed memory with training.",
-      incomplete: "Not complete yet: y has not moved positive from the starting read.",
-    },
-    actions: [
-      { label: "Reset balanced", type: "preset", name: "balanced", resetCheck: true },
-      { label: "Measure starting y", type: "evaluate", instruction: "FF", record: "baseline-y" },
-      { label: "Train positive", type: "cycle", read: "FF", feedback: "RH", count: 8 },
-      { label: "Read result", type: "evaluate", instruction: "FF", check: "positive-moved" },
-    ],
-    details: [
-      {
-        title: "Scenario",
-        items: [
-          "A simple filter may learn that one signal should usually count as yes.",
-          "This lesson stores that tiny yes preference in one synapse by using feedback.",
+        title: "Read, then reinforce",
+        body: "The tutorial uses FF followed by RH as a simple positive-moving cycle. You read the state, then apply feedback.",
+        task: "Run five FF/RH cycles and watch the chart.",
+        focus: "chart",
+        check: {
+          pending: "Run five FF/RH cycles.",
+          complete: "Complete: feedback cycles ran and changed the history.",
+        },
+        actions: [{ label: "Run 5 cycles", type: "cycle", read: "FF", feedback: "RH", count: 5, check: "action-complete" }],
+        details: [
+          {
+            title: "What to watch",
+            items: [
+              "The history chart should gain several points.",
+              "The y value should move because stored conductance changed.",
+            ],
+          },
         ],
       },
       {
-        title: "Why it matters",
-        items: [
-          "This is the smallest useful learning loop in the tutorial: read, train, read again.",
-          "If y moves positive, the feedback changed the stored conductance state.",
+        title: "Compare feedback directions",
+        body: "RH and RL are both reverse feedback instructions, but their coefficient signs differ. That means they nudge the update differently.",
+        task: "Predict which way RL will move compared with RH. Then run RL cycles from a balanced state.",
+        focus: "chart",
+        check: {
+          pending: "Reset balanced, then run five FF/RL cycles.",
+          complete: "Complete: FF/RL cycles ran. Compare the chart with FF/RH.",
+        },
+        actions: [
+          { label: "Reset balanced", type: "preset", name: "balanced" },
+          { label: "Run 5 FF/RL cycles", type: "cycle", read: "FF", feedback: "RL", count: 5, check: "action-complete" },
+        ],
+        details: [
+          {
+            title: "Why it matters",
+            items: [
+              "Feedback is not just a button named learning.",
+              "The instruction choice changes how conductance is nudged.",
+            ],
+          },
         ],
       },
       {
-        title: "What to watch",
-        items: [
-          "The y gauge should move above its starting value.",
-          "The conductance bars should separate as one side becomes stronger.",
-          "The chart should show the training history instead of just a static value.",
+        title: "Project setup",
+        checkKey: "lesson-4-project",
+        body: "Now use feedback for a small useful job: teach one synapse to lean positive.",
+        task: "Reset balanced and measure the starting y.",
+        focus: "activation",
+        check: {
+          pending: "Reset, then measure starting y.",
+          complete: "Starting y recorded. Now train positive.",
+        },
+        actions: [
+          { label: "Reset balanced", type: "preset", name: "balanced", resetCheck: true },
+          { label: "Measure starting y", type: "evaluate", instruction: "FF", record: "baseline-y" },
         ],
-      },
-    ],
-  },
-  {
-    title: "Noise can be useful",
-    body: "Low-voltage reads can act like samples. Near y = 0, the sign of the read can flip around like a soft coin toss.",
-    task: "Sample FFLV forty times. The positive count shows how often the noisy read landed above zero.",
-    focus: "samples",
-    check: {
-      pending: "Reset to balanced, then sample FFLV forty times.",
-      complete: "Complete: noisy samples collected. Compare the positive and negative counts.",
-    },
-    actions: [
-      { label: "Reset balanced", type: "preset", name: "balanced" },
-      { label: "Sample FFLV", type: "sample", instruction: "FFLV", count: 40, check: "action-complete" },
-    ],
-    details: [
-      {
-        title: "Scenario",
-        items: [
-          "A recommendation system may try different options when it is unsure what you prefer.",
-          "As evidence grows, the choices become less random and more biased toward what it has learned.",
+        details: [
+          {
+            title: "Success condition",
+            items: [
+              "After training, y should be greater than this starting value.",
+              "That shows feedback changed memory, not just the display.",
+            ],
+          },
         ],
       },
       {
-        title: "Why it matters",
-        items: [
-          "Noisy samples show uncertainty instead of hiding it.",
-          "The positive and negative counts help you see whether the lane is balanced or biased.",
+        title: "Train the preference",
+        checkKey: "lesson-4-project",
+        body: "Repeated FF/RH cycles store a tiny yes preference in the selected synapse.",
+        task: "Train positive, then read the result. The lesson is complete when y moves above the starting value.",
+        focus: "chart",
+        check: {
+          pending: "Train with feedback, then read the result.",
+          baselineMissing: "Measure the starting y first.",
+          complete: "Complete: y moved positive after feedback. You changed memory with training.",
+          incomplete: "Not complete yet: y has not moved positive from the starting read.",
+        },
+        actions: [
+          { label: "Train positive", type: "cycle", read: "FF", feedback: "RH", count: 8 },
+          { label: "Read result", type: "evaluate", instruction: "FF", check: "positive-moved" },
         ],
-      },
-    ],
-  },
-  {
-    title: "Magnitude is stored evidence",
-    body: "Magnitude is the total conductance. A higher magnitude means the same weight is harder to move, like a heavier object.",
-    task: "Load the low and high magnitude presets. They have the same starting weight, but different stored evidence.",
-    focus: "magnitude",
-    check: {
-      pending: "Load both magnitude presets to compare stored evidence.",
-      complete: "Complete: you loaded both low and high magnitude states.",
-    },
-    actions: [
-      { label: "Low magnitude", type: "preset", name: "low-magnitude", check: "collect-preset" },
-      { label: "High magnitude", type: "preset", name: "high-magnitude", check: "collect-preset" },
-    ],
-    details: [
-      {
-        title: "Scenario",
-        items: [
-          "One customer review is weak evidence. Hundreds of reviews are harder to overturn.",
-          "A system should change quickly when evidence is small and more slowly when evidence is large.",
-        ],
-      },
-      {
-        title: "Why it matters",
-        items: [
-          "Magnitude helps explain how much stored evidence is behind the current weight.",
-          "Two states can point the same direction but have different resistance to change.",
+        details: [
+          {
+            title: "What to watch",
+            items: [
+              "The y gauge should move above its starting value.",
+              "The conductance bars should separate as one side becomes stronger.",
+              "The chart should show the training history.",
+            ],
+          },
         ],
       },
     ],
   },
   {
-    title: "Where this is heading",
-    body: "Right now, this tutorial teaches the primitive behavior: reads, feedback, noise, conductance balance, and stored evidence.",
-    task: "Use this as a roadmap. Logic gates, supervised classifiers, and auto-encoders build on the same lower-level ideas you just explored.",
-    focus: "chart",
-    details: [
+    id: "lesson-5",
+    menuLabel: "Lesson 5: Magnitude",
+    title: "Magnitude as confidence and inertia",
+    source: "Knowm Chapter 3b",
+    steps: [
+      {
+        title: "Magnitude is the total",
+        body: "Magnitude is Ga plus Gb. Chapter 3b treats it as the common mode: the amount of stored evidence behind the current lean.",
+        task: "Load the low-magnitude preset and look at the Magnitude card.",
+        focus: "magnitude",
+        check: {
+          pending: "Load the low-magnitude preset.",
+          complete: "Complete: low-magnitude state loaded.",
+        },
+        actions: [{ label: "Low magnitude", type: "preset", name: "low-magnitude", check: "collect-preset" }],
+        details: [
+          {
+            title: "Scenario",
+            items: [
+              "One customer review is weak evidence.",
+              "A few votes can be overturned easily.",
+            ],
+          },
+        ],
+      },
+      {
+        title: "Same lean, more evidence",
+        body: "Two states can point the same direction but carry different amounts of evidence. That is what the magnitude presets demonstrate.",
+        task: "Load the high-magnitude preset. Compare y and magnitude with the previous state.",
+        focus: "magnitude",
+        check: {
+          pending: "Load both magnitude presets to compare stored evidence.",
+          complete: "Complete: you loaded both low and high magnitude states.",
+        },
+        actions: [{ label: "High magnitude", type: "preset", name: "high-magnitude", check: "collect-preset" }],
+        details: [
+          {
+            title: "What you should see",
+            items: [
+              "The starting y should be similar.",
+              "The magnitude value should be much larger in the high-magnitude state.",
+            ],
+          },
+        ],
+      },
+      {
+        title: "Magnitude is inertia",
+        body: "A larger magnitude is harder to move. The same feedback has a smaller effect when more evidence is already stored.",
+        task: "Run five FF/RH cycles from the current high-magnitude state and watch how slowly y moves.",
+        focus: "chart",
+        check: {
+          pending: "Run five FF/RH cycles from the high-magnitude state.",
+          complete: "Complete: high-magnitude feedback cycles ran.",
+        },
+        actions: [{ label: "Run 5 cycles", type: "cycle", read: "FF", feedback: "RH", count: 5, check: "action-complete" }],
+        details: [
+          {
+            title: "Why it matters",
+            items: [
+              "Magnitude acts like confidence and inertia at the same time.",
+              "A synapse with more stored evidence should change more slowly.",
+            ],
+          },
+        ],
+      },
+      {
+        title: "Evidence in plain language",
+        body: "Think of Ga and Gb as two running tallies. y is the lean of the vote. Magnitude is how many votes are behind it.",
+        task: "Use the cards to say which number is the lean and which number is evidence.",
+        focus: "magnitude",
+        details: [
+          {
+            title: "Bridge",
+            pairs: [
+              ["Lean", "Activation y."],
+              ["Positive tally", "Ga."],
+              ["Negative tally", "Gb."],
+              ["Evidence count", "Magnitude, or Ga plus Gb."],
+            ],
+          },
+        ],
+      },
+    ],
+  },
+  {
+    id: "lesson-6",
+    menuLabel: "Lesson 6: Noise and sampling",
+    title: "Noise and sampling",
+    source: "Knowm Chapter 3b",
+    steps: [
+      {
+        title: "Noise is not only error",
+        body: "Near a balanced state, noisy reads reveal uncertainty. That randomness can be useful because it tells you the lane is not strongly committed.",
+        task: "Reset balanced before sampling.",
+        focus: "samples",
+        actions: [{ label: "Reset balanced", type: "preset", name: "balanced" }],
+        details: [
+          {
+            title: "Scenario",
+            items: [
+              "A recommendation system may try different options when it is unsure.",
+              "As evidence grows, choices become less random and more biased.",
+            ],
+          },
+        ],
+      },
+      {
+        title: "Balanced sampling",
+        body: "When y is near zero, FFLV samples can split between positive and negative like a soft coin toss.",
+        task: "Sample FFLV forty times.",
+        focus: "samples",
+        check: {
+          pending: "Sample FFLV forty times from the balanced state.",
+          complete: "Complete: balanced noisy samples collected.",
+        },
+        actions: [{ label: "Sample FFLV", type: "sample", instruction: "FFLV", count: 40, check: "action-complete" }],
+        details: [
+          {
+            title: "What to watch",
+            items: [
+              "The sample bars show positive and negative counts.",
+              "Balanced does not mean every sample is exactly zero.",
+            ],
+          },
+        ],
+      },
+      {
+        title: "Biased sampling",
+        body: "If the weight leans positive, noisy samples should land positive more often. The randomness is still there, but the split changes.",
+        task: "Load the positive preset, then sample FFLV forty times.",
+        focus: "samples",
+        check: {
+          pending: "Load positive, then sample FFLV forty times.",
+          complete: "Complete: biased noisy samples collected.",
+        },
+        actions: [
+          { label: "Load positive preset", type: "preset", name: "positive" },
+          { label: "Sample FFLV", type: "sample", instruction: "FFLV", count: 40, check: "action-complete" },
+        ],
+        details: [
+          {
+            title: "What should change",
+            items: [
+              "The positive bar should usually take a larger share.",
+              "A stronger lean should bias the sample split.",
+            ],
+          },
+        ],
+      },
+      {
+        title: "The idea without calculus",
+        body: "The probability of a positive sample rises when the weight is larger compared with the noise. You do not need the formula yet; just watch the split.",
+        task: "Compare balanced samples with positive samples.",
+        focus: "samples",
+        details: [
+          {
+            title: "Plain language",
+            pairs: [
+              ["More balance", "More coin-like samples."],
+              ["More lean", "More samples land on the leaning side."],
+              ["More noise", "Samples spread out more."],
+            ],
+          },
+        ],
+      },
+    ],
+  },
+  {
+    id: "lesson-7",
+    menuLabel: "Lesson 7: Bigger systems",
+    title: "From one synapse to bigger systems",
+    source: "Knowm Chapters 1, 4, and 4b",
+    steps: [
       {
         title: "Current scope",
-        items: [
-          "One lane, one selected address, and one visible differential conductance pair.",
-          "Enough surface area to learn how reading and feedback change stored state.",
+        body: "Right now, this app teaches primitive lane behavior: reads, feedback, noise, conductance balance, and stored evidence.",
+        task: "Review the one-synapse scope before looking ahead.",
+        focus: "chart",
+        details: [
+          {
+            title: "What this app shows",
+            items: [
+              "One lane.",
+              "One selected address.",
+              "One visible differential conductance pair.",
+            ],
+          },
         ],
       },
       {
-        title: "Near roadmap",
-        items: [
-          "Logic gates can show how simple computation is assembled from lane behavior.",
-          "Supervised classifiers can show how feedback trains decisions from examples.",
-          "Auto-encoders can show how systems learn compressed internal representations.",
+        title: "AAT scales the selection",
+        body: "Chapter 4 describes the Activation Address Tuple as the selection pattern for a neural lane. This app fixes it at (0,), but larger examples can select more structure.",
+        task: "Look at the AAT label in the top bar and connect it to the selected synapse.",
+        focus: "activation",
+        details: [
+          {
+            title: "Bridge",
+            items: [
+              "Here, AAT (0,) means one selected address.",
+              "In larger lane examples, address selections become part of the computation.",
+            ],
+          },
         ],
       },
       {
-        title: "Why it matters",
-        items: [
-          "The current emulator is the foundation, not the finish line.",
-          "If you understand one synapse changing after feedback, later gates and classifiers have a concrete place to start.",
+        title: "From primitives to examples",
+        body: "Logic gates, classifiers, and auto-encoders should come after the emulator exposes runnable examples for them.",
+        task: "Use this as a roadmap, not as a claim that those examples are implemented here yet.",
+        focus: "chart",
+        details: [
+          {
+            title: "Near roadmap",
+            items: [
+              "Logic gates can show how simple computation is assembled from lane behavior.",
+              "Supervised classifiers can show how feedback trains decisions from examples.",
+              "Auto-encoders can show learned internal representations.",
+            ],
+          },
+        ],
+      },
+      {
+        title: "What to remember",
+        body: "If you understand one synapse changing after feedback, later systems have a concrete place to start.",
+        task: "Exit the tutorial or jump back to any lesson for review.",
+        focus: "chart",
+        details: [
+          {
+            title: "Summary",
+            items: [
+              "Reads report state.",
+              "Feedback changes state.",
+              "Magnitude is stored evidence.",
+              "Noise can become sampling.",
+              "A lane combines selected synapses into useful computation.",
+            ],
+          },
         ],
       },
     ],
   },
 ];
+const lessons = tutorialLessonGroups.flatMap((group, groupIndex) => {
+  return group.steps.map((step, stepIndex) => ({
+    ...step,
+    lessonId: group.id,
+    lessonTitle: group.title,
+    lessonMenuLabel: group.menuLabel,
+    lessonSource: group.source,
+    lessonNumber: groupIndex + 1,
+    lessonCount: tutorialLessonGroups.length,
+    lessonStep: stepIndex + 1,
+    lessonStepCount: group.steps.length,
+    menuLabel: `${group.menuLabel}: ${step.title}`,
+  }));
+});
+const lessonStartIndexes = tutorialLessonGroups.map((group) => {
+  return lessons.findIndex((lesson) => lesson.lessonId === group.id);
+});
 let tutorialIndex = 0;
+let tutorialPage = 0;
 let tourIndex = 0;
 let activeTourTarget = null;
 const tutorialChecks = new Map();
@@ -687,21 +1001,23 @@ const els = {
   sampleNote: document.querySelector("#sample-note"),
   tutorialToggle: document.querySelector("#tutorial-toggle"),
   tutorialPanel: document.querySelector("#tutorial-panel"),
+  tutorialKicker: document.querySelector("#tutorial-kicker"),
   tutorialTitle: document.querySelector("#tutorial-title"),
   tutorialBody: document.querySelector("#tutorial-body"),
   tutorialTask: document.querySelector("#tutorial-task"),
   tutorialDetails: document.querySelector("#tutorial-details"),
   tutorialStatus: document.querySelector("#tutorial-status"),
   tutorialActions: document.querySelector("#tutorial-actions"),
+  tutorialJump: document.querySelector("#tutorial-jump"),
   tutorialProgress: document.querySelector("#tutorial-progress"),
   tutorialPrev: document.querySelector("#tutorial-prev"),
   tutorialNext: document.querySelector("#tutorial-next"),
   tutorialResetLesson: document.querySelector("#tutorial-reset-lesson"),
-  tutorialRestart: document.querySelector("#tutorial-restart"),
   tutorialExit: document.querySelector("#tutorial-exit"),
   tourStart: document.querySelector("#tour-start"),
   tourScrim: document.querySelector("#tour-scrim"),
   tourBubble: document.querySelector("#tour-bubble"),
+  tourControls: document.querySelector("#tour-controls"),
   tourTitle: document.querySelector("#tour-title"),
   tourBody: document.querySelector("#tour-body"),
   tourProgress: document.querySelector("#tour-progress"),
@@ -751,6 +1067,16 @@ function render(state) {
   drawChart(state.history || []);
 }
 
+function showTutorialPanel() {
+  els.tutorialPanel.hidden = false;
+  renderTutorial();
+}
+
+function hideTutorialPanel() {
+  els.tutorialPanel.hidden = true;
+  setFocus(null);
+}
+
 function setFocus(target) {
   document.querySelectorAll(".focused").forEach((node) => node.classList.remove("focused"));
   if (!target) {
@@ -758,6 +1084,10 @@ function setFocus(target) {
   }
   if (target === "chart") {
     document.querySelector(".chart-panel")?.classList.add("focused");
+    return;
+  }
+  if (target === "instructions") {
+    document.querySelector("#instructions")?.classList.add("focused");
     return;
   }
   document.querySelectorAll(`[data-focus="${target}"]`).forEach((node) => {
@@ -797,9 +1127,8 @@ function renderTour() {
     return;
   }
 
-  if (step.showTutorial && els.tutorialPanel.hidden) {
-    els.tutorialPanel.hidden = false;
-    renderTutorial();
+  if (step.selector === ".tutorial-panel" || document.querySelector(step.selector)?.closest("#tutorial-panel")) {
+    showTutorialPanel();
   }
 
   const target = document.querySelector(step.selector);
@@ -821,6 +1150,7 @@ function renderTour() {
   els.tourNext.textContent = tourIndex === tourSteps.length - 1 ? "Finish" : "Next";
   els.tourScrim.hidden = false;
   els.tourBubble.hidden = false;
+  els.tourControls.hidden = false;
 
   window.setTimeout(() => positionTourBubble(target), 220);
 }
@@ -834,6 +1164,7 @@ function closeTour() {
   clearTourHighlight();
   els.tourScrim.hidden = true;
   els.tourBubble.hidden = true;
+  els.tourControls.hidden = true;
 }
 
 function moveTour(delta) {
@@ -887,16 +1218,25 @@ function clearSamples() {
 
 function renderTutorial() {
   const lesson = lessons[tutorialIndex];
+  const pageCount = getTutorialPageCount(lesson);
+  tutorialPage = clamp(tutorialPage, 0, pageCount - 1);
+  const lessonStartIndex = lessonStartIndexes[lesson.lessonNumber - 1] ?? tutorialIndex;
+  els.tutorialJump.value = String(lessonStartIndex);
+  els.tutorialKicker.textContent = `Lesson ${lesson.lessonNumber} of ${lesson.lessonCount} | ${lesson.lessonTitle}`;
   els.tutorialTitle.textContent = lesson.title;
   els.tutorialBody.textContent = lesson.body;
   els.tutorialTask.textContent = lesson.task;
-  els.tutorialProgress.textContent = `${tutorialIndex + 1} / ${lessons.length}`;
-  els.tutorialPrev.disabled = tutorialIndex === 0;
-  els.tutorialNext.disabled = tutorialIndex === lessons.length - 1;
-  renderTutorialDetails(lesson.details || []);
+  els.tutorialProgress.textContent = `Step ${lesson.lessonStep} / ${lesson.lessonStepCount} | Page ${tutorialPage + 1} / ${pageCount}`;
+  els.tutorialPrev.disabled = tutorialIndex === 0 && tutorialPage === 0;
+  els.tutorialNext.disabled = tutorialIndex === lessons.length - 1 && tutorialPage === pageCount - 1;
+  const hasMoreText = tutorialPage < pageCount - 1;
+  els.tutorialNext.textContent = "Next >>";
+  els.tutorialNext.classList.toggle("has-more", hasMoreText);
+  renderTutorialDetails(getTutorialPageDetails(lesson));
   renderTutorialStatus();
   els.tutorialActions.replaceChildren();
-  (lesson.actions || []).forEach((action) => {
+  const actions = tutorialPage === 0 ? (lesson.actions || []) : [];
+  actions.forEach((action) => {
     const button = document.createElement("button");
     button.type = "button";
     button.textContent = action.label;
@@ -906,11 +1246,55 @@ function renderTutorial() {
   setFocus(lesson.focus);
 }
 
-function getTutorialCheck() {
-  if (!tutorialChecks.has(tutorialIndex)) {
-    tutorialChecks.set(tutorialIndex, {});
+function getTutorialPageCount(lesson) {
+  return Math.max((lesson.details || []).length + 1, 1);
+}
+
+function getTutorialPageDetails(lesson) {
+  if (tutorialPage === 0) {
+    return [];
   }
-  return tutorialChecks.get(tutorialIndex);
+  return [lesson.details[tutorialPage - 1]].filter(Boolean);
+}
+
+function goTutorialPrevious() {
+  if (tutorialPage > 0) {
+    tutorialPage -= 1;
+  } else {
+    tutorialIndex = Math.max(0, tutorialIndex - 1);
+    tutorialPage = getTutorialPageCount(lessons[tutorialIndex]) - 1;
+  }
+  renderTutorial();
+}
+
+function goTutorialNext() {
+  const pageCount = getTutorialPageCount(lessons[tutorialIndex]);
+  if (tutorialPage < pageCount - 1) {
+    tutorialPage += 1;
+  } else {
+    tutorialIndex = Math.min(lessons.length - 1, tutorialIndex + 1);
+    tutorialPage = 0;
+  }
+  renderTutorial();
+}
+
+function wireTutorialJump() {
+  els.tutorialJump.replaceChildren();
+  tutorialLessonGroups.forEach((group, groupIndex) => {
+    const startIndex = lessonStartIndexes[groupIndex];
+    const option = document.createElement("option");
+    option.value = String(startIndex);
+    option.textContent = group.menuLabel;
+    els.tutorialJump.appendChild(option);
+  });
+}
+
+function getTutorialCheck() {
+  const key = lessons[tutorialIndex].checkKey || tutorialIndex;
+  if (!tutorialChecks.has(key)) {
+    tutorialChecks.set(key, {});
+  }
+  return tutorialChecks.get(key);
 }
 
 function renderTutorialStatus(message, kind) {
@@ -925,7 +1309,8 @@ function renderTutorialStatus(message, kind) {
 }
 
 function resetTutorialCheck() {
-  tutorialChecks.set(tutorialIndex, {});
+  const key = lessons[tutorialIndex].checkKey || tutorialIndex;
+  tutorialChecks.set(key, {});
   renderTutorialStatus();
 }
 
@@ -939,12 +1324,6 @@ async function resetLessonState() {
     clearSamples();
   }
   renderTutorial();
-}
-
-async function restartTutorial() {
-  tutorialChecks.clear();
-  tutorialIndex = 0;
-  await resetLessonState();
 }
 
 function renderTutorialDetails(details) {
@@ -1202,32 +1581,30 @@ els.sample.addEventListener("click", async () => {
 });
 
 els.tutorialToggle.addEventListener("click", () => {
-  els.tutorialPanel.hidden = !els.tutorialPanel.hidden;
-  if (!els.tutorialPanel.hidden) {
-    renderTutorial();
+  if (els.tutorialPanel.hidden) {
+    showTutorialPanel();
   } else {
-    setFocus(null);
+    hideTutorialPanel();
   }
 });
 
 els.tutorialPrev.addEventListener("click", () => {
-  tutorialIndex = Math.max(0, tutorialIndex - 1);
-  renderTutorial();
+  goTutorialPrevious();
 });
 
 els.tutorialNext.addEventListener("click", () => {
-  tutorialIndex = Math.min(lessons.length - 1, tutorialIndex + 1);
+  goTutorialNext();
+});
+
+els.tutorialJump.addEventListener("change", () => {
+  tutorialIndex = Number(els.tutorialJump.value);
+  tutorialPage = 0;
   renderTutorial();
 });
 
 els.tutorialResetLesson.addEventListener("click", resetLessonState);
 
-els.tutorialRestart.addEventListener("click", restartTutorial);
-
-els.tutorialExit.addEventListener("click", () => {
-  els.tutorialPanel.hidden = true;
-  setFocus(null);
-});
+els.tutorialExit.addEventListener("click", hideTutorialPanel);
 
 els.tourStart.addEventListener("click", startTour);
 
@@ -1257,4 +1634,5 @@ window.addEventListener("keydown", (event) => {
 });
 
 wireInstructions();
+wireTutorialJump();
 getState().then(render);
