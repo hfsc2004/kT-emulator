@@ -429,6 +429,13 @@ const tutorialLessonGroups = [
               "Ga and Gb are also two sides of a comparison.",
             ],
           },
+          {
+            title: "Why would someone do this?",
+            items: [
+              "Many decisions are comparisons, not isolated measurements.",
+              "The pair lets the emulator show which side is winning and how strongly it is winning.",
+            ],
+          },
         ],
       },
       {
@@ -447,6 +454,13 @@ const tutorialLessonGroups = [
             items: [
               "The y value should stay near zero when Ga and Gb are similar.",
               "The gauge needle should stay near the center.",
+            ],
+          },
+          {
+            title: "Scenario",
+            items: [
+              "When two votes are tied, the decision should stay neutral.",
+              "A balanced conductance pair behaves the same way: neither side has earned the lean yet.",
             ],
           },
         ],
@@ -469,6 +483,13 @@ const tutorialLessonGroups = [
               "The conductance bars should no longer match exactly.",
             ],
           },
+          {
+            title: "Why would someone do this?",
+            items: [
+              "A positive lean can represent a small yes, go, or likely signal.",
+              "The visible conductance difference shows where that lean is stored.",
+            ],
+          },
         ],
       },
       {
@@ -489,6 +510,13 @@ const tutorialLessonGroups = [
               "The pair carries more information than one ordinary scalar weight.",
             ],
           },
+          {
+            title: "Scenario",
+            items: [
+              "If one signal means go and the other means stop, reversing the balance reverses the decision.",
+              "The same pair can express either direction without changing the rest of the lane.",
+            ],
+          },
         ],
       },
       {
@@ -504,6 +532,13 @@ const tutorialLessonGroups = [
               "Ga and Gb are the two conductance sides.",
               "y is the normalized read result from their balance.",
               "The bars and gauge are read-only views of that state.",
+            ],
+          },
+          {
+            title: "Why would someone do this?",
+            items: [
+              "Once the comparison is visible, later feedback steps are easier to understand.",
+              "You can tell whether training changed memory by watching the pair separate or rebalance.",
             ],
           },
         ],
@@ -537,6 +572,13 @@ const tutorialLessonGroups = [
               "FFLV and RFLV are low-voltage reads.",
             ],
           },
+          {
+            title: "Scenario",
+            items: [
+              "Checking a battery level should not drain the battery.",
+              "A read should report the lane state while keeping the idea of storage separate from feedback.",
+            ],
+          },
         ],
       },
       {
@@ -555,6 +597,13 @@ const tutorialLessonGroups = [
             items: [
               "A single low-voltage read may not look dramatic.",
               "The difference becomes clearer when you collect many samples.",
+            ],
+          },
+          {
+            title: "Why would someone do this?",
+            items: [
+              "Low-voltage reads make uncertainty visible without turning the lesson into a math exercise.",
+              "They prepare you for sampling before you learn larger lane examples.",
             ],
           },
         ],
@@ -580,6 +629,13 @@ const tutorialLessonGroups = [
               "A balanced state should feel coin-like, not locked to one answer.",
             ],
           },
+          {
+            title: "Scenario",
+            items: [
+              "A cautious sensor may need several checks before acting.",
+              "Sampling a balanced pair shows why one noisy read should not be treated as a final verdict.",
+            ],
+          },
         ],
       },
       {
@@ -594,6 +650,13 @@ const tutorialLessonGroups = [
               ["Read", "Reports y from the selected state."],
               ["Low-voltage read", "Samples the state with more visible randomness."],
               ["Feedback", "Changes conductance instead of only reporting y."],
+            ],
+          },
+          {
+            title: "Why would someone do this?",
+            items: [
+              "Separating read from feedback prevents accidental learning.",
+              "That distinction matters when a system must observe before deciding how to adapt.",
             ],
           },
         ],
@@ -620,6 +683,13 @@ const tutorialLessonGroups = [
               "That feedback nudges future decisions so similar signals are more likely to be flagged.",
             ],
           },
+          {
+            title: "Why would someone do this?",
+            items: [
+              "A useful learner needs a way to change after feedback.",
+              "This lesson shows the smallest version of that training loop.",
+            ],
+          },
         ],
       },
       {
@@ -638,6 +708,13 @@ const tutorialLessonGroups = [
             items: [
               "The history chart should gain several points.",
               "The y value should move because stored conductance changed.",
+            ],
+          },
+          {
+            title: "Scenario",
+            items: [
+              "Each correction to a spam filter is small.",
+              "Several corrections in the same direction create a visible preference.",
             ],
           },
         ],
@@ -663,6 +740,13 @@ const tutorialLessonGroups = [
               "The instruction choice changes how conductance is nudged.",
             ],
           },
+          {
+            title: "Scenario",
+            items: [
+              "Two teachers can give opposite corrections to the same answer.",
+              "RH and RL let you see how the chosen feedback direction changes the stored state.",
+            ],
+          },
         ],
       },
       {
@@ -685,6 +769,13 @@ const tutorialLessonGroups = [
             items: [
               "After training, y should be greater than this starting value.",
               "That shows feedback changed memory, not just the display.",
+            ],
+          },
+          {
+            title: "Why would someone do this?",
+            items: [
+              "A baseline gives training something honest to compare against.",
+              "Without the starting read, you cannot prove the preference moved.",
             ],
           },
         ],
@@ -712,6 +803,13 @@ const tutorialLessonGroups = [
               "The y gauge should move above its starting value.",
               "The conductance bars should separate as one side becomes stronger.",
               "The chart should show the training history.",
+            ],
+          },
+          {
+            title: "Scenario",
+            items: [
+              "This is the tiny version of teaching this input should usually count as yes.",
+              "The emulator stores that preference as conductance change.",
             ],
           },
         ],
@@ -742,6 +840,13 @@ const tutorialLessonGroups = [
               "A few votes can be overturned easily.",
             ],
           },
+          {
+            title: "Why would someone do this?",
+            items: [
+              "A learner should react differently to weak evidence than to strong evidence.",
+              "Magnitude gives the UI a way to show how much evidence is stored behind the current lean.",
+            ],
+          },
         ],
       },
       {
@@ -760,6 +865,13 @@ const tutorialLessonGroups = [
             items: [
               "The starting y should be similar.",
               "The magnitude value should be much larger in the high-magnitude state.",
+            ],
+          },
+          {
+            title: "Scenario",
+            items: [
+              "Two products can both have good ratings, but one rating may come from three people and the other from three thousand.",
+              "The lean can look similar while the evidence behind it is very different.",
             ],
           },
         ],
@@ -782,6 +894,13 @@ const tutorialLessonGroups = [
               "A synapse with more stored evidence should change more slowly.",
             ],
           },
+          {
+            title: "Scenario",
+            items: [
+              "A strong reputation should not flip after one new review.",
+              "High magnitude makes the stored state harder to move for the same reason.",
+            ],
+          },
         ],
       },
       {
@@ -797,6 +916,13 @@ const tutorialLessonGroups = [
               ["Positive tally", "Ga."],
               ["Negative tally", "Gb."],
               ["Evidence count", "Magnitude, or Ga plus Gb."],
+            ],
+          },
+          {
+            title: "Why would someone do this?",
+            items: [
+              "Plain-language labels make the readings easier to remember.",
+              "Lean tells direction; magnitude tells how much stored evidence supports it.",
             ],
           },
         ],
@@ -823,6 +949,13 @@ const tutorialLessonGroups = [
               "As evidence grows, choices become less random and more biased.",
             ],
           },
+          {
+            title: "Why would someone do this?",
+            items: [
+              "Uncertainty is useful information.",
+              "Sampling lets the app show a soft decision instead of pretending every read is equally certain.",
+            ],
+          },
         ],
       },
       {
@@ -841,6 +974,13 @@ const tutorialLessonGroups = [
             items: [
               "The sample bars show positive and negative counts.",
               "Balanced does not mean every sample is exactly zero.",
+            ],
+          },
+          {
+            title: "Scenario",
+            items: [
+              "When a recommendation engine is unsure, it may explore both choices.",
+              "Balanced noisy samples show that uncertainty as a visible split.",
             ],
           },
         ],
@@ -866,6 +1006,13 @@ const tutorialLessonGroups = [
               "A stronger lean should bias the sample split.",
             ],
           },
+          {
+            title: "Why would someone do this?",
+            items: [
+              "Biased sampling turns stored evidence into a more likely choice.",
+              "The lane can still explore, but it should favor the side with stronger evidence.",
+            ],
+          },
         ],
       },
       {
@@ -880,6 +1027,13 @@ const tutorialLessonGroups = [
               ["More balance", "More coin-like samples."],
               ["More lean", "More samples land on the leaning side."],
               ["More noise", "Samples spread out more."],
+            ],
+          },
+          {
+            title: "Scenario",
+            items: [
+              "A system can choose confidently when evidence is strong and stay flexible when evidence is weak.",
+              "That is the practical reason to care about noisy low-voltage sampling.",
             ],
           },
         ],
@@ -906,6 +1060,13 @@ const tutorialLessonGroups = [
               "One visible differential conductance pair.",
             ],
           },
+          {
+            title: "Scenario",
+            items: [
+              "A robot controller does not trust one sensor reading by itself.",
+              "It combines many small signals before choosing an action.",
+            ],
+          },
         ],
       },
       {
@@ -919,6 +1080,13 @@ const tutorialLessonGroups = [
             items: [
               "Here, AAT (0,) means one selected address.",
               "In larger lane examples, address selections become part of the computation.",
+            ],
+          },
+          {
+            title: "Why would someone do this?",
+            items: [
+              "Address selection is how a larger system chooses which stored pieces participate.",
+              "This app keeps the address fixed so the first lesson stays visible.",
             ],
           },
         ],
@@ -937,6 +1105,13 @@ const tutorialLessonGroups = [
               "Auto-encoders can show learned internal representations.",
             ],
           },
+          {
+            title: "Scenario",
+            items: [
+              "A face detector, weather model, or robot controller combines many learned signals.",
+              "The one-synapse lesson is the smallest part of that larger pattern.",
+            ],
+          },
         ],
       },
       {
@@ -953,6 +1128,159 @@ const tutorialLessonGroups = [
               "Magnitude is stored evidence.",
               "Noise can become sampling.",
               "A lane combines selected synapses into useful computation.",
+            ],
+          },
+          {
+            title: "Why would someone do this?",
+            items: [
+              "The goal is not to memorize button names.",
+              "The goal is to recognize the loop: read state, apply feedback, watch memory change, then scale that idea up.",
+            ],
+          },
+        ],
+      },
+    ],
+  },
+  {
+    id: "lesson-8",
+    menuLabel: "Lesson 8: Guided challenge",
+    title: "Train and verify a preference",
+    source: "Knowm Chapters 3b, 4, and 4b",
+    steps: [
+      {
+        title: "Challenge setup",
+        checkKey: "lesson-8-challenge",
+        body: "Now use the emulator without a new concept being introduced. The job is to teach one synapse a tiny positive preference and prove it moved.",
+        task: "Load the balanced preset so the challenge starts from a neutral state.",
+        focus: "controls",
+        check: {
+          pending: "Load balanced to start the challenge.",
+          complete: "Complete: challenge state reset to balanced.",
+        },
+        actions: [{ label: "Load balanced", type: "preset", name: "balanced", resetCheck: true }],
+        details: [
+          {
+            title: "Scenario",
+            items: [
+              "Imagine this one synapse is voting on a simple yes/no signal.",
+              "Your goal is to make it lean yes, then prove the memory changed.",
+            ],
+          },
+          {
+            title: "Why would someone do this?",
+            items: [
+              "A challenge turns the earlier explanations into one complete workflow.",
+              "It checks that reads, feedback, conductance balance, and magnitude now fit together.",
+            ],
+          },
+        ],
+      },
+      {
+        title: "Record the starting point",
+        checkKey: "lesson-8-challenge",
+        body: "A good experiment records where it started. Here, the starting read becomes the baseline for the final check.",
+        task: "Run FF once to record the starting activation y.",
+        focus: "activation",
+        check: {
+          pending: "Run FF to record the starting y.",
+          complete: "Starting y recorded. Now train the preference.",
+        },
+        actions: [{ label: "Measure starting y", type: "evaluate", instruction: "FF", record: "baseline-y" }],
+        details: [
+          {
+            title: "What to watch",
+            items: [
+              "The top Activation card reports y.",
+              "The balanced state should start near zero.",
+            ],
+          },
+          {
+            title: "Why would someone do this?",
+            items: [
+              "The baseline keeps the challenge honest.",
+              "The final read only counts if it moves above this starting value.",
+            ],
+          },
+        ],
+      },
+      {
+        title: "Train the yes preference",
+        checkKey: "lesson-8-challenge",
+        body: "Use repeated read plus feedback cycles to store a small positive lean. This is the same learning loop from the feedback lesson, now used as a challenge.",
+        task: "Run ten FF/RH cycles and watch the chart gain history.",
+        focus: "chart",
+        check: {
+          pending: "Run ten FF/RH cycles.",
+          complete: "Complete: training cycles ran.",
+        },
+        actions: [{ label: "Run 10 FF/RH cycles", type: "cycle", read: "FF", feedback: "RH", count: 10 }],
+        details: [
+          {
+            title: "What to watch",
+            items: [
+              "The chart should show several new points.",
+              "The conductance bars should begin separating.",
+            ],
+          },
+          {
+            title: "Scenario",
+            items: [
+              "Repeated positive feedback is like seeing the same answer confirmed several times.",
+              "The synapse should start treating that direction as more likely.",
+            ],
+          },
+        ],
+      },
+      {
+        title: "Verify the result",
+        checkKey: "lesson-8-challenge",
+        body: "The challenge is not complete until a fresh read proves the stored state moved positive from the baseline.",
+        task: "Run FF again. The check passes when y is higher than the starting read.",
+        focus: "gauge",
+        check: {
+          pending: "Read the trained state with FF.",
+          baselineMissing: "Record the starting y before verifying the result.",
+          complete: "Complete: the trained read moved positive. The preference is stored in the synapse.",
+          incomplete: "Not complete yet: the trained read has not moved positive from the baseline.",
+        },
+        actions: [{ label: "Read trained result", type: "evaluate", instruction: "FF", check: "positive-moved" }],
+        details: [
+          {
+            title: "Success condition",
+            items: [
+              "Activation y should be higher than the recorded baseline.",
+              "The Weight Gauge should lean right.",
+              "Ga and Gb should no longer look perfectly balanced.",
+            ],
+          },
+          {
+            title: "Why would someone do this?",
+            items: [
+              "Verification separates a real state change from a hopeful guess.",
+              "This is the smallest complete read-train-read loop in the emulator.",
+            ],
+          },
+        ],
+      },
+      {
+        title: "Explain what changed",
+        body: "The final step is to connect the UI readings back to the idea. Feedback changed conductance. Conductance balance changed y. The chart recorded the training history.",
+        task: "Use the visible readings to explain the result in one sentence.",
+        focus: "balance",
+        details: [
+          {
+            title: "Answer shape",
+            items: [
+              "The synapse started near neutral.",
+              "FF/RH feedback pushed the stored conductances toward a positive lean.",
+              "The final read showed y moved positive compared with the baseline.",
+            ],
+          },
+          {
+            title: "What comes next",
+            items: [
+              "Future tutorials can reuse this same loop for logic gates and classifiers.",
+              "Those examples should wait until the emulator exposes runnable multi-synapse behavior.",
             ],
           },
         ],
