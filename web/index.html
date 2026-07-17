@@ -18,8 +18,8 @@
         </div>
         <div class="status">
           <span id="branch">AAT (0,)</span>
-          <button id="tutorial-toggle" type="button">Tutorial</button>
-          <button id="tour-start" type="button">Interface Tour</button>
+          <button id="tutorial-toggle" type="button" title="Show tutorial panel">Tutorial</button>
+          <button id="tour-start" type="button" title="Start interface tour">Interface Tour</button>
           <strong id="step">0</strong>
         </div>
       </header>
@@ -49,7 +49,7 @@
           <div class="section-title">Core <em>adjustable</em></div>
           <label>
             <span>Model</span>
-            <select id="model">
+            <select id="model" title="Emulator model">
               <option value="float">float</option>
               <option value="byte">byte</option>
               <option value="rs">rs</option>
@@ -58,7 +58,7 @@
           </label>
           <label>
             <span>Init</span>
-            <select id="init">
+            <select id="init" title="Initial conductance preset">
               <option value="medium">medium</option>
               <option value="low">low</option>
               <option value="high">high</option>
@@ -74,18 +74,18 @@
           <div class="row">
             <label>
               <span>Seed</span>
-              <input id="seed" type="number" value="1" min="0" step="1">
+              <input id="seed" type="number" value="1" min="0" step="1" title="Repeatable random seed">
             </label>
             <label>
               <span>Start y</span>
-              <input id="start-y" type="number" placeholder="auto" min="-1" max="1" step="0.05">
+              <input id="start-y" type="number" placeholder="auto" min="-1" max="1" step="0.05" title="Optional starting activation">
             </label>
           </div>
           <label>
             <span>Read noise</span>
-            <input id="read-noise" type="range" min="0" max="0.1" step="0.001" value="0.02">
+            <input id="read-noise" type="range" min="0" max="0.1" step="0.001" value="0.02" title="Core read noise">
           </label>
-          <button id="reset" class="primary" type="button">Reset core</button>
+          <button id="reset" class="primary" type="button" title="Rebuild the emulator state">Reset core</button>
 
           <div class="section-title">Instruction <em>actions</em></div>
           <div class="instruction-grid" id="instructions"></div>
@@ -94,7 +94,7 @@
           <div class="row">
             <label>
               <span>Read</span>
-              <select id="cycle-read">
+              <select id="cycle-read" title="Cycle read instruction">
                 <option>FF</option>
                 <option>FFLV</option>
                 <option>RF</option>
@@ -103,7 +103,7 @@
             </label>
             <label>
               <span>Feedback</span>
-              <select id="cycle-feedback">
+              <select id="cycle-feedback" title="Cycle feedback instruction">
                 <option>RH</option>
                 <option>RL</option>
                 <option>FH</option>
@@ -117,20 +117,20 @@
           </div>
           <label>
             <span>Count</span>
-            <input id="cycle-count" type="number" min="1" max="500" value="5">
+            <input id="cycle-count" type="number" min="1" max="500" value="5" title="Number of read-feedback cycles">
           </label>
-          <button id="run-cycle" type="button">Run cycle</button>
+          <button id="run-cycle" type="button" title="Run repeated read-feedback cycles">Run cycle</button>
 
           <div class="section-title">Sampling <em>adjustable</em></div>
           <label>
             <span>Read-voltage noise dial</span>
-            <input id="noise" type="range" min="0" max="0.95" step="0.01" value="0">
+            <input id="noise" type="range" min="0" max="0.95" step="0.01" value="0" title="Sampling noise dial">
           </label>
           <label>
             <span>Samples</span>
-            <input id="sample-count" type="number" min="1" max="1000" value="40">
+            <input id="sample-count" type="number" min="1" max="1000" value="40" title="Number of samples">
           </label>
-          <button id="sample" type="button">Sample FFLV</button>
+          <button id="sample" type="button" title="Collect low-voltage read samples">Sample FFLV</button>
           </section>
         </aside>
 
@@ -198,13 +198,13 @@
             </article>
           </section>
 
-          <section id="tutorial-panel" class="panel tutorial-panel" hidden>
+          <section id="tutorial-panel" class="panel tutorial-panel">
             <div class="tutorial-main">
               <div class="tutorial-head">
                 <div class="section-title" id="tutorial-kicker">Tutorial</div>
                 <label class="tutorial-select">
                   <span>Jump to</span>
-                  <select id="tutorial-jump"></select>
+                  <select id="tutorial-jump" title="Jump to lesson"></select>
                 </label>
               </div>
               <h2 id="tutorial-title">What is this emulator?</h2>
@@ -215,11 +215,11 @@
               <div class="tutorial-actions" id="tutorial-actions"></div>
             </div>
             <div class="tutorial-nav">
-              <button id="tutorial-prev" type="button">&lt;&lt; Back</button>
+              <button id="tutorial-prev" type="button" title="Previous tutorial page or step">&lt;&lt; Back</button>
               <span id="tutorial-progress">1 / 1</span>
-              <button id="tutorial-next" type="button">Next</button>
-              <button id="tutorial-reset-lesson" type="button">Reset Lesson</button>
-              <button id="tutorial-exit" type="button">Close</button>
+              <button id="tutorial-next" type="button" title="Next tutorial page or step">Next</button>
+              <button id="tutorial-reset-lesson" type="button" title="Reset current lesson state">Reset Lesson</button>
+              <button id="tutorial-exit" type="button" title="Hide tutorial panel">Close</button>
             </div>
           </section>
         </section>
@@ -232,15 +232,15 @@
         <p id="tour-body"></p>
       </section>
       <nav id="tour-controls" class="tour-controls" hidden aria-label="Interface tour controls">
-        <button id="tour-prev" type="button">Back</button>
+        <button id="tour-prev" type="button" title="Previous tour target">Back</button>
         <span id="tour-progress">1 / 1</span>
-        <button id="tour-next" type="button">Next</button>
-        <button id="tour-close" type="button">Close</button>
+        <button id="tour-next" type="button" title="Next tour target">Next</button>
+        <button id="tour-close" type="button" title="End interface tour">Close</button>
       </nav>
 
       <footer class="app-footer">
         <span>kT-RAM Neural Lane Emulator</span>
-        <strong>v0.1.2</strong>
+        <strong>v0.1.3</strong>
       </footer>
     </main>
     <script src="/app.js"></script>

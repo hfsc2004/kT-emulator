@@ -1,5 +1,10 @@
 # Changelog
 
+## v0.1.3
+
+- Added brief mouse-over names for compact controls and instruction buttons.
+- Updated README screenshot cache-buster and project version references.
+
 ## v0.1.2
 
 - Bumped project version after the tutorial and compact layout update.
