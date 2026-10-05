@@ -4,7 +4,7 @@
 
 # kT-RAM Neural Lane Emulator
 
-Current version: `v0.1.8`
+Current version: `v0.1.9`
 
 Browser-based explorer for Knowm's kT-RAM neural lane emulator, with live controls, visual gauges, noisy read sampling, and an optional beginner tutorial.
 
@@ -77,6 +77,8 @@ See [NOTICE.md](NOTICE.md) for attribution and IP/license notes.
 The app includes a local monitor API for external programs that want to drive the visual dashboard while they run. Think of it like connecting an oscilloscope to a circuit: your program sends neural-lane snapshots, and the browser shows activation, conductance balance, magnitude, gauge position, and history.
 
 The monitor API is local to the running app server. If the UI is open at `http://127.0.0.1:8000`, post monitor events to that same origin.
+
+The dashboard checks for updates every 500 ms. When Monitor mode is inactive, it reads `/api/state` and redraws when the emulator's `revision` changes, including after external Evaluate or Reset commands. Revisions increase across resets even when the step returns to zero. Reading state does not execute an instruction or change emulator state/history. An active Monitor stream takes precedence until `/api/monitor/reset` clears it, then the dashboard displays the latest emulator state.
 
 | Endpoint | Method | Purpose |
 | --- | --- | --- |
@@ -233,6 +235,17 @@ To force dependency installation again:
 | Linux | `./start.sh install` |
 | macOS | `./start.command install` |
 | Windows | `start.bat install` |
+
+## Regression Tests
+
+Run the HTTP API tests with the project's Python environment and the frontend polling tests with Node.js:
+
+```bash
+.venv/bin/python -m unittest discover -s tests -v
+node --test tests/monitor.test.cjs
+```
+
+The HTTP tests start a temporary localhost server. They cover external Evaluate and Reset commands, read-only state refreshes, and preservation of the Monitor stream. The frontend tests cover graph refresh detection and Monitor mode precedence.
 
 ## Dependency
 

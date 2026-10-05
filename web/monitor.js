@@ -2,7 +2,10 @@ class MonitorBridge {
   constructor({ render, getState }) {
     this.render = render;
     this.getState = getState;
-    this.sequence = 0;
+    this.sequence = null;
+    this.revision = null;
+    this.mode = null;
+    this.polling = false;
     this.timer = null;
   }
 
@@ -20,19 +23,28 @@ class MonitorBridge {
   }
 
   async poll() {
+    if (this.polling) return;
+    this.polling = true;
     try {
       const monitor = await this.getMonitorState();
-      if (monitor.sequence <= this.sequence) {
-        return;
-      }
-      this.sequence = monitor.sequence;
       if (monitor.active && monitor.state) {
-        this.render(monitor.state);
+        if (this.mode !== "monitor" || monitor.sequence !== this.sequence) {
+          this.render(monitor.state);
+          this.sequence = monitor.sequence;
+          this.mode = "monitor";
+        }
         return;
       }
-      this.render(await this.getState());
+      const state = await this.getState();
+      if (this.mode !== "emulator" || state.revision !== this.revision) {
+        this.render(state);
+        this.revision = state.revision;
+        this.mode = "emulator";
+      }
     } catch (_error) {
       // Monitor polling is best-effort; local emulator controls should keep working.
+    } finally {
+      this.polling = false;
     }
   }
 
