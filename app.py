@@ -29,6 +29,7 @@ Z = (0,)
 class EmulatorSession:
     def __init__(self) -> None:
         self._lock = threading.RLock()
+        self.revision = 0
         self.reset()
 
     def reset(
@@ -60,6 +61,7 @@ class EmulatorSession:
             self.history: list[dict] = []
             if start_y is not None:
                 self.core.set_start_y(0, Z, start_y, level=level)
+            self.revision += 1
             return self.snapshot("reset", 0.0)
 
     def evaluate(self, instruction: str, noise: float = 0.0) -> dict:
@@ -124,9 +126,16 @@ class EmulatorSession:
             if instruction not in {"reset", "state"}:
                 self.history.append(point)
                 self.history = self.history[-240:]
+                self.revision += 1
             state = dict(point)
-            state["history"] = self.history
+            state["revision"] = self.revision
+            state["history"] = list(self.history)
             return state
+
+    def current(self) -> dict:
+        """Read a consistent state without evaluating or advancing history."""
+        with self._lock:
+            return self.snapshot("state", self.core.lane(0).y)
 
 
 SESSION = EmulatorSession()
@@ -147,7 +156,7 @@ class Handler(BaseHTTPRequestHandler):
     def do_GET(self) -> None:
         parsed = urlparse(self.path)
         if parsed.path == "/api/state":
-            self.send_json(SESSION.snapshot("state", SESSION.core.lane(0).y))
+            self.send_json(SESSION.current())
             return
         if parsed.path == "/api/monitor/state":
             self.send_json(MONITOR.current())

@@ -1,5 +1,12 @@
 # Changelog
 
+## v0.1.9
+
+- Fixed live dashboard updates after external HTTP Evaluate, Reset, cycle, sample, and preset commands.
+- Added a monotonically increasing emulator state revision, including across resets, and consistent read-only state snapshots.
+- Updated browser polling to detect emulator revisions while preserving active Monitor mode and returning to current emulator state when the Monitor stream is cleared.
+- Added HTTP API and frontend polling regression tests for external Evaluate, Reset, Monitor precedence, and read-only refreshes.
+
 ## v0.1.8
 
 - Added a local Monitor API so external programs can stream neural activity snapshots into the dashboard visuals.
